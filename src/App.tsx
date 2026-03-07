@@ -1,6 +1,66 @@
 import { motion, useScroll, useTransform, useSpring, useMotionValueEvent } from 'motion/react';
 import { ExternalLink, Instagram, Video, Mail, Phone, MapPin, ArrowRight, Play } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import Lenis from 'lenis';
+
+const CustomCursor = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const updateMousePosition = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+      if (!isVisible) setIsVisible(true);
+    };
+    
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('.portfolio-item')) {
+        setIsHovering(true);
+      } else {
+        setIsHovering(false);
+      }
+    };
+
+    const handleMouseLeave = () => setIsVisible(false);
+
+    window.addEventListener('mousemove', updateMousePosition);
+    window.addEventListener('mouseover', handleMouseOver);
+    document.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      window.removeEventListener('mousemove', updateMousePosition);
+      window.removeEventListener('mouseover', handleMouseOver);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [isVisible]);
+
+  if (!isVisible) return null;
+
+  return (
+    <motion.div
+      className="fixed top-0 left-0 z-[100] pointer-events-none flex items-center justify-center rounded-full overflow-hidden"
+      animate={{
+        x: mousePosition.x - (isHovering ? 40 : 8),
+        y: mousePosition.y - (isHovering ? 40 : 8),
+        width: isHovering ? 80 : 16,
+        height: isHovering ? 80 : 16,
+        backgroundColor: isHovering ? "rgba(255, 255, 255, 0.9)" : "rgba(255, 255, 255, 0.5)",
+        backdropFilter: isHovering ? "blur(4px)" : "blur(0px)",
+      }}
+      transition={{ type: "spring", stiffness: 500, damping: 28, mass: 0.2 }}
+    >
+      <motion.span 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isHovering ? 1 : 0 }}
+        className="text-black text-xs font-bold tracking-widest"
+      >
+        PLAY
+      </motion.span>
+    </motion.div>
+  );
+};
 
 const Background = () => {
   const { scrollYProgress } = useScroll();
@@ -42,6 +102,17 @@ const Hero = () => {
   return (
     <section className="min-h-screen flex flex-col items-center justify-center relative px-6 py-24 overflow-hidden">
       <motion.div style={{ y: y1, opacity: opacityBg }} className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+        {/* Cinematic Video Background */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-screen"
+          src="https://assets.mixkit.co/videos/preview/mixkit-ink-swirling-in-water-26772-large.mp4"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/50 to-[#050505]" />
+        
         <motion.div animate={{ rotate: 360 }} transition={{ duration: 100, repeat: Infinity, ease: "linear" }} className="w-[120vw] h-[120vw] md:w-[800px] md:h-[800px] border-[1px] border-white/10 rounded-full absolute border-dashed" />
         <motion.div animate={{ rotate: -360 }} transition={{ duration: 80, repeat: Infinity, ease: "linear" }} className="w-[100vw] h-[100vw] md:w-[600px] md:h-[600px] border-[1px] border-white/10 rounded-full absolute" />
         <motion.div 
@@ -73,7 +144,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[12vw] md:text-[9vw] font-bold tracking-tighter uppercase text-white"
+            className="text-5xl sm:text-7xl md:text-[9vw] font-bold tracking-tighter uppercase text-white"
           >
             Capturing
           </motion.h1>
@@ -83,17 +154,17 @@ const Hero = () => {
             transition={{ delay: 0.6, duration: 1, ease: [0.16, 1, 0.3, 1] }}
             className="flex items-center gap-4 md:gap-8"
           >
-            <div className="hidden md:block w-24 h-[2px] bg-white/30" />
-            <h1 className="text-[14vw] md:text-[11vw] font-[family-name:var(--font-display)] italic font-light text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 lowercase pr-4">
+            <div className="hidden md:block w-12 md:w-24 h-[2px] bg-white/30" />
+            <h1 className="text-6xl sm:text-8xl md:text-[11vw] font-[family-name:var(--font-display)] italic font-light text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 lowercase pr-4">
               moments
             </h1>
-            <div className="hidden md:block w-24 h-[2px] bg-white/30" />
+            <div className="hidden md:block w-12 md:w-24 h-[2px] bg-white/30" />
           </motion.div>
           <motion.h1 
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[10vw] md:text-[7vw] font-bold tracking-tighter uppercase text-outline"
+            className="text-4xl sm:text-6xl md:text-[7vw] font-bold tracking-tighter uppercase text-outline"
           >
             Masterpieces
           </motion.h1>
@@ -139,13 +210,17 @@ const Hero = () => {
 
 const About = () => {
   const ref = useRef(null);
+  const imgContainerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const { scrollYProgress: imgScroll } = useScroll({ target: imgContainerRef, offset: ["start end", "end start"] });
+  
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 180]);
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1.2, 0.8]);
   const x = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
   
   const imgY1 = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
   const imgY2 = useTransform(scrollYProgress, [0, 1], ["20%", "-20%"]);
+  const innerImgY = useTransform(imgScroll, [0, 1], ["-15%", "15%"]);
 
   return (
     <section id="about" ref={ref} className="py-32 px-6 relative overflow-hidden">
@@ -177,11 +252,13 @@ const About = () => {
             className="lg:col-span-5 relative"
           >
             {/* Main Arch Image */}
-            <div className="relative z-10 rounded-t-full rounded-b-[3rem] overflow-hidden aspect-[3/4] border border-white/10">
-              <img 
-                src="https://picsum.photos/seed/photographer/800/1000" 
+            <div ref={imgContainerRef} className="relative z-10 rounded-t-full rounded-b-[3rem] overflow-hidden aspect-[3/4] border border-white/10">
+              <motion.img 
+                style={{ y: innerImgY, scale: 1.2 }}
+                src="https://picsum.photos/seed/photographer/800/1000.webp" 
                 alt="Bachtiar Aryansyah Putra" 
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 scale-105 hover:scale-100"
+                loading="lazy"
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
                 referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80" />
@@ -197,8 +274,9 @@ const About = () => {
               className="absolute -bottom-12 -right-6 md:-right-12 w-48 aspect-square rounded-full overflow-hidden border-8 border-[#050505] z-20 hidden sm:block"
             >
               <img 
-                src="https://picsum.photos/seed/camera/400/400" 
+                src="https://picsum.photos/seed/camera/400/400.webp" 
                 alt="Camera" 
+                loading="lazy"
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />
@@ -461,10 +539,10 @@ const Portfolio = () => {
   ];
 
   const projects = [
-    { title: "Wedding Cinematic", category: "Videography", img: "https://picsum.photos/seed/wedding/800/800", span: "md:col-span-2 md:row-span-2" },
-    { title: "Corporate Event", category: "Documentation", img: "https://picsum.photos/seed/corporate/800/400", span: "md:col-span-2 md:row-span-1" },
-    { title: "Commercial Ad", category: "Directing", img: "https://picsum.photos/seed/commercial/400/400", span: "md:col-span-1 md:row-span-1" },
-    { title: "Portrait Session", category: "Photography", img: "https://picsum.photos/seed/portrait/400/400", span: "md:col-span-1 md:row-span-1" },
+    { title: "Wedding Cinematic", category: "Videography", img: "https://picsum.photos/seed/wedding/800/800.webp", span: "md:col-span-2 md:row-span-2" },
+    { title: "Corporate Event", category: "Documentation", img: "https://picsum.photos/seed/corporate/800/400.webp", span: "md:col-span-2 md:row-span-1" },
+    { title: "Commercial Ad", category: "Directing", img: "https://picsum.photos/seed/commercial/400/400.webp", span: "md:col-span-1 md:row-span-1" },
+    { title: "Portrait Session", category: "Photography", img: "https://picsum.photos/seed/portrait/400/400.webp", span: "md:col-span-1 md:row-span-1" },
   ];
 
   return (
@@ -522,11 +600,12 @@ const Portfolio = () => {
               key={i}
               variants={{ hidden: { opacity: 0, scale: 0.9, y: 20 }, visible: { opacity: 1, scale: 1, y: 0 } }}
               transition={{ type: "spring", stiffness: 50 }}
-              className={`group relative rounded-[2rem] overflow-hidden cursor-pointer ${project.span}`}
+              className={`portfolio-item group relative rounded-[2rem] overflow-hidden cursor-none ${project.span}`}
             >
               <img 
                 src={project.img} 
                 alt={project.title} 
+                loading="lazy"
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                 referrerPolicy="no-referrer"
               />
@@ -708,8 +787,32 @@ const FloatingNavbar = () => {
 };
 
 export default function App() {
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 2,
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
+
   return (
     <div className="relative min-h-screen selection:bg-blue-500/30 selection:text-white">
+      <CustomCursor />
       <FloatingNavbar />
       <Background />
       <Hero />
