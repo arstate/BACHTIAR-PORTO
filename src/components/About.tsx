@@ -1,0 +1,114 @@
+import { motion, useScroll, useTransform } from 'motion/react';
+import { useRef } from 'react';
+
+const About = () => {
+  const ref = useRef(null);
+  const imgContainerRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const { scrollYProgress: imgScroll } = useScroll({ target: imgContainerRef, offset: ["start end", "end start"] });
+  
+  const rotate = useTransform(scrollYProgress, [0, 1], [0, 180]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1.2, 0.8]);
+  const x = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
+  
+  const imgY1 = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
+  const imgY2 = useTransform(scrollYProgress, [0, 1], ["20%", "-20%"]);
+  const innerImgY = useTransform(imgScroll, [0, 1], ["-15%", "15%"]);
+
+  return (
+    <section id="about" ref={ref} className="py-32 px-6 relative overflow-hidden">
+      {/* Morphing Background Shape */}
+      <motion.div 
+        style={{ rotate, scale, x }}
+        className="absolute top-1/2 left-1/4 w-[80vw] h-[80vw] md:w-[40vw] md:h-[40vw] bg-blue-900/10 blur-[80px] -translate-y-1/2 z-0 pointer-events-none rounded-[40%_60%_70%_30%/40%_50%_60%_50%]"
+      />
+
+      {/* Background Marquee */}
+      <div className="absolute top-1/2 left-0 w-[200%] -translate-y-1/2 overflow-hidden opacity-[0.03] pointer-events-none z-0 flex">
+        <motion.div 
+          animate={{ x: ["0%", "-50%"] }} 
+          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+          className="whitespace-nowrap text-[15vw] font-bold uppercase"
+        >
+          CREATIVE DIRECTOR • VIDEOGRAPHER • PHOTOGRAPHER • CREATIVE DIRECTOR • VIDEOGRAPHER • PHOTOGRAPHER • 
+        </motion.div>
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="grid lg:grid-cols-12 gap-16 items-center">
+          <motion.div 
+            style={{ y: imgY1 }}
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="lg:col-span-5 relative"
+          >
+            {/* Main Arch Image */}
+            <div ref={imgContainerRef} className="relative z-10 rounded-t-full rounded-b-[3rem] overflow-hidden aspect-[3/4] border border-white/10">
+              <motion.img 
+                style={{ y: innerImgY, scale: 1.2 }}
+                src="https://picsum.photos/seed/videographer/800/1000.webp" 
+                alt="Bachtiar Aryansyah Putra" 
+                loading="lazy"
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80" />
+            </div>
+            
+            {/* Floating Accent Image */}
+            <motion.div 
+              style={{ y: imgY2 }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+              className="absolute -bottom-12 -right-6 md:-right-12 w-48 aspect-square rounded-full overflow-hidden border-8 border-[#050505] z-20 hidden sm:block"
+            >
+              <img 
+                src="https://picsum.photos/seed/dslr/400/400.webp" 
+                alt="Camera" 
+                loading="lazy"
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+            </motion.div>
+          </motion.div>
+          
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: { staggerChildren: 0.2 }
+              }
+            }}
+            className="lg:col-span-7 space-y-8"
+          >
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="flex items-center gap-4">
+              <div className="w-12 h-[1px] bg-blue-500" />
+              <span className="uppercase tracking-widest text-sm text-blue-400 font-medium">The Artist</span>
+            </motion.div>
+            <motion.h2 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="text-5xl md:text-7xl font-[family-name:var(--font-display)] italic font-light leading-tight">
+              Crafting visual <br/>
+              <span className="font-[family-name:var(--font-sans)] font-bold not-italic uppercase tracking-tighter text-white">Narratives.</span>
+            </motion.h2>
+            
+            <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="glass-card p-8 md:p-10 relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-500 to-purple-500" />
+              <p className="text-lg md:text-xl text-white/70 leading-relaxed font-light">
+                Saya adalah profesional di bidang videografi dan fotografi dengan pengalaman lebih dari 4 tahun. Mahir dalam produksi dan editing konten visual. Saat ini aktif sebagai mahasiswa D4 Desain Grafis di Universitas Negeri Surabaya (UNESA) dan Founder <span className="text-white font-medium">Arstate.Cinema</span>, vendor dokumentasi berbagai event.
+              </p>
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default About;

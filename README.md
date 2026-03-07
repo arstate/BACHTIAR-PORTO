@@ -1,20 +1,45 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Bachtiar Aryansyah Putra | Portfolio
 
-# Run and deploy your AI Studio app
+Welcome to the source code for my personal portfolio and creative showcase.
 
-This contains everything you need to run your app locally.
+## About
+I am a professional videographer, photographer, and creative director with over 4 years of experience in the creative industry. I am also the Founder and Creative Director of **Arstate.Cinema**, a creative media agency specializing in event documentation, commercials, and visual storytelling.
 
-View your app in AI Studio: https://ai.studio/apps/2ba778b9-fa88-4321-aa8b-4b3519817e75
+## Tech Stack
+This portfolio is built with modern web technologies to ensure a smooth, performant, and visually engaging experience:
+- **React 18**
+- **Vite**
+- **Tailwind CSS**
+- **Framer Motion** (for advanced animations and scroll effects)
+- **Lenis** (for smooth scrolling)
+- **Lucide React** (for iconography)
 
-## Run Locally
+## Features
+- Cinematic video background hero section
+- Smooth scrolling with Lenis
+- Complex scroll-linked animations using Framer Motion
+- Glassmorphism UI elements
+- Custom cursor interactions
+- Responsive design for mobile and desktop
 
-**Prerequisites:**  Node.js
+## Getting Started
+To run this project locally:
 
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+4. Build for production:
+   ```bash
+   npm run build
+   ```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Contact
+- Email: aryansyah1509@gmail.com
+- Phone: 0896 1732 3344
+- Location: Sidoarjo, Indonesia
