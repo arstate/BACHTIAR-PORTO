@@ -13,7 +13,7 @@ const Footer = () => {
   const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
-    <footer id="contact" ref={footerRef} className="pt-32 pb-12 px-6 relative overflow-hidden">
+    <footer id="contact" ref={footerRef} className="pt-32 pb-12 px-6 relative overflow-hidden z-10">
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-blue-900/10 pointer-events-none" />
       
       {/* Expanding Glow Animation */}

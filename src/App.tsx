@@ -9,6 +9,7 @@ import About from './components/About';
 import Experience from './components/Experience';
 import Skills from './components/Skills';
 import Portfolio from './components/Portfolio';
+import Clients from './components/Clients';
 import Footer from './components/Footer';
 
 export default function App() {
@@ -45,6 +46,7 @@ export default function App() {
       <Experience />
       <Skills />
       <Portfolio />
+      <Clients />
       <Footer />
     </div>
   );

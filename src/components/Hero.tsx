@@ -3,12 +3,29 @@ import { Play } from 'lucide-react';
 
 const Hero = () => {
   const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 1000], [0, 200]);
-  const yText = useTransform(scrollY, [0, 1000], [0, 150]);
-  const opacityBg = useTransform(scrollY, [0, 500], [0.2, 0]);
+  const y1 = useTransform(scrollY, [0, 1000], [0, -200]);
+  const opacityBg = useTransform(scrollY, [0, 800], [0.2, 0]);
+  
+  // Parallax transforms for individual elements (moving UP and fading out as we scroll down)
+  // Staggered exit: Top elements move faster and fade out earlier
+  const yBadge = useTransform(scrollY, [0, 500], [0, -1200]);
+  const opacityBadge = useTransform(scrollY, [0, 300], [1, 0]);
+
+  const yTitle1 = useTransform(scrollY, [0, 600], [0, -1000]);
+  const opacityTitle1 = useTransform(scrollY, [100, 400], [1, 0]);
+
+  const yTitle2 = useTransform(scrollY, [0, 700], [0, -800]);
+  const opacityTitle2 = useTransform(scrollY, [200, 500], [1, 0]);
+
+  const yTitle3 = useTransform(scrollY, [0, 800], [0, -600]);
+  const opacityTitle3 = useTransform(scrollY, [300, 600], [1, 0]);
+
+  // Card moves up smoothly
+  const yCard = useTransform(scrollY, [0, 900], [0, -400]);
+  const opacityCard = useTransform(scrollY, [500, 800], [1, 0]);
 
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center relative px-6 py-24 overflow-hidden">
+    <section className="h-screen sticky top-0 flex flex-col items-center justify-center px-6 py-24 overflow-hidden z-0">
       <motion.div style={{ y: y1, opacity: opacityBg }} className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
         {/* Cinematic Video Background */}
         <video
@@ -30,14 +47,11 @@ const Hero = () => {
         />
       </motion.div>
 
-      <motion.div 
-        style={{ y: yText }}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
+      <div 
         className="z-10 text-center w-full max-w-7xl mx-auto flex flex-col items-center"
       >
         <motion.div 
+          style={{ y: yBadge, opacity: opacityBadge }}
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.8 }}
@@ -48,15 +62,19 @@ const Hero = () => {
         </motion.div>
         
         <div className="flex flex-col items-center justify-center leading-[0.85] mb-12 w-full">
-          <motion.h1 
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-5xl sm:text-7xl md:text-[9vw] font-bold tracking-tighter uppercase text-white"
-          >
-            Capturing
-          </motion.h1>
+          <motion.div style={{ y: yTitle1, opacity: opacityTitle1 }}>
+            <motion.h1 
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-5xl sm:text-7xl md:text-[9vw] font-bold tracking-tighter uppercase text-white"
+            >
+              Capturing
+            </motion.h1>
+          </motion.div>
+          
           <motion.div 
+            style={{ y: yTitle2, opacity: opacityTitle2 }}
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.6, duration: 1, ease: [0.16, 1, 0.3, 1] }}
@@ -68,50 +86,55 @@ const Hero = () => {
             </h1>
             <div className="hidden md:block w-12 md:w-24 h-[2px] bg-white/30" />
           </motion.div>
-          <motion.h1 
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-4xl sm:text-6xl md:text-[7vw] font-bold tracking-tighter uppercase text-outline"
-          >
-            Masterpieces
-          </motion.h1>
+
+          <motion.div style={{ y: yTitle3, opacity: opacityTitle3 }}>
+            <motion.h1 
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-4xl sm:text-6xl md:text-[7vw] font-bold tracking-tighter uppercase text-outline"
+            >
+              Masterpieces
+            </motion.h1>
+          </motion.div>
         </div>
         
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1, duration: 0.8 }}
-          className="glass-card p-6 md:p-8 max-w-2xl w-full flex flex-col sm:flex-row items-center justify-between gap-6"
-        >
-          <p className="text-sm md:text-base text-white/60 font-light text-left max-w-xs">
-            Freelance Creative Media <br/>
-            Founder & Creative Director of <span className="text-white font-medium">Arstate.Cinema</span>
-          </p>
-          <div className="flex items-center gap-4 w-full sm:w-auto">
-            <a 
-              href="#portfolio" 
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform"
-            >
-              <Play size={20} className="ml-1" fill="currentColor" />
-            </a>
-            <a 
-              href="#contact" 
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="glass-button px-6 py-4 text-sm font-medium flex-1 sm:flex-none text-center"
-            >
-              Let's Talk
-            </a>
-          </div>
+        <motion.div style={{ y: yCard, opacity: opacityCard }} className="w-full max-w-2xl">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 0.8 }}
+            className="glass-card p-6 md:p-8 w-full flex flex-col sm:flex-row items-center justify-between gap-6"
+          >
+            <p className="text-sm md:text-base text-white/60 font-light text-left max-w-xs">
+              Freelance Creative Media <br/>
+              Founder & Creative Director of <span className="text-white font-medium">Arstate.Cinema</span>
+            </p>
+            <div className="flex items-center gap-4 w-full sm:w-auto">
+              <a 
+                href="#portfolio" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform"
+              >
+                <Play size={20} className="ml-1" fill="currentColor" />
+              </a>
+              <a 
+                href="#contact" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="glass-button px-6 py-4 text-sm font-medium flex-1 sm:flex-none text-center"
+              >
+                Let's Talk
+              </a>
+            </div>
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 };

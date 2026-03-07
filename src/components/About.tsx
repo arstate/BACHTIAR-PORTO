@@ -3,20 +3,18 @@ import { useRef } from 'react';
 
 const About = () => {
   const ref = useRef(null);
-  const imgContainerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const { scrollYProgress: imgScroll } = useScroll({ target: imgContainerRef, offset: ["start end", "end start"] });
   
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 180]);
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1.2, 0.8]);
   const x = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
   
-  const imgY1 = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
-  const imgY2 = useTransform(scrollYProgress, [0, 1], ["20%", "-20%"]);
-  const innerImgY = useTransform(imgScroll, [0, 1], ["-15%", "15%"]);
+  const mainImageY = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
+  const floatingImageY = useTransform(scrollYProgress, [0, 1], ["30%", "-30%"]);
+  const innerImgY = useTransform(scrollYProgress, [0, 1], ["-25%", "25%"]);
 
   return (
-    <section id="about" ref={ref} className="py-32 px-6 relative overflow-hidden">
+    <section id="about" ref={ref} className="py-32 px-6 relative overflow-hidden z-10">
       {/* Morphing Background Shape */}
       <motion.div 
         style={{ rotate, scale, x }}
@@ -37,7 +35,7 @@ const About = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid lg:grid-cols-12 gap-16 items-center">
           <motion.div 
-            style={{ y: imgY1 }}
+            style={{ y: mainImageY }}
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -45,7 +43,7 @@ const About = () => {
             className="lg:col-span-5 relative"
           >
             {/* Main Arch Image */}
-            <div ref={imgContainerRef} className="relative z-10 rounded-t-full rounded-b-[3rem] overflow-hidden aspect-[3/4] border border-white/10">
+            <div className="relative z-10 rounded-t-full rounded-b-[3rem] overflow-hidden aspect-[3/4] border border-white/10">
               <motion.img 
                 style={{ y: innerImgY, scale: 1.2 }}
                 src="https://picsum.photos/seed/videographer/800/1000.webp" 
@@ -59,7 +57,7 @@ const About = () => {
             
             {/* Floating Accent Image */}
             <motion.div 
-              style={{ y: imgY2 }}
+              style={{ y: floatingImageY }}
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}

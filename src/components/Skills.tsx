@@ -7,6 +7,8 @@ const Skills = () => {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["-50%", "50%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0.3, 0]);
+  
+  const headingY = useTransform(scrollYProgress, [0, 1], ["-150px", "150px"]);
 
   const roles = [
     "Professional Photographer", "Videographer", "Photo & Video Editor", "Camera Operator"
@@ -24,7 +26,7 @@ const Skills = () => {
   ];
 
   return (
-    <section id="skills" ref={ref} className="py-32 px-6 relative overflow-hidden">
+    <section id="skills" ref={ref} className="py-32 px-6 relative overflow-hidden z-10">
       {/* Moving Light Ray */}
       <motion.div 
         style={{ y, opacity }}
@@ -34,12 +36,25 @@ const Skills = () => {
       {/* Animated Grid Background */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.05)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none z-0" />
       
-      <div className="max-w-7xl mx-auto relative z-10">
+      <motion.div 
+        className="max-w-7xl mx-auto relative z-10"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={{
+          hidden: { opacity: 0 },
+          visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.2 }
+          }
+        }}
+      >
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
+          style={{ y: headingY }}
+          variants={{
+            hidden: { opacity: 0, y: 40 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
+          }}
           className="mb-16"
         >
           <div className="flex items-center gap-4 mb-6">
@@ -53,9 +68,6 @@ const Skills = () => {
 
         {/* Bento Grid */}
         <motion.div 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
           variants={{
             hidden: { opacity: 0 },
             visible: {
@@ -109,7 +121,7 @@ const Skills = () => {
             </div>
           </motion.div>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 };

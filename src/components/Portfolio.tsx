@@ -24,7 +24,7 @@ const Portfolio = () => {
   ];
 
   return (
-    <section id="portfolio" ref={ref} className="py-32 px-6 relative overflow-hidden">
+    <section id="portfolio" ref={ref} className="py-32 px-6 relative overflow-hidden z-10">
       {/* Scroll-linked morphing gradient */}
       <motion.div 
         style={{ scale, rotate }}

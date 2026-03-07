@@ -13,18 +13,24 @@ const Experience = () => {
       company: "PT Cita Entertainment",
       period: "2023 - Present",
       role: "Divisi Multimedia",
-      description: "Videographer, Photographer, Camera Operator for major events and highlight editing."
+      description: "Videographer, Photographer, Camera Operator for major events and highlight editing.",
+      bullets: [
+        "Managed post-production workflows"
+      ]
     },
     {
       company: "Arstate.Cinema",
       period: "2021 - Present",
       role: "Founder & Creative Director",
-      description: "Managing photo/video documentation services for weddings, corporate, commercials, and leading the creative post-production process."
+      description: "Managing photo/video documentation services for weddings, corporate, commercials, and leading the creative post-production process.",
+      bullets: [
+        "Developed client acquisition strategies"
+      ]
     }
   ];
 
   return (
-    <section id="experience" ref={containerRef} className="py-32 px-6 relative">
+    <section id="experience" ref={containerRef} className="py-32 px-6 relative z-10">
       {/* Scroll-linked glowing orb */}
       <motion.div 
         style={{ top: useTransform(scrollYProgress, [0, 1], ["0%", "100%"]) }}
@@ -92,9 +98,16 @@ const Experience = () => {
                     {exp.period}
                   </span>
                 </div>
-                <p className="text-white/70 font-light leading-relaxed text-lg">
+                <p className="text-white/70 font-light leading-relaxed text-lg mb-4">
                   {exp.description}
                 </p>
+                {exp.bullets && exp.bullets.length > 0 && (
+                  <ul className="list-disc list-inside text-white/60 font-light space-y-2">
+                    {exp.bullets.map((bullet, i) => (
+                      <li key={i}>{bullet}</li>
+                    ))}
+                  </ul>
+                )}
               </motion.div>
             ))}
             </div>
