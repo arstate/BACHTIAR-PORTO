@@ -62,6 +62,16 @@ const CustomCursor = () => {
   );
 };
 
+const NoiseOverlay = () => (
+  <div 
+    className="fixed inset-0 z-[999] pointer-events-none opacity-[0.05]"
+    style={{ 
+      backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 256 256%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")',
+      backgroundSize: '256px 256px'
+    }}
+  />
+);
+
 const Background = () => {
   const { scrollYProgress } = useScroll();
   const smoothProgress = useSpring(scrollYProgress, { damping: 20, stiffness: 100 });
@@ -78,17 +88,15 @@ const Background = () => {
 
   return (
     <motion.div style={{ backgroundColor: bg }} className="fixed inset-0 z-[-1] overflow-hidden">
-      <motion.div style={{ y: y1, scale: scale1 }} className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-blue-900/20 blur-[140px] mix-blend-screen" />
-      <motion.div style={{ y: y2, scale: scale2 }} className="absolute bottom-[-20%] right-[-10%] w-[70vw] h-[70vw] rounded-full bg-purple-900/15 blur-[160px] mix-blend-screen" />
-      <motion.div style={{ scale: scale1 }} className="absolute top-[30%] left-[40%] w-[50vw] h-[50vw] rounded-full bg-amber-900/10 blur-[120px] animate-float mix-blend-screen" />
+      <motion.div style={{ y: y1, scale: scale1 }} className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-[radial-gradient(circle,rgba(30,58,138,0.15)_0%,transparent_60%)] mix-blend-screen" />
+      <motion.div style={{ y: y2, scale: scale2 }} className="absolute bottom-[-20%] right-[-10%] w-[70vw] h-[70vw] rounded-full bg-[radial-gradient(circle,rgba(88,28,135,0.15)_0%,transparent_60%)] mix-blend-screen" />
+      <motion.div style={{ scale: scale1 }} className="absolute top-[30%] left-[40%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(120,53,15,0.1)_0%,transparent_60%)] animate-float mix-blend-screen" />
       
       {/* Dynamic Grid Pattern */}
       <motion.div 
         style={{ opacity: useTransform(smoothProgress, [0, 0.5, 1], [0.1, 0.3, 0.1]) }}
         className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)]"
       />
-      
-      <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
     </motion.div>
   );
 };
@@ -111,7 +119,7 @@ const Hero = () => {
           className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-screen"
           src="https://assets.mixkit.co/videos/preview/mixkit-ink-swirling-in-water-26772-large.mp4"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/50 to-[#050505]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/80 to-[#050505]" />
         
         <motion.div animate={{ rotate: 360 }} transition={{ duration: 100, repeat: Infinity, ease: "linear" }} className="w-[120vw] h-[120vw] md:w-[800px] md:h-[800px] border-[1px] border-white/10 rounded-full absolute border-dashed" />
         <motion.div animate={{ rotate: -360 }} transition={{ duration: 80, repeat: Infinity, ease: "linear" }} className="w-[100vw] h-[100vw] md:w-[600px] md:h-[600px] border-[1px] border-white/10 rounded-full absolute" />
@@ -812,6 +820,7 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen selection:bg-blue-500/30 selection:text-white">
+      <NoiseOverlay />
       <CustomCursor />
       <FloatingNavbar />
       <Background />
