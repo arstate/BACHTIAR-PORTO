@@ -1,9 +1,10 @@
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useRef, useState } from 'react';
+import { MousePointerClick } from 'lucide-react';
 
 const About = () => {
   const ref = useRef(null);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 180]);
@@ -46,13 +47,13 @@ const About = () => {
             {/* Main Arch Image - Flip Card */}
             <div 
               className="relative z-10 w-full aspect-[3/4] perspective-1000 group cursor-pointer"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
+              onClick={() => setIsFlipped(!isFlipped)}
+              onMouseLeave={() => setIsFlipped(false)}
               style={{ perspective: "1000px" }}
             >
               <motion.div
                 className="w-full h-full relative preserve-3d transition-all duration-700"
-                animate={{ rotateY: isHovered ? 180 : 0 }}
+                animate={{ rotateY: isFlipped ? 180 : 0 }}
                 transition={{ duration: 0.8, ease: "easeInOut" }}
                 style={{ transformStyle: "preserve-3d" }}
               >
@@ -63,13 +64,20 @@ const About = () => {
                 >
                   <motion.img 
                     style={{ y: innerImgY, scale: 1.2 }}
-                    src="https://picsum.photos/seed/videographer/800/1000.webp" 
+                    src="https://lh3.googleusercontent.com/pw/AP1GczOY6eh8jD-AhYTN36AAloPj19xxOD1ZU-GJcdT814YnnlKqTIXtX7GLjBfoMrpOTG-eFw9enBnBbRQbgBqTzLnoZbtoYyG0_mRFfnfBJLefqLl-n6I=w2400" 
                     alt="Bachtiar Aryansyah Putra" 
                     loading="lazy"
-                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
                     referrerPolicy="no-referrer"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80" />
+                  
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20">
+                    <span className="px-6 py-3 rounded-full bg-black/50 backdrop-blur-md text-white border border-white/20 text-sm font-medium tracking-widest uppercase flex items-center gap-2 shadow-xl">
+                      Click to flip <MousePointerClick size={16} />
+                    </span>
+                  </div>
                 </div>
 
                 {/* Back Face */}
