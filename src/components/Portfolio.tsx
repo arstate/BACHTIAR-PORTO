@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 import { ExternalLink, Instagram, Video, ArrowRight, X } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 const Portfolio = () => {
   const ref = useRef(null);
@@ -176,76 +177,79 @@ const Portfolio = () => {
       </div>
 
       {/* Project Modal */}
-      <AnimatePresence>
-        {selectedProject && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-sm"
-            onClick={() => setSelectedProject(null)}
-          >
+      {createPortal(
+        <AnimatePresence>
+          {selectedProject && (
             <motion.div
-              initial={{ scale: 0.9, y: 20, opacity: 0 }}
-              animate={{ scale: 1, y: 0, opacity: 1 }}
-              exit={{ scale: 0.9, y: 20, opacity: 0 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="w-full max-w-5xl bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]"
-              onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[9999] flex items-start justify-center px-4 pt-28 pb-8 md:px-8 md:pt-32 bg-black/80 backdrop-blur-sm"
+              onClick={() => setSelectedProject(null)}
             >
-              {/* Media Section */}
-              <div className="w-full md:w-3/5 h-64 md:h-auto relative bg-black">
-                <img 
-                  src={selectedProject.img} 
-                  alt={selectedProject.title} 
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-                {/* Placeholder for video play button if it were a video */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="w-16 h-16 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center border border-white/20">
-                    <Video size={24} className="text-white/80" />
+              <motion.div
+                initial={{ scale: 0.9, y: 20, opacity: 0 }}
+                animate={{ scale: 1, y: 0, opacity: 1 }}
+                exit={{ scale: 0.9, y: 20, opacity: 0 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                className="w-full max-w-5xl bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[85vh]"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Media Section */}
+                <div className="w-full md:w-3/5 h-64 md:h-auto relative bg-black">
+                  <img 
+                    src={selectedProject.img} 
+                    alt={selectedProject.title} 
+                    className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                  {/* Placeholder for video play button if it were a video */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="w-16 h-16 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center border border-white/20">
+                      <Video size={24} className="text-white/80" />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Content Section */}
-              <div className="w-full md:w-2/5 p-8 md:p-10 flex flex-col overflow-y-auto">
-                <div className="flex justify-between items-start mb-6">
-                  <div>
-                    <p className="text-blue-400 text-sm font-medium mb-2 tracking-widest uppercase">{selectedProject.category}</p>
-                    <h3 className="text-3xl md:text-4xl font-bold text-white">{selectedProject.title}</h3>
+                {/* Content Section */}
+                <div className="w-full md:w-2/5 p-8 md:p-10 flex flex-col overflow-y-auto">
+                  <div className="flex justify-between items-start mb-6">
+                    <div>
+                      <p className="text-blue-400 text-sm font-medium mb-2 tracking-widest uppercase">{selectedProject.category}</p>
+                      <h3 className="text-3xl md:text-4xl font-bold text-white">{selectedProject.title}</h3>
+                    </div>
+                    <button 
+                      onClick={() => setSelectedProject(null)}
+                      className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors border border-white/10"
+                    >
+                      <X size={20} />
+                    </button>
                   </div>
-                  <button 
-                    onClick={() => setSelectedProject(null)}
-                    className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors border border-white/10"
-                  >
-                    <X size={20} />
-                  </button>
-                </div>
 
-                <div className="mb-8">
-                  <h4 className="text-sm uppercase tracking-widest text-white/50 mb-3">Client Brief</h4>
-                  <p className="text-white/80 font-light leading-relaxed">
-                    {selectedProject.brief}
-                  </p>
-                </div>
+                  <div className="mb-8">
+                    <h4 className="text-sm uppercase tracking-widest text-white/50 mb-3">Client Brief</h4>
+                    <p className="text-white/80 font-light leading-relaxed">
+                      {selectedProject.brief}
+                    </p>
+                  </div>
 
-                <div className="mt-auto">
-                  <h4 className="text-sm uppercase tracking-widest text-white/50 mb-3">Tools Used</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedProject.tools.map((tool: string, i: number) => (
-                      <span key={i} className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white/70 text-sm">
-                        {tool}
-                      </span>
-                    ))}
+                  <div className="mt-auto">
+                    <h4 className="text-sm uppercase tracking-widest text-white/50 mb-3">Tools Used</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedProject.tools.map((tool: string, i: number) => (
+                        <span key={i} className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white/70 text-sm">
+                          {tool}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </section>
   );
 };

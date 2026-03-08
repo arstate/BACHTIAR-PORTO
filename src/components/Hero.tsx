@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform, useMotionValueEvent, AnimatePresence } from 'motion/react';
 import { Play, ArrowRight, Download, FileText, X } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 const Hero = () => {
   const { scrollY } = useScroll();
@@ -188,56 +189,59 @@ const Hero = () => {
       </div>
 
       {/* CV Modal */}
-      <AnimatePresence>
-        {isCVModalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-sm"
-            onClick={() => setIsCVModalOpen(false)}
-          >
+      {createPortal(
+        <AnimatePresence>
+          {isCVModalOpen && (
             <motion.div
-              initial={{ scale: 0.9, y: 20, opacity: 0 }}
-              animate={{ scale: 1, y: 0, opacity: 1 }}
-              exit={{ scale: 0.9, y: 20, opacity: 0 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="w-full max-w-4xl bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
-              onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[9999] flex items-start justify-center px-4 pt-28 pb-8 md:px-8 md:pt-32 bg-black/80 backdrop-blur-sm"
+              onClick={() => setIsCVModalOpen(false)}
             >
-              <div className="flex justify-between items-center p-6 border-b border-white/10">
-                <h3 className="text-xl font-bold text-white">Curriculum Vitae</h3>
-                <div className="flex items-center gap-4">
-                  <a 
-                    href="#" // Replace with actual PDF link
-                    download
-                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium transition-colors"
-                  >
-                    <Download size={16} />
-                    Download PDF
-                  </a>
-                  <button 
-                    onClick={() => setIsCVModalOpen(false)}
-                    className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors border border-white/10"
-                  >
-                    <X size={20} />
-                  </button>
+              <motion.div
+                initial={{ scale: 0.9, y: 20, opacity: 0 }}
+                animate={{ scale: 1, y: 0, opacity: 1 }}
+                exit={{ scale: 0.9, y: 20, opacity: 0 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                className="w-full max-w-3xl bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[80vh]"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex justify-between items-center p-6 border-b border-white/10">
+                  <h3 className="text-xl font-bold text-white">Curriculum Vitae</h3>
+                  <div className="flex items-center gap-4">
+                    <a 
+                      href="#" // Replace with actual PDF link
+                      download
+                      className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium transition-colors"
+                    >
+                      <Download size={16} />
+                      Download PDF
+                    </a>
+                    <button 
+                      onClick={() => setIsCVModalOpen(false)}
+                      className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors border border-white/10"
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
                 </div>
-              </div>
-              
-              <div className="p-6 overflow-y-auto flex-1 bg-black/50 flex justify-center">
-                {/* Placeholder for CV Image */}
-                <img 
-                  src="https://picsum.photos/seed/cv/800/1131.webp" 
-                  alt="CV Preview" 
-                  className="max-w-full h-auto object-contain shadow-2xl border border-white/5"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
+                
+                <div className="p-6 overflow-y-auto flex-1 bg-black/50 flex justify-center">
+                  {/* Placeholder for CV Image */}
+                  <img 
+                    src="https://picsum.photos/seed/cv/800/1131.webp" 
+                    alt="CV Preview" 
+                    className="max-w-full h-auto object-contain shadow-2xl border border-white/5"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </section>
   );
 };
