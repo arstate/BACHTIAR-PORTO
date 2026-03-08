@@ -133,11 +133,11 @@ const Skills = () => {
           {/* Decorative Card */}
           <motion.div
             variants={{ hidden: { opacity: 0, scale: 0.9 }, visible: { opacity: 1, scale: 1 } }}
-            className="md:col-span-1 glass-card p-8 relative overflow-hidden flex items-center justify-center min-h-[250px]"
+            className="md:col-span-1 glass-card p-8 relative overflow-hidden flex flex-col items-center justify-center min-h-[250px]"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-purple-600/20" />
-            <h2 className="text-8xl font-[family-name:var(--font-display)] italic text-white/20 absolute">4+</h2>
-            <p className="relative z-10 text-xl font-medium text-center">Years of<br/>Experience</p>
+            <h2 className="text-7xl font-[family-name:var(--font-display)] italic text-white mb-2 relative z-10">4+</h2>
+            <p className="relative z-10 text-xl font-medium text-center text-white/80">Years of<br/>Experience</p>
           </motion.div>
 
           {/* Software Card - Spans full width */}

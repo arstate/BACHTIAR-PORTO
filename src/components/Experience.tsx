@@ -20,7 +20,7 @@ const Experience = () => {
     },
     {
       company: "Arstate.Cinema",
-      period: "2021 - Present",
+      period: "2020 - Present",
       role: "Founder & Creative Director",
       description: "Managing photo/video documentation services for weddings, corporate, commercials, and leading the creative post-production process.",
       bullets: [

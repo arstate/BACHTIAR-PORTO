@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform, useMotionValueEvent } from 'motion/react';
-import { Play } from 'lucide-react';
+import { Play, ArrowRight } from 'lucide-react';
 import { useRef, useState } from 'react';
 
 const Hero = () => {
@@ -157,9 +157,10 @@ const Hero = () => {
                   e.preventDefault();
                   document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="glass-button px-6 py-4 text-sm font-medium flex-1 sm:flex-none text-center"
+                className="glass-button px-6 py-4 text-sm font-medium flex-1 sm:flex-none text-center flex items-center justify-center gap-2"
               >
                 Let's Talk
+                <ArrowRight size={16} />
               </a>
             </div>
           </motion.div>
