@@ -49,7 +49,7 @@ const LazySection = ({ children, className = "", id = "", placeholderHeight = "5
         Actually, for "rendering when active only", we should unmount when !isInView.
         But we need to keep the height.
       */}
-      {(isInView || !hasLoaded) ? children : null}
+      {(hasLoaded || isInView) ? children : null}
     </div>
   );
 };

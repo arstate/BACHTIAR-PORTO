@@ -15,7 +15,7 @@ const About = () => {
   const innerImgY = useTransform(scrollYProgress, [0, 1], ["-25%", "25%"]);
 
   return (
-    <section id="about" ref={ref} className="py-32 px-6 relative overflow-hidden z-10 w-[140%] -ml-[20%]">
+    <section id="about" ref={ref} className="py-32 px-6 relative overflow-hidden z-10 w-[140%] -ml-[20%] bg-[#050505]">
       {/* Morphing Background Shape */}
       <motion.div 
         style={{ rotate, scale, x }}

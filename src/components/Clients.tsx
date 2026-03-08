@@ -14,7 +14,7 @@ const clients = [
 
 const Clients = () => {
   return (
-    <section className="py-24 relative z-10 overflow-hidden border-t border-white/5 w-[140%] -ml-[20%]">
+    <section className="py-24 relative z-10 overflow-hidden border-t border-white/5 w-[140%] -ml-[20%] bg-[#050505]">
       <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

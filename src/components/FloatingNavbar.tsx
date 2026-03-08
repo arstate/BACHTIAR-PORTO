@@ -15,20 +15,22 @@ const FloatingNavbar = () => {
   });
 
   const navLinks = [
-    { name: 'About', href: '#about' },
-    { name: 'Experience', href: '#experience' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Portfolio', href: '#portfolio' },
+    { name: 'About', href: '#about-section' },
+    { name: 'Experience', href: '#experience-section' },
+    { name: 'Skills', href: '#skills-section' },
+    { name: 'Portfolio', href: '#portfolio-section' },
   ];
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, href: string) => {
     e.preventDefault();
     const targetId = href.replace('#', '');
     const elem = document.getElementById(targetId);
+    
     if (elem) {
-      elem.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
+      const offsetTop = elem.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({
+        top: offsetTop - 100, // Offset for the fixed header
+        behavior: 'smooth'
       });
     }
   };
@@ -55,8 +57,8 @@ const FloatingNavbar = () => {
         </a>
       ))}
       <a 
-        href="#contact" 
-        onClick={(e) => handleScroll(e, '#contact')}
+        href="#footer-section" 
+        onClick={(e) => handleScroll(e, '#footer-section')}
         className="text-[10px] md:text-sm font-medium text-black bg-white px-3 md:px-4 py-1.5 md:py-2 rounded-full hover:scale-105 transition-transform tracking-wide uppercase"
       >
         Let's Talk

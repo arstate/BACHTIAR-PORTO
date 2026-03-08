@@ -36,24 +36,24 @@ const Hero = () => {
   
   // Parallax transforms for individual elements (moving UP and fading out as we scroll down)
   // Staggered exit: Top elements move faster and fade out earlier
-  const yBadge = useTransform(scrollY, [0, 500], [0, -1200]);
+  const yBadge = useTransform(scrollY, [0, 500], [0, -200]);
   const opacityBadge = useTransform(scrollY, [0, 300], [1, 0]);
 
-  const yTitle1 = useTransform(scrollY, [0, 600], [0, -1000]);
+  const yTitle1 = useTransform(scrollY, [0, 600], [0, -150]);
   const opacityTitle1 = useTransform(scrollY, [100, 400], [1, 0]);
 
-  const yTitle2 = useTransform(scrollY, [0, 700], [0, -800]);
+  const yTitle2 = useTransform(scrollY, [0, 700], [0, -100]);
   const opacityTitle2 = useTransform(scrollY, [200, 500], [1, 0]);
 
-  const yTitle3 = useTransform(scrollY, [0, 800], [0, -600]);
+  const yTitle3 = useTransform(scrollY, [0, 800], [0, -50]);
   const opacityTitle3 = useTransform(scrollY, [300, 600], [1, 0]);
 
   // Card moves up smoothly
-  const yCard = useTransform(scrollY, [0, 900], [0, -400]);
+  const yCard = useTransform(scrollY, [0, 900], [0, 0]);
   const opacityCard = useTransform(scrollY, [500, 800], [1, 0]);
 
   return (
-    <section className="h-screen sticky top-0 flex flex-col items-center justify-center px-6 py-24 overflow-hidden z-0">
+    <section className="h-screen relative flex flex-col items-center justify-center px-6 py-24 overflow-hidden z-0">
       <motion.div style={{ y: y1, opacity: opacityBg }} className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
         {/* Cinematic Video Background */}
         <video
