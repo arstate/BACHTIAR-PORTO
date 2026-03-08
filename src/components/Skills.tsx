@@ -1,6 +1,5 @@
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useRef } from 'react';
-import { FiFilm, FiVideo, FiMonitor, FiImage, FiSliders, FiPenTool, FiLayout, FiScissors } from 'react-icons/fi';
 
 const Skills = () => {
   const ref = useRef(null);
@@ -15,18 +14,53 @@ const Skills = () => {
   ];
   
   const software = [
-    { name: "Premiere Pro", icon: <FiFilm size={32} className="text-[#9999FF]" /> },
-    { name: "After Effects", icon: <FiVideo size={32} className="text-[#9999FF]" /> },
-    { name: "DaVinci Resolve", icon: <FiMonitor size={32} className="text-[#52B5F7]" /> },
-    { name: "Photoshop", icon: <FiImage size={32} className="text-[#31A8FF]" /> },
-    { name: "Lightroom", icon: <FiSliders size={32} className="text-[#31A8FF]" /> },
-    { name: "Illustrator", icon: <FiPenTool size={32} className="text-[#FF9A00]" /> },
-    { name: "Figma", icon: <FiLayout size={32} className="text-[#F24E1E]" /> },
-    { name: "Capcut", icon: <FiScissors size={32} className="text-[#FFFFFF]" /> }
+    { 
+      name: "Adobe Premiere Pro", 
+      icon: "https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg",
+      rating: "5/5"
+    },
+    { 
+      name: "Adobe After Effects", 
+      icon: "https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg",
+      rating: "4/5"
+    },
+    { 
+      name: "DaVinci Resolve", 
+      icon: "https://upload.wikimedia.org/wikipedia/commons/4/4d/DaVinci_Resolve_Studio.png",
+      rating: "4/5"
+    },
+    { 
+      name: "Adobe Photoshop", 
+      icon: "https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg",
+      rating: "4.5/5"
+    },
+    { 
+      name: "Adobe Lightroom", 
+      icon: "https://upload.wikimedia.org/wikipedia/commons/4/4c/Adobe_Lightroom_CC_2026_icon.svg",
+      rating: "5/5"
+    },
+    { 
+      name: "Adobe Illustrator", 
+      icon: "https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg",
+      rating: "3.5/5"
+    },
+    { 
+      name: "Figma", 
+      icon: "https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg",
+      rating: "5/5"
+    },
+    { 
+      name: "Capcut", 
+      icon: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/capcut-icon.png",
+      rating: "4/5"
+    }
   ];
 
+  const row1 = software.slice(0, 4);
+  const row2 = software.slice(4, 8);
+
   return (
-    <section id="skills" ref={ref} className="py-32 px-6 relative overflow-hidden z-10">
+    <section id="skills" ref={ref} className="py-32 px-6 relative overflow-hidden z-10 w-[140%] -ml-[20%]">
       {/* Moving Light Ray */}
       <motion.div 
         style={{ y, opacity }}
@@ -37,7 +71,7 @@ const Skills = () => {
       <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.05)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none z-0" />
       
       <motion.div 
-        className="max-w-7xl mx-auto relative z-10"
+        className="max-w-[90rem] mx-auto relative z-10"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
@@ -109,18 +143,61 @@ const Skills = () => {
           {/* Software Card - Spans full width */}
           <motion.div
             variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-            className="md:col-span-3 glass-card p-8 md:p-12"
+            className="md:col-span-3 glass-card p-8 md:p-12 overflow-hidden"
           >
             <h3 className="text-sm uppercase tracking-widest text-white/50 mb-8">Software Proficiency</h3>
-            <div className="flex flex-wrap gap-4">
-              {software.map((sw, i) => (
-                <div key={i} className="flex flex-col items-center justify-center gap-3 px-6 py-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 hover:border-blue-500/50 transition-colors shadow-lg min-w-[120px]">
-                  {sw.icon}
-                  <span className="text-white/80 text-sm font-medium text-center">
-                    {sw.name}
-                  </span>
-                </div>
-              ))}
+            <div className="flex flex-col gap-8">
+              {/* Row 1 - Moves Right */}
+              <div className="flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] -mx-8 md:-mx-12 px-8 md:px-12">
+                <motion.div 
+                  className="flex gap-4 pr-4"
+                  animate={{ x: ["-50%", "0%"] }}
+                  transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                >
+                  {[...row1, ...row1, ...row1, ...row1].map((sw, i) => (
+                    <div key={i} className="flex flex-col items-center justify-center gap-4 p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 hover:border-blue-500/50 transition-colors shadow-lg aspect-square w-32 md:w-40 flex-shrink-0 group relative">
+                      <div className="absolute top-2 right-2 text-[10px] md:text-xs font-mono text-white/50 bg-white/5 px-1.5 py-0.5 rounded border border-white/10">
+                        {sw.rating}
+                      </div>
+                      <img 
+                        src={sw.icon} 
+                        alt={sw.name}
+                        className="w-10 h-10 md:w-12 md:h-12 object-contain group-hover:scale-110 transition-transform duration-300"
+                        referrerPolicy="no-referrer"
+                      />
+                      <span className="text-white/80 text-xs md:text-sm font-medium text-center leading-tight">
+                        {sw.name}
+                      </span>
+                    </div>
+                  ))}
+                </motion.div>
+              </div>
+
+              {/* Row 2 - Moves Left */}
+              <div className="flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] -mx-8 md:-mx-12 px-8 md:px-12">
+                <motion.div 
+                  className="flex gap-4 pr-4"
+                  animate={{ x: ["0%", "-50%"] }}
+                  transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                >
+                  {[...row2, ...row2, ...row2, ...row2].map((sw, i) => (
+                    <div key={i} className="flex flex-col items-center justify-center gap-4 p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 hover:border-blue-500/50 transition-colors shadow-lg aspect-square w-32 md:w-40 flex-shrink-0 group relative">
+                      <div className="absolute top-2 right-2 text-[10px] md:text-xs font-mono text-white/50 bg-white/5 px-1.5 py-0.5 rounded border border-white/10">
+                        {sw.rating}
+                      </div>
+                      <img 
+                        src={sw.icon} 
+                        alt={sw.name}
+                        className="w-10 h-10 md:w-12 md:h-12 object-contain group-hover:scale-110 transition-transform duration-300"
+                        referrerPolicy="no-referrer"
+                      />
+                      <span className="text-white/80 text-xs md:text-sm font-medium text-center leading-tight">
+                        {sw.name}
+                      </span>
+                    </div>
+                  ))}
+                </motion.div>
+              </div>
             </div>
           </motion.div>
         </motion.div>

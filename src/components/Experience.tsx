@@ -30,7 +30,7 @@ const Experience = () => {
   ];
 
   return (
-    <section id="experience" ref={containerRef} className="py-32 px-6 relative z-10">
+    <section id="experience" ref={containerRef} className="py-32 px-6 relative z-10 overflow-hidden w-[140%] -ml-[20%]">
       {/* Scroll-linked glowing orb */}
       <motion.div 
         style={{ top: useTransform(scrollYProgress, [0, 1], ["0%", "100%"]) }}

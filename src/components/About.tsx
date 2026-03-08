@@ -1,8 +1,9 @@
 import { motion, useScroll, useTransform } from 'motion/react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 const About = () => {
   const ref = useRef(null);
+  const [isHovered, setIsHovered] = useState(false);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 180]);
@@ -14,7 +15,7 @@ const About = () => {
   const innerImgY = useTransform(scrollYProgress, [0, 1], ["-25%", "25%"]);
 
   return (
-    <section id="about" ref={ref} className="py-32 px-6 relative overflow-hidden z-10">
+    <section id="about" ref={ref} className="py-32 px-6 relative overflow-hidden z-10 w-[140%] -ml-[20%]">
       {/* Morphing Background Shape */}
       <motion.div 
         style={{ rotate, scale, x }}
@@ -42,17 +43,54 @@ const About = () => {
             transition={{ duration: 1, ease: "easeOut" }}
             className="lg:col-span-5 relative"
           >
-            {/* Main Arch Image */}
-            <div className="relative z-10 rounded-t-full rounded-b-[3rem] overflow-hidden aspect-[3/4] border border-white/10">
-              <motion.img 
-                style={{ y: innerImgY, scale: 1.2 }}
-                src="https://picsum.photos/seed/videographer/800/1000.webp" 
-                alt="Bachtiar Aryansyah Putra" 
-                loading="lazy"
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80" />
+            {/* Main Arch Image - Flip Card */}
+            <div 
+              className="relative z-10 w-full aspect-[3/4] perspective-1000 group cursor-pointer"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              style={{ perspective: "1000px" }}
+            >
+              <motion.div
+                className="w-full h-full relative preserve-3d transition-all duration-700"
+                animate={{ rotateY: isHovered ? 180 : 0 }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                {/* Front Face */}
+                <div 
+                  className="absolute inset-0 backface-hidden rounded-3xl overflow-hidden border border-white/10 bg-[#050505]"
+                  style={{ backfaceVisibility: "hidden" }}
+                >
+                  <motion.img 
+                    style={{ y: innerImgY, scale: 1.2 }}
+                    src="https://picsum.photos/seed/videographer/800/1000.webp" 
+                    alt="Bachtiar Aryansyah Putra" 
+                    loading="lazy"
+                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80" />
+                </div>
+
+                {/* Back Face */}
+                <div 
+                  className="absolute inset-0 backface-hidden rounded-3xl overflow-hidden border border-white/10 bg-[#1a1a1a]"
+                  style={{ transform: "rotateY(180deg)", backfaceVisibility: "hidden" }}
+                >
+                  <img 
+                    src="https://picsum.photos/seed/editing/800/1000.webp" 
+                    alt="Behind the scenes" 
+                    className="w-full h-full object-cover opacity-60"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-black/40">
+                    <h3 className="text-3xl font-display italic text-white mb-2">Behind the Scenes</h3>
+                    <p className="text-sm text-white/80 font-light tracking-wide">
+                      Every frame tells a story. From pre-production to the final cut, we craft narratives that resonate.
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
             </div>
             
             {/* Floating Accent Image */}
