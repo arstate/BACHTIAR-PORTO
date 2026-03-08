@@ -40,7 +40,7 @@ const otherCats = ['Wedding', 'Prewedding', 'Ads', 'Corporate'];
 const galleryItems = [
   ...konserUrls.map((url, i) => ({
     id: `konser-${i}`,
-    title: `Konser Project ${i + 1}`,
+    title: 'Konser',
     category: 'Konser',
     img: url,
   })),
@@ -48,7 +48,7 @@ const galleryItems = [
     const category = otherCats[i % otherCats.length];
     return {
       id: `other-${i}`,
-      title: `${category} Project ${i + 1}`,
+      title: category,
       category: category,
       img: `https://picsum.photos/seed/gallery${i}/800/1200.webp`,
     };
@@ -163,7 +163,6 @@ const PortfolioGallery = () => {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-[#050505]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       <div className="absolute inset-0 p-6 flex flex-col justify-end translate-y-4 group-hover:translate-y-0 transition-transform duration-500 opacity-0 group-hover:opacity-100">
-                        <p className="text-blue-400 text-xs font-medium mb-1 tracking-widest uppercase">{item.category}</p>
                         <h3 className="text-lg md:text-xl font-bold text-white">{item.title}</h3>
                       </div>
                     </motion.div>
@@ -214,7 +213,6 @@ const PortfolioGallery = () => {
                   </button>
                 </div>
                 <div className="p-8">
-                  <p className="text-blue-400 text-sm font-medium mb-2 tracking-widest uppercase">{selectedProject.category}</p>
                   <h3 className="text-3xl font-bold text-white">{selectedProject.title}</h3>
                 </div>
               </motion.div>
