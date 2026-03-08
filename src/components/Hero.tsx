@@ -1,11 +1,24 @@
-import { motion, useScroll, useTransform, useMotionValueEvent } from 'motion/react';
-import { Play, ArrowRight, Download } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { motion, useScroll, useTransform, useMotionValueEvent, AnimatePresence } from 'motion/react';
+import { Play, ArrowRight, Download, FileText, X } from 'lucide-react';
+import { useRef, useState, useEffect } from 'react';
 
 const Hero = () => {
   const { scrollY } = useScroll();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isVideoPlaying, setIsVideoPlaying] = useState(true);
+  const [isCVModalOpen, setIsCVModalOpen] = useState(false);
+
+  // Prevent scrolling when modal is open
+  useEffect(() => {
+    if (isCVModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isCVModalOpen]);
 
   // Optimize: Pause video when scrolled past viewport height
   useMotionValueEvent(scrollY, "change", (latest) => {
@@ -70,11 +83,9 @@ const Hero = () => {
         
         <motion.div animate={{ rotate: 360 }} transition={{ duration: 100, repeat: Infinity, ease: "linear" }} className="w-[120vw] h-[120vw] md:w-[800px] md:h-[800px] border-[1px] border-white/10 rounded-full absolute border-dashed" />
         <motion.div animate={{ rotate: -360 }} transition={{ duration: 80, repeat: Infinity, ease: "linear" }} className="w-[100vw] h-[100vw] md:w-[600px] md:h-[600px] border-[1px] border-white/10 rounded-full absolute" />
-        <motion.div 
-          animate={{ x: ["-100%", "200%"] }} 
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} 
-          className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12 blur-2xl"
-        />
+        
+        {/* Replaced animated blur with a performant static radial gradient */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.15)_0%,transparent_60%)] pointer-events-none" />
       </motion.div>
 
       <div 
@@ -163,20 +174,70 @@ const Hero = () => {
                   Let's Talk
                   <ArrowRight size={16} />
                 </a>
-                <a 
-                  href="#" 
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button 
+                  onClick={() => setIsCVModalOpen(true)}
                   className="px-6 py-4 rounded-full border border-white/20 text-white/90 text-sm font-medium hover:bg-white/10 transition-colors flex items-center justify-center gap-2 flex-1 sm:flex-none whitespace-nowrap"
                 >
-                  <Download size={16} />
-                  Download CV
-                </a>
+                  <FileText size={16} />
+                  View CV
+                </button>
               </div>
             </div>
           </motion.div>
         </motion.div>
       </div>
+
+      {/* CV Modal */}
+      <AnimatePresence>
+        {isCVModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-sm"
+            onClick={() => setIsCVModalOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.9, y: 20, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="w-full max-w-4xl bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex justify-between items-center p-6 border-b border-white/10">
+                <h3 className="text-xl font-bold text-white">Curriculum Vitae</h3>
+                <div className="flex items-center gap-4">
+                  <a 
+                    href="#" // Replace with actual PDF link
+                    download
+                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium transition-colors"
+                  >
+                    <Download size={16} />
+                    Download PDF
+                  </a>
+                  <button 
+                    onClick={() => setIsCVModalOpen(false)}
+                    className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors border border-white/10"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+              </div>
+              
+              <div className="p-6 overflow-y-auto flex-1 bg-black/50 flex justify-center">
+                {/* Placeholder for CV Image */}
+                <img 
+                  src="https://picsum.photos/seed/cv/800/1131.webp" 
+                  alt="CV Preview" 
+                  className="max-w-full h-auto object-contain shadow-2xl border border-white/5"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };
