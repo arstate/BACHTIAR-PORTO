@@ -56,11 +56,15 @@ const Skills = () => {
     }
   ];
 
+  const softSkills = [
+    "Creative Direction", "Visual Storytelling", "Client Communication", "Team Leadership", "Project Management"
+  ];
+
   const row1 = software.slice(0, 4);
   const row2 = software.slice(4, 8);
 
   return (
-    <section id="skills" ref={ref} className="py-32 px-6 relative overflow-hidden z-10 w-[140%] -ml-[20%] bg-[#050505]">
+    <section id="skills" ref={ref} className="py-32 px-6 relative overflow-hidden z-10 w-[140%] -ml-[20%]">
       {/* Moving Light Ray */}
       <motion.div 
         style={{ y, opacity }}
@@ -147,40 +151,14 @@ const Skills = () => {
           >
             <h3 className="text-sm uppercase tracking-widest text-white/50 mb-8">Software Proficiency</h3>
             <div className="flex flex-col gap-8">
-              {/* Row 1 - Moves Right */}
-              <div className="flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] -mx-8 md:-mx-12 px-8 md:px-12">
-                <motion.div 
-                  className="flex gap-4 pr-4"
-                  animate={{ x: ["-50%", "0%"] }}
-                  transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-                >
-                  {[...row1, ...row1, ...row1, ...row1].map((sw, i) => (
-                    <div key={i} className="flex flex-col items-center justify-center gap-4 p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 hover:border-blue-500/50 transition-colors shadow-lg aspect-square w-32 md:w-40 flex-shrink-0 group relative">
-                      <div className="absolute top-2 right-2 text-[10px] md:text-xs font-mono text-white/50 bg-white/5 px-1.5 py-0.5 rounded border border-white/10">
-                        {sw.rating}
-                      </div>
-                      <img 
-                        src={sw.icon} 
-                        alt={sw.name}
-                        className="w-10 h-10 md:w-12 md:h-12 object-contain group-hover:scale-110 transition-transform duration-300"
-                        referrerPolicy="no-referrer"
-                      />
-                      <span className="text-white/80 text-xs md:text-sm font-medium text-center leading-tight">
-                        {sw.name}
-                      </span>
-                    </div>
-                  ))}
-                </motion.div>
-              </div>
-
-              {/* Row 2 - Moves Left */}
+              {/* Single Row - Moves Left */}
               <div className="flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] -mx-8 md:-mx-12 px-8 md:px-12">
                 <motion.div 
                   className="flex gap-4 pr-4"
                   animate={{ x: ["0%", "-50%"] }}
-                  transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                  transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
                 >
-                  {[...row2, ...row2, ...row2, ...row2].map((sw, i) => (
+                  {[...software, ...software].map((sw, i) => (
                     <div key={i} className="flex flex-col items-center justify-center gap-4 p-6 rounded-2xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 hover:border-blue-500/50 transition-colors shadow-lg aspect-square w-32 md:w-40 flex-shrink-0 group relative">
                       <div className="absolute top-2 right-2 text-[10px] md:text-xs font-mono text-white/50 bg-white/5 px-1.5 py-0.5 rounded border border-white/10">
                         {sw.rating}
@@ -198,6 +176,23 @@ const Skills = () => {
                   ))}
                 </motion.div>
               </div>
+            </div>
+          </motion.div>
+
+          {/* Soft Skills Card */}
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+            className="md:col-span-3 glass-card p-8 md:p-12 relative overflow-hidden"
+          >
+            <div className="absolute top-0 left-0 w-64 h-64 bg-purple-500/10 blur-[80px] rounded-full" />
+            <h3 className="text-sm uppercase tracking-widest text-white/50 mb-8 relative z-10">Soft Skills</h3>
+            <div className="flex flex-wrap gap-4 relative z-10">
+              {softSkills.map((skill, i) => (
+                <span key={i} className="px-6 py-3 rounded-xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/10 text-white/90 text-sm md:text-base font-medium hover:border-purple-500/50 transition-colors shadow-lg flex items-center gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-purple-400" />
+                  {skill}
+                </span>
+              ))}
             </div>
           </motion.div>
         </motion.div>

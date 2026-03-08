@@ -1,12 +1,26 @@
-import { motion, useScroll, useTransform } from 'motion/react';
-import { ExternalLink, Instagram, Video, ArrowRight } from 'lucide-react';
-import { useRef } from 'react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
+import { ExternalLink, Instagram, Video, ArrowRight, X } from 'lucide-react';
+import { useRef, useState, useEffect } from 'react';
 
 const Portfolio = () => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1.5, 0.8]);
   const rotate = useTransform(scrollYProgress, [0, 1], [-45, 45]);
+
+  const [selectedProject, setSelectedProject] = useState<any>(null);
+
+  // Prevent scrolling when modal is open
+  useEffect(() => {
+    if (selectedProject) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [selectedProject]);
 
   const links = [
     { name: "Arstate Cinema Web", url: "https://www.arstatecinema.com", icon: <ExternalLink size={20} /> },
@@ -17,14 +31,42 @@ const Portfolio = () => {
   ];
 
   const projects = [
-    { title: "Wedding Cinematic", category: "Videography", img: "https://picsum.photos/seed/wedding/800/800.webp", span: "md:col-span-2 md:row-span-2" },
-    { title: "Corporate Event", category: "Documentation", img: "https://picsum.photos/seed/corporate/800/400.webp", span: "md:col-span-2 md:row-span-1" },
-    { title: "Commercial Ad", category: "Directing", img: "https://picsum.photos/seed/commercial/400/400.webp", span: "md:col-span-1 md:row-span-1" },
-    { title: "Portrait Session", category: "Photography", img: "https://picsum.photos/seed/portrait/400/400.webp", span: "md:col-span-1 md:row-span-1" },
+    { 
+      title: "Wedding Cinematic", 
+      category: "Videography", 
+      img: "https://picsum.photos/seed/wedding/800/800.webp", 
+      span: "md:col-span-2 md:row-span-2",
+      brief: "A cinematic wedding documentation capturing the emotional journey of the couple's special day. Focus on storytelling, candid moments, and high-quality color grading.",
+      tools: ["Sony FX3", "Premiere Pro", "DaVinci Resolve"]
+    },
+    { 
+      title: "Corporate Event", 
+      category: "Documentation", 
+      img: "https://picsum.photos/seed/corporate/800/400.webp", 
+      span: "md:col-span-2 md:row-span-1",
+      brief: "Full-day coverage of an annual corporate summit. Delivered a highlight reel and full session recordings with professional audio syncing.",
+      tools: ["Sony A7IV", "DJI Ronin", "Final Cut Pro"]
+    },
+    { 
+      title: "Commercial Ad", 
+      category: "Directing", 
+      img: "https://picsum.photos/seed/commercial/400/400.webp", 
+      span: "md:col-span-1 md:row-span-1",
+      brief: "Directed a 30-second commercial spot for a local lifestyle brand. Managed the crew, talent, and post-production pipeline.",
+      tools: ["RED Komodo", "After Effects", "Cinema 4D"]
+    },
+    { 
+      title: "Portrait Session", 
+      category: "Photography", 
+      img: "https://picsum.photos/seed/portrait/400/400.webp", 
+      span: "md:col-span-1 md:row-span-1",
+      brief: "Creative portrait session for an upcoming artist's album cover. Explored dramatic lighting and unique compositions.",
+      tools: ["Canon R5", "Profoto Lighting", "Lightroom"]
+    },
   ];
 
   return (
-    <section id="portfolio" ref={ref} className="py-32 px-6 relative overflow-hidden z-10 w-[140%] -ml-[20%] bg-[#050505]">
+    <section id="portfolio" ref={ref} className="py-32 px-6 relative overflow-hidden z-10 w-[140%] -ml-[20%]">
       {/* Scroll-linked morphing gradient */}
       <motion.div 
         style={{ scale, rotate }}
@@ -78,7 +120,8 @@ const Portfolio = () => {
               key={i}
               variants={{ hidden: { opacity: 0, scale: 0.9, y: 20 }, visible: { opacity: 1, scale: 1, y: 0 } }}
               transition={{ type: "spring", stiffness: 50 }}
-              className={`portfolio-item group relative rounded-[2rem] overflow-hidden cursor-none ${project.span}`}
+              onClick={() => setSelectedProject(project)}
+              className={`portfolio-item group relative rounded-[2rem] overflow-hidden cursor-pointer ${project.span}`}
             >
               <img 
                 src={project.img} 
@@ -131,6 +174,78 @@ const Portfolio = () => {
           </div>
         </motion.div>
       </div>
+
+      {/* Project Modal */}
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-sm"
+            onClick={() => setSelectedProject(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.9, y: 20, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="w-full max-w-5xl bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row max-h-[90vh]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Media Section */}
+              <div className="w-full md:w-3/5 h-64 md:h-auto relative bg-black">
+                <img 
+                  src={selectedProject.img} 
+                  alt={selectedProject.title} 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+                {/* Placeholder for video play button if it were a video */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="w-16 h-16 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center border border-white/20">
+                    <Video size={24} className="text-white/80" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Content Section */}
+              <div className="w-full md:w-2/5 p-8 md:p-10 flex flex-col overflow-y-auto">
+                <div className="flex justify-between items-start mb-6">
+                  <div>
+                    <p className="text-blue-400 text-sm font-medium mb-2 tracking-widest uppercase">{selectedProject.category}</p>
+                    <h3 className="text-3xl md:text-4xl font-bold text-white">{selectedProject.title}</h3>
+                  </div>
+                  <button 
+                    onClick={() => setSelectedProject(null)}
+                    className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors border border-white/10"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+
+                <div className="mb-8">
+                  <h4 className="text-sm uppercase tracking-widest text-white/50 mb-3">Client Brief</h4>
+                  <p className="text-white/80 font-light leading-relaxed">
+                    {selectedProject.brief}
+                  </p>
+                </div>
+
+                <div className="mt-auto">
+                  <h4 className="text-sm uppercase tracking-widest text-white/50 mb-3">Tools Used</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedProject.tools.map((tool: string, i: number) => (
+                      <span key={i} className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white/70 text-sm">
+                        {tool}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

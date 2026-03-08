@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform, useMotionValueEvent } from 'motion/react';
-import { Play, ArrowRight } from 'lucide-react';
+import { Play, ArrowRight, Download } from 'lucide-react';
 import { useRef, useState } from 'react';
 
 const Hero = () => {
@@ -129,39 +129,50 @@ const Hero = () => {
           </motion.div>
         </div>
         
-        <motion.div style={{ y: yCard, opacity: opacityCard }} className="w-full max-w-2xl">
+        <motion.div style={{ y: yCard, opacity: opacityCard }} className="w-full max-w-4xl">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.8 }}
-            className="glass-card p-6 md:p-8 w-full flex flex-col sm:flex-row items-center justify-between gap-6"
+            className="glass-card p-6 md:p-8 w-full flex flex-col md:flex-row items-center justify-between gap-6"
           >
-            <p className="text-sm md:text-base text-white/60 font-light text-left max-w-xs">
+            <p className="text-sm md:text-base text-white/60 font-light text-center md:text-left max-w-sm">
               Freelance Creative Media <br/>
               Founder & Creative Director of <span className="text-white font-medium">Arstate.Cinema</span>
             </p>
-            <div className="flex items-center gap-4 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto justify-center md:justify-end">
               <a 
                 href="#portfolio" 
                 onClick={(e) => {
                   e.preventDefault();
                   document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform"
+                className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform flex-shrink-0"
               >
                 <Play size={20} className="ml-1" fill="currentColor" />
               </a>
-              <a 
-                href="#contact" 
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="glass-button px-6 py-4 text-sm font-medium flex-1 sm:flex-none text-center flex items-center justify-center gap-2"
-              >
-                Let's Talk
-                <ArrowRight size={16} />
-              </a>
+              <div className="flex items-center gap-4 w-full sm:w-auto">
+                <a 
+                  href="#contact" 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="glass-button px-6 py-4 text-sm font-medium flex-1 sm:flex-none text-center flex items-center justify-center gap-2 whitespace-nowrap"
+                >
+                  Let's Talk
+                  <ArrowRight size={16} />
+                </a>
+                <a 
+                  href="#" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-4 rounded-full border border-white/20 text-white/90 text-sm font-medium hover:bg-white/10 transition-colors flex items-center justify-center gap-2 flex-1 sm:flex-none whitespace-nowrap"
+                >
+                  <Download size={16} />
+                  Download CV
+                </a>
+              </div>
             </div>
           </motion.div>
         </motion.div>
