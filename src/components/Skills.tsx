@@ -51,19 +51,22 @@ const Skills = () => {
       >
         <motion.div
           style={{ y: headingY }}
-          variants={{
-            hidden: { opacity: 0, y: 40 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
-          }}
           className="mb-16"
         >
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-12 h-[1px] bg-blue-500" />
-            <span className="uppercase tracking-widest text-sm text-blue-400 font-medium">Arsenal</span>
-          </div>
-          <h2 className="text-5xl md:text-7xl font-bold tracking-tighter uppercase">
-            Skills & <span className="font-[family-name:var(--font-display)] italic font-light text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 lowercase">Expertise</span>
-          </h2>
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 40 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
+            }}
+          >
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-[1px] bg-blue-500" />
+              <span className="uppercase tracking-widest text-sm text-blue-400 font-medium">Arsenal</span>
+            </div>
+            <h2 className="text-5xl md:text-7xl font-bold tracking-tighter uppercase">
+              Skills & <span className="font-[family-name:var(--font-display)] italic font-light text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 lowercase">Expertise</span>
+            </h2>
+          </motion.div>
         </motion.div>
 
         {/* Bento Grid */}

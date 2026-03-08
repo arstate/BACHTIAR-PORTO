@@ -11,6 +11,8 @@ import Skills from './components/Skills';
 import Portfolio from './components/Portfolio';
 import Clients from './components/Clients';
 import Footer from './components/Footer';
+import LazySection from './components/LazySection';
+import ThreeDCamera from './components/ThreeDCamera';
 
 export default function App() {
   useEffect(() => {
@@ -42,12 +44,36 @@ export default function App() {
       <FloatingNavbar />
       <Background />
       <Hero />
-      <About />
-      <Experience />
-      <Skills />
-      <Portfolio />
-      <Clients />
-      <Footer />
+      <ThreeDCamera index={0} className="relative z-20">
+        <LazySection id="about-section" placeholderHeight="100vh">
+          <About />
+        </LazySection>
+      </ThreeDCamera>
+      <ThreeDCamera index={1} className="relative z-20">
+        <LazySection id="experience-section" placeholderHeight="100vh">
+          <Experience />
+        </LazySection>
+      </ThreeDCamera>
+      <ThreeDCamera index={2} className="relative z-20">
+        <LazySection id="skills-section" placeholderHeight="100vh">
+          <Skills />
+        </LazySection>
+      </ThreeDCamera>
+      <ThreeDCamera index={3} className="relative z-20">
+        <LazySection id="portfolio-section" placeholderHeight="100vh">
+          <Portfolio />
+        </LazySection>
+      </ThreeDCamera>
+      <ThreeDCamera index={4} className="relative z-20">
+        <LazySection id="clients-section" placeholderHeight="50vh">
+          <Clients />
+        </LazySection>
+      </ThreeDCamera>
+      <ThreeDCamera index={5} className="relative z-20">
+        <LazySection id="footer-section" placeholderHeight="50vh">
+          <Footer />
+        </LazySection>
+      </ThreeDCamera>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { motion, useScroll, useSpring, useTransform } from 'motion/react';
+import { memo } from 'react';
 
-const NoiseOverlay = () => (
+const NoiseOverlay = memo(() => (
   <div 
     className="fixed inset-0 z-[999] pointer-events-none opacity-[0.08]"
     style={{ 
@@ -8,7 +9,7 @@ const NoiseOverlay = () => (
       backgroundSize: '256px 256px'
     }}
   />
-);
+));
 
 const Background = () => {
   const { scrollYProgress } = useScroll();

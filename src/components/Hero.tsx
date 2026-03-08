@@ -1,8 +1,36 @@
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform, useMotionValueEvent } from 'motion/react';
 import { Play } from 'lucide-react';
+import { useRef, useState } from 'react';
 
 const Hero = () => {
   const { scrollY } = useScroll();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
+
+  // Optimize: Pause video when scrolled past viewport height
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    if (videoRef.current) {
+      const viewportHeight = window.innerHeight;
+      // If scrolled past 1.2x viewport height (fully covered by next section), pause video
+      if (latest > viewportHeight * 1.2) {
+        if (isVideoPlaying) {
+          videoRef.current.pause();
+          setIsVideoPlaying(false);
+        }
+      } else {
+        if (!isVideoPlaying) {
+          const playPromise = videoRef.current.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(() => {
+              // Auto-play was prevented
+            });
+          }
+          setIsVideoPlaying(true);
+        }
+      }
+    }
+  });
+
   const y1 = useTransform(scrollY, [0, 1000], [0, -200]);
   const opacityBg = useTransform(scrollY, [0, 800], [0.2, 0]);
   
@@ -29,13 +57,15 @@ const Hero = () => {
       <motion.div style={{ y: y1, opacity: opacityBg }} className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
         {/* Cinematic Video Background */}
         <video
+          ref={videoRef}
           autoPlay
           loop
           muted
           playsInline
           className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-screen"
-          src="https://assets.mixkit.co/videos/preview/mixkit-ink-swirling-in-water-26772-large.mp4"
-        />
+        >
+          <source src="https://cdn.pixabay.com/video/2023/10/15/185090-874636939_large.mp4" type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/80 to-[#050505]" />
         
         <motion.div animate={{ rotate: 360 }} transition={{ duration: 100, repeat: Infinity, ease: "linear" }} className="w-[120vw] h-[120vw] md:w-[800px] md:h-[800px] border-[1px] border-white/10 rounded-full absolute border-dashed" />
