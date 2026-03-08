@@ -2,12 +2,14 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 import { ExternalLink, Instagram, Video, ArrowRight, X } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Portfolio = () => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1.5, 0.8]);
   const rotate = useTransform(scrollYProgress, [0, 1], [-45, 45]);
+  const navigate = useNavigate();
 
   const [selectedProject, setSelectedProject] = useState<any>(null);
 
@@ -57,14 +59,24 @@ const Portfolio = () => {
       tools: ["RED Komodo", "After Effects", "Cinema 4D"]
     },
     { 
-      title: "Portrait Session", 
-      category: "Photography", 
-      img: "https://picsum.photos/seed/portrait/400/400.webp", 
+      title: "See More", 
+      category: "Explore", 
+      img: "https://picsum.photos/seed/explore/400/400.webp", 
       span: "md:col-span-1 md:row-span-1",
-      brief: "Creative portrait session for an upcoming artist's album cover. Explored dramatic lighting and unique compositions.",
-      tools: ["Canon R5", "Profoto Lighting", "Lightroom"]
+      brief: "Explore our full portfolio of work across various categories.",
+      tools: [],
+      isSeeMore: true
     },
   ];
+
+  const handleProjectClick = (project: any) => {
+    if (project.isSeeMore) {
+      navigate('/portfolio');
+      window.scrollTo(0, 0);
+    } else {
+      setSelectedProject(project);
+    }
+  };
 
   return (
     <section id="portfolio" ref={ref} className="py-32 px-6 relative overflow-hidden z-10 w-full md:w-[140%] md:-ml-[20%]">
@@ -121,7 +133,7 @@ const Portfolio = () => {
               key={i}
               variants={{ hidden: { opacity: 0, scale: 0.9, y: 20 }, visible: { opacity: 1, scale: 1, y: 0 } }}
               transition={{ type: "spring", stiffness: 50 }}
-              onClick={() => setSelectedProject(project)}
+              onClick={() => handleProjectClick(project)}
               className={`portfolio-item group relative rounded-[2rem] overflow-hidden cursor-pointer ${project.span}`}
             >
               <img 
@@ -147,6 +159,7 @@ const Portfolio = () => {
             </motion.div>
           ))}
         </motion.div>
+
 
         {/* Links Section */}
         <motion.div

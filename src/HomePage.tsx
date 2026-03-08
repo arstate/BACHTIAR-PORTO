@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import Lenis from 'lenis';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import CustomCursor from './components/CustomCursor';
 import Background from './components/Background';
@@ -14,11 +13,36 @@ import Clients from './components/Clients';
 import Footer from './components/Footer';
 import LazySection from './components/LazySection';
 import ThreeDCamera from './components/ThreeDCamera';
-import PortfolioGallery from './components/PortfolioGallery';
 
-function Home() {
+export default function HomePage() {
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 2,
+    });
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
+
   return (
-    <>
+    <div className="relative min-h-screen w-full overflow-x-hidden selection:bg-blue-500/30 selection:text-white">
+      <CustomCursor />
+      <FloatingNavbar />
+      <Background />
       <Hero />
       
       <LazySection id="about-section" placeholderHeight="100vh" className="relative z-20 overflow-hidden">
@@ -56,46 +80,6 @@ function Home() {
           <Footer />
         </ThreeDCamera>
       </LazySection>
-    </>
-  );
-}
-
-export default function App() {
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
-    });
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
-
-  return (
-    <Router>
-      <div className="relative min-h-screen w-full overflow-x-hidden selection:bg-blue-500/30 selection:text-white">
-        <CustomCursor />
-        <FloatingNavbar />
-        <Background />
-        
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/portfolio" element={<PortfolioGallery />} />
-        </Routes>
-      </div>
-    </Router>
+    </div>
   );
 }
