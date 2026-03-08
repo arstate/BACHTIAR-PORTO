@@ -50,8 +50,11 @@ const ThreeDCamera = ({ children, className = "", index = 0 }: ThreeDCameraProps
   return (
     <div 
       ref={ref} 
-      className={`perspective-[800px] ${className}`} // Decreased perspective for stronger 3D distortion
-      style={{ perspectiveOrigin: '50% 50%' }}
+      className={`perspective-[800px] w-full h-full ${className}`} // Ensure full size
+      style={{ 
+        perspectiveOrigin: '50% 50%',
+        position: 'relative' // Explicitly set position to fix "non-static" warning
+      }}
     >
       <motion.div
         style={{ 
@@ -61,7 +64,7 @@ const ThreeDCamera = ({ children, className = "", index = 0 }: ThreeDCameraProps
           scale,
           opacity,
           transformStyle: "preserve-3d",
-          backfaceVisibility: "hidden", // Performance optimization
+          backfaceVisibility: "hidden",
         }}
         className="w-full h-full origin-center will-change-transform"
       >

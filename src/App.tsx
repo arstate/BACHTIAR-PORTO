@@ -44,36 +44,42 @@ export default function App() {
       <FloatingNavbar />
       <Background />
       <Hero />
-      <ThreeDCamera index={0} className="relative z-20">
-        <LazySection id="about-section" placeholderHeight="100vh">
+      
+      <LazySection id="about-section" placeholderHeight="100vh" className="relative z-20">
+        <ThreeDCamera index={0}>
           <About />
-        </LazySection>
-      </ThreeDCamera>
-      <ThreeDCamera index={1} className="relative z-20">
-        <LazySection id="experience-section" placeholderHeight="100vh">
+        </ThreeDCamera>
+      </LazySection>
+
+      <LazySection id="experience-section" placeholderHeight="100vh" className="relative z-20">
+        <ThreeDCamera index={1}>
           <Experience />
-        </LazySection>
-      </ThreeDCamera>
-      <ThreeDCamera index={2} className="relative z-20">
-        <LazySection id="skills-section" placeholderHeight="100vh">
+        </ThreeDCamera>
+      </LazySection>
+
+      <LazySection id="skills-section" placeholderHeight="100vh" className="relative z-20">
+        <ThreeDCamera index={2}>
           <Skills />
-        </LazySection>
-      </ThreeDCamera>
-      <ThreeDCamera index={3} className="relative z-20">
-        <LazySection id="portfolio-section" placeholderHeight="100vh">
+        </ThreeDCamera>
+      </LazySection>
+
+      <LazySection id="portfolio-section" placeholderHeight="100vh" className="relative z-20">
+        <ThreeDCamera index={3}>
           <Portfolio />
-        </LazySection>
-      </ThreeDCamera>
-      <ThreeDCamera index={4} className="relative z-20">
-        <LazySection id="clients-section" placeholderHeight="50vh">
+        </ThreeDCamera>
+      </LazySection>
+
+      <LazySection id="clients-section" placeholderHeight="50vh" className="relative z-20">
+        <ThreeDCamera index={4}>
           <Clients />
-        </LazySection>
-      </ThreeDCamera>
-      <ThreeDCamera index={5} className="relative z-20">
-        <LazySection id="footer-section" placeholderHeight="50vh">
+        </ThreeDCamera>
+      </LazySection>
+
+      <LazySection id="footer-section" placeholderHeight="50vh" className="relative z-20">
+        <ThreeDCamera index={5}>
           <Footer />
-        </LazySection>
-      </ThreeDCamera>
+        </ThreeDCamera>
+      </LazySection>
     </div>
   );
 }
