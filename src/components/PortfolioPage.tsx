@@ -3,9 +3,19 @@ import { motion } from 'motion/react';
 import { useLocation } from 'react-router-dom';
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { getDatabase } from '../utils/database';
 
 const ManualRow: React.FC<{ cat: string }> = ({ cat }) => {
-  const originalItems = [1, 2, 3, 4, 5, 6, 7, 8]; // Demo items
+  const db = getDatabase();
+  const videographyDb = db['videography'] || {};
+  let dbItems = videographyDb[cat.toLowerCase()] || [];
+
+  // Basic fallback if text file is empty
+  if (dbItems.length === 0) {
+    dbItems = ['Placeholder Video 1', 'Placeholder Video 2', 'Placeholder Video 3'];
+  }
+
+  const originalItems = dbItems;
   // Triplicate the array: [prepend] + [original] + [append]
   // This allows us to infinitely scroll visually
   const items = [...originalItems, ...originalItems, ...originalItems];
@@ -81,15 +91,21 @@ const ManualRow: React.FC<{ cat: string }> = ({ cat }) => {
               key={`${i}`}
               className="w-[85vw] md:w-[500px] aspect-video bg-[#0a0a0a] rounded-[2rem] border border-white/10 flex items-center justify-center flex-shrink-0 hover:bg-white/5 hover:border-white/30 transition-colors duration-500 cursor-pointer overflow-hidden relative snap-center md:snap-start"
             >
-              {/* Fake Video Thumbnail / Placeholder */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#111] to-[#222]" />
+              {/* We can use item as a link or title here. Let's show the URL string simply if possible or basic image layer */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#111] to-[#222]">
+                {item.startsWith('http') && (
+                  <img src={item} alt={cat} className="w-full h-full object-cover opacity-50 group-hover:opacity-80 transition-opacity duration-300" />
+                )}
+              </div>
               <div className="z-10 w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
                   <path d="M5 3L19 12L5 21V3Z" />
                 </svg>
               </div>
-              <div className="absolute bottom-6 left-6 z-10">
-                <span className="text-white font-bold tracking-widest uppercase text-sm">{cat} Masterpiece {item}</span>
+              <div className="absolute bottom-6 left-6 z-10 w-3/4">
+                <span className="text-white font-bold tracking-widest uppercase text-sm truncate block">
+                  {item.startsWith('http') ? `${cat} Project` : item}
+                </span>
               </div>
               <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-500 pointer-events-none" />
             </div>
