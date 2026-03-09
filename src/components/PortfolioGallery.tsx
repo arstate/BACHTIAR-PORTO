@@ -225,7 +225,7 @@ const PortfolioGallery = () => {
 
       {/* Header */}
       <div className="fixed top-0 left-0 w-full z-50 pt-24 pb-8 px-6 pointer-events-none">
-        <div className="max-w-7xl mx-auto pointer-events-auto">
+        <div className="w-full pointer-events-auto">
           <h1 className="text-5xl md:text-7xl font-[family-name:var(--font-display)] italic font-light mb-6">
             Gallery
           </h1>
@@ -233,7 +233,7 @@ const PortfolioGallery = () => {
       </div>
 
       {/* Infinite Looping Gallery */}
-      <div className="h-full w-full px-4 md:px-8 max-w-7xl mx-auto flex gap-4 md:gap-6">
+      <div className="h-full w-full px-4 md:px-8 flex gap-4 md:gap-6">
         {cols.map((colItems, colIndex) => (
           <LoopingColumn 
             key={`${activeCategory}-${colIndex}`}
