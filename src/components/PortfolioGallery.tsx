@@ -36,13 +36,55 @@ const konserUrls = [
   "https://github.com/user-attachments/assets/abcb3eec-2493-4515-837d-8a133f5199e2"
 ];
 
-const otherCats = ['Ads', 'Animals', 'Corporate', 'Graduation', 'Konser', 'Prewedding', 'Wedding', 'Yearbook'];
+const graduationUrls = [
+  "https://github.com/user-attachments/assets/0068afa0-9fc8-4eb7-926e-ad99f7baee59",
+  "https://github.com/user-attachments/assets/41d7af04-2c39-495a-bc3c-34d16c149b0e",
+  "https://github.com/user-attachments/assets/3a059c13-c3c1-405f-9807-0cc4b0787f48",
+  "https://github.com/user-attachments/assets/7c5c6f50-ada8-4884-adc1-a474a05816a7",
+  "https://github.com/user-attachments/assets/350492f4-1c30-4178-82b3-53b77915219d",
+  "https://github.com/user-attachments/assets/ce59eece-a629-47c1-b8ee-aee07f33c66b",
+  "https://github.com/user-attachments/assets/d67d1486-bf53-4df4-a386-6e2d900132fc",
+  "https://github.com/user-attachments/assets/87518edf-d4af-4f32-ad97-8f868ea3069f",
+  "https://github.com/user-attachments/assets/3006c5ae-bc51-42d8-8a8c-6f6f7959ea7f",
+  "https://github.com/user-attachments/assets/a455fd41-8b80-475b-a974-b02e6efefafa",
+  "https://github.com/user-attachments/assets/b0d991fa-4172-432c-8e9c-48337390bdc9",
+  "https://github.com/user-attachments/assets/faeaf979-feba-42b4-b211-e0fb15fcb8c1",
+  "https://github.com/user-attachments/assets/7fffa469-170e-4a10-9963-acd46dc05776",
+  "https://github.com/user-attachments/assets/926cb8c8-d957-4ae7-b761-85e0fee280d2",
+  "https://github.com/user-attachments/assets/81249376-eedf-492b-a6e9-58bbb228d0d3",
+  "https://github.com/user-attachments/assets/4053060b-077d-4ee6-b74e-995fd7309619",
+  "https://github.com/user-attachments/assets/f40f43f3-92d6-4123-b922-abb48e0723e7",
+  "https://github.com/user-attachments/assets/b28de964-f0d2-4267-b7aa-0df61d705249",
+  "https://github.com/user-attachments/assets/1e82852b-fbcd-43cc-a7f6-6f3f4897f597",
+  "https://github.com/user-attachments/assets/9d2b6802-ad5f-4485-b7e0-6224317ff50c",
+  "https://github.com/user-attachments/assets/2e1552bd-b318-4035-9b31-61ec3d2220a8",
+  "https://github.com/user-attachments/assets/547c4aa1-add3-4399-a64e-f08a39d22763",
+  "https://github.com/user-attachments/assets/8864cd91-a10c-4f49-83e9-a71c5b0bc27d",
+  "https://github.com/user-attachments/assets/6f7918b0-fd0c-42ac-8eab-35377310db13",
+  "https://github.com/user-attachments/assets/80377191-de71-49d6-9165-e89a1d3ae824",
+  "https://github.com/user-attachments/assets/c39b345a-ef69-457f-90d3-16872ee1dfd8",
+  "https://github.com/user-attachments/assets/c6803153-2eb0-499e-a815-3f234688af33",
+  "https://github.com/user-attachments/assets/3f03d445-33a9-4ae1-9589-a8c924d07bc1",
+  "https://github.com/user-attachments/assets/9a09dbfc-3ddc-40d7-a95e-32a79b416c95",
+  "https://github.com/user-attachments/assets/7cff3551-7927-4aa9-9524-c8740f7dd850",
+  "https://github.com/user-attachments/assets/d5ebc2cb-c4c8-48f5-9419-69d78daf3512",
+  "https://github.com/user-attachments/assets/15eae376-5496-4248-8fc9-816c28867f00",
+  "https://github.com/user-attachments/assets/8383127d-7494-41bc-a6ef-145b9874f1be"
+];
+
+const otherCats = ['Ads', 'Animals', 'Corporate', 'Konser', 'Prewedding', 'Wedding', 'Yearbook']; // Removed Graduation to handle specifically
 
 const galleryItems = [
   ...konserUrls.map((url, i) => ({
     id: `konser-${i}`,
     title: 'Konser',
     category: 'Konser',
+    img: url,
+  })),
+  ...graduationUrls.map((url, i) => ({
+    id: `graduation-${i}`,
+    title: 'Graduation',
+    category: 'Graduation',
     img: url,
   })),
   ...Array.from({ length: 80 }).map((_, i) => {
