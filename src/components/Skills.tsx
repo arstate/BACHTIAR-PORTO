@@ -6,58 +6,58 @@ const Skills = () => {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["-50%", "50%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 0.3, 0]);
-  
+
   const headingY = useTransform(scrollYProgress, [0, 1], ["-150px", "150px"]);
 
   const roles = [
     "Professional Photographer", "Videographer", "Photo & Video Editor", "Camera Operator"
   ];
-  
+
   const software = [
-    { 
-      name: "Adobe Premiere Pro", 
+    {
+      name: "Adobe Premiere Pro",
       icon: "https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg",
       rating: "5/5"
     },
-    { 
-      name: "Adobe After Effects", 
+    {
+      name: "Adobe After Effects",
       icon: "https://upload.wikimedia.org/wikipedia/commons/c/cb/Adobe_After_Effects_CC_icon.svg",
       rating: "4/5"
     },
-    { 
-      name: "DaVinci Resolve", 
+    {
+      name: "DaVinci Resolve",
       icon: "https://upload.wikimedia.org/wikipedia/commons/4/4d/DaVinci_Resolve_Studio.png",
       rating: "4/5"
     },
-    { 
-      name: "Adobe Photoshop", 
+    {
+      name: "Adobe Photoshop",
       icon: "https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg",
       rating: "4.5/5"
     },
-    { 
-      name: "Adobe Lightroom", 
+    {
+      name: "Adobe Lightroom",
       icon: "https://upload.wikimedia.org/wikipedia/commons/4/4c/Adobe_Lightroom_CC_2026_icon.svg",
       rating: "5/5"
     },
-    { 
-      name: "Adobe Illustrator", 
+    {
+      name: "Adobe Illustrator",
       icon: "https://upload.wikimedia.org/wikipedia/commons/f/fb/Adobe_Illustrator_CC_icon.svg",
       rating: "3.5/5"
     },
-    { 
-      name: "Figma", 
+    {
+      name: "Figma",
       icon: "https://upload.wikimedia.org/wikipedia/commons/3/33/Figma-logo.svg",
       rating: "5/5"
     },
-    { 
-      name: "Capcut", 
+    {
+      name: "Capcut",
       icon: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/capcut-icon.png",
       rating: "4/5"
     }
   ];
 
   const softSkills = [
-    "Creative Direction", "Visual Storytelling", "Client Communication", "Team Leadership", "Project Management"
+    "AI Fluency", "Creative Direction", "Visual Storytelling", "Client Communication", "Team Leadership", "Project Management"
   ];
 
   const row1 = software.slice(0, 4);
@@ -66,15 +66,15 @@ const Skills = () => {
   return (
     <section id="skills" ref={ref} className="py-32 px-6 relative overflow-hidden z-10 w-full md:w-[140%] md:-ml-[20%]">
       {/* Moving Light Ray */}
-      <motion.div 
+      <motion.div
         style={{ y, opacity }}
         className="absolute inset-0 w-full h-[200%] bg-gradient-to-b from-transparent via-blue-500/10 to-transparent skew-y-12 pointer-events-none z-0"
       />
-      
+
       {/* Animated Grid Background */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.05)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none z-0" />
-      
-      <motion.div 
+
+      <motion.div
         className="max-w-[90rem] mx-auto relative z-10"
         initial="hidden"
         whileInView="visible"
@@ -108,7 +108,7 @@ const Skills = () => {
         </motion.div>
 
         {/* Bento Grid */}
-        <motion.div 
+        <motion.div
           variants={{
             hidden: { opacity: 0 },
             visible: {
@@ -140,8 +140,8 @@ const Skills = () => {
             className="md:col-span-1 glass-card p-8 relative overflow-hidden flex flex-col items-center justify-center min-h-[250px]"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-purple-600/20" />
-            <h2 className="text-7xl font-[family-name:var(--font-display)] italic text-white mb-2 relative z-10">4+</h2>
-            <p className="relative z-10 text-xl font-medium text-center text-white/80">Years of<br/>Experience</p>
+            <h2 className="text-7xl font-[family-name:var(--font-display)] italic text-white mb-2 relative z-10">5+</h2>
+            <p className="relative z-10 text-xl font-medium text-center text-white/80">Years of<br />Experience</p>
           </motion.div>
 
           {/* Software Card - Spans full width */}
@@ -153,7 +153,7 @@ const Skills = () => {
             <div className="flex flex-col gap-8">
               {/* Single Row - Moves Left */}
               <div className="flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] -mx-8 md:-mx-12 px-8 md:px-12">
-                <motion.div 
+                <motion.div
                   className="flex gap-4 pr-4"
                   animate={{ x: ["0%", "-50%"] }}
                   transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
@@ -163,8 +163,8 @@ const Skills = () => {
                       <div className="absolute top-2 right-2 text-[10px] md:text-xs font-mono text-white/50 bg-white/5 px-1.5 py-0.5 rounded border border-white/10">
                         {sw.rating}
                       </div>
-                      <img 
-                        src={sw.icon} 
+                      <img
+                        src={sw.icon}
                         alt={sw.name}
                         className="w-10 h-10 md:w-12 md:h-12 object-contain group-hover:scale-110 transition-transform duration-300"
                         referrerPolicy="no-referrer"
