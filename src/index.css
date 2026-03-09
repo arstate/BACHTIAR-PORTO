@@ -58,23 +58,16 @@ body {
 }
 
 /* Hide scrollbar completely globally for all elements */
-html::-webkit-scrollbar,
-body::-webkit-scrollbar,
 ::-webkit-scrollbar {
   display: none !important;
   width: 0 !important;
   height: 0 !important;
   background: transparent !important;
-  -webkit-appearance: none !important;
 }
 
-html,
-body,
 * {
   -ms-overflow-style: none !important;
-  /* IE and Edge */
   scrollbar-width: none !important;
-  /* Firefox */
 }
 
 /* Hide scrollbar for horizontal scrolling elements (legacy support) */
