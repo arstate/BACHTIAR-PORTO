@@ -35,8 +35,73 @@ const konserUrls = [
   "https://github.com/user-attachments/assets/a61550f9-1e01-4f64-b6b5-d1826b3ae6c7",
   "https://github.com/user-attachments/assets/abcb3eec-2493-4515-837d-8a133f5199e2"
 ];
-
 const graduationUrls = [
+  "https://github.com/user-attachments/assets/f62f9ca9-23c5-4b81-8f7e-c9c646875ec8",
+  "https://github.com/user-attachments/assets/276def06-0dfe-4c9e-8e9c-be91ac62d2ed",
+  "https://github.com/user-attachments/assets/6fbb2a3f-1469-49b9-85b5-26e944ddc62c",
+  "https://github.com/user-attachments/assets/eb894008-2618-4f82-b359-862c5053518b",
+  "https://github.com/user-attachments/assets/2cff160d-a6eb-4321-880c-1506e16b5da2",
+  "https://github.com/user-attachments/assets/bee0fd4a-9c60-45fd-8a8d-0142754f9968",
+  "https://github.com/user-attachments/assets/64299811-3be7-4bdf-894a-2d9b39ed2b5f",
+  "https://github.com/user-attachments/assets/36a78d15-f9c5-4d2d-b02d-86136b779fd8",
+  "https://github.com/user-attachments/assets/8383d5aa-10cb-4e64-b196-abe4b255b11c",
+  "https://github.com/user-attachments/assets/c8799254-0313-4981-9b5b-bc630aa4b3e3",
+  "https://github.com/user-attachments/assets/08be47e4-8f74-4e82-ad05-fa981ff1bbe0",
+  "https://github.com/user-attachments/assets/2bf533cd-0924-46b4-8bea-5b4659f6771a",
+  "https://github.com/user-attachments/assets/5803aac9-472e-4746-a599-ab036fd6cdee",
+  "https://github.com/user-attachments/assets/f88a7367-c70a-40df-9835-3b74c0c8b18d",
+  "https://github.com/user-attachments/assets/5d7f77f4-21e4-479f-a425-f1cf4b2b8c44",
+  "https://github.com/user-attachments/assets/3728a2fe-5dac-441e-8b4b-1ce52ff87511",
+  "https://github.com/user-attachments/assets/32afba91-a565-4ffb-8c8e-2fea6aef23ae",
+  "https://github.com/user-attachments/assets/373f67eb-44f5-4ea3-b6ac-d97b81d6c47f",
+  "https://github.com/user-attachments/assets/722a7fd3-7e26-4a71-8db7-17761761c0d7",
+  "https://github.com/user-attachments/assets/8a94b7a5-bba5-4a18-963b-87e6de87869c",
+  "https://github.com/user-attachments/assets/3f1ec3cf-28d5-474a-96a2-5fe613b0b0d7",
+  "https://github.com/user-attachments/assets/0983c8d0-04ef-4436-93e3-d265fa79858f",
+  "https://github.com/user-attachments/assets/35a7efbf-a6d6-4131-a7fb-62a929953d18",
+  "https://github.com/user-attachments/assets/ef7acfdb-8634-4cff-854b-78be2e16ad75",
+  "https://github.com/user-attachments/assets/7df01810-4045-4ea7-b475-b0829183a341",
+  "https://github.com/user-attachments/assets/7b9afa5b-2a86-497e-b9f5-b5db91dc4afa",
+  "https://github.com/user-attachments/assets/74fd30ab-b6da-4fe3-ae62-3c3a5c1ab05c",
+  "https://github.com/user-attachments/assets/1e6ec483-6237-4883-b49b-59387d0fcbe2",
+  "https://github.com/user-attachments/assets/32fac26b-e4f0-4655-9573-258c8dd4285f",
+  "https://github.com/user-attachments/assets/7d5e60a2-a31e-43fb-8ca9-873ab26f02a5",
+  "https://github.com/user-attachments/assets/546b54df-2357-45fe-a906-600b1fc28616",
+  "https://github.com/user-attachments/assets/ae5a66f5-a6a7-436a-8c59-6e6c31286203",
+  "https://github.com/user-attachments/assets/732dfca5-9144-4131-b4bc-9fe9978a6ba5",
+  "https://github.com/user-attachments/assets/128ee3fb-0b27-48f9-a963-cc8f6db73284",
+  "https://github.com/user-attachments/assets/f6dac92c-e500-466c-9da7-fc6669721d41",
+  "https://github.com/user-attachments/assets/bf267004-ff2c-4a75-8186-9107bf800cde",
+  "https://github.com/user-attachments/assets/8e90ec0b-df91-4f27-b1b3-d853a33c8334",
+  "https://github.com/user-attachments/assets/793fe427-7a0f-46e6-af94-b43f0e869d00",
+  "https://github.com/user-attachments/assets/01cba537-bb07-4398-a760-cc1f1b2602fa",
+  "https://github.com/user-attachments/assets/7872acea-778e-40b6-9075-4e6b09f6fbe7",
+  "https://github.com/user-attachments/assets/493c1bad-4ec9-4e5d-86d2-759841554070",
+  "https://github.com/user-attachments/assets/0d95cd93-cecb-4784-b84a-b257df3d62d6",
+  "https://github.com/user-attachments/assets/c57487bc-7bb3-4866-93b7-245e79b2556e",
+  "https://github.com/user-attachments/assets/f089677f-3a76-4b4c-a6f3-6cbbb6bfaff9",
+  "https://github.com/user-attachments/assets/8d5e8d51-2159-4d2c-9041-bae1b7b3b242",
+  "https://github.com/user-attachments/assets/391ee6da-31db-4841-9712-a50587267e1c",
+  "https://github.com/user-attachments/assets/d8a0f639-737f-46a3-8627-652253ab0ff0",
+  "https://github.com/user-attachments/assets/be803727-90be-4b36-b5f6-5c182a929b38",
+  "https://github.com/user-attachments/assets/df7e5c8d-28a6-4dfc-92db-d2eb1ccff348",
+  "https://github.com/user-attachments/assets/a702b385-0963-4231-9397-fb54834b6d06",
+  "https://github.com/user-attachments/assets/01ced7f7-efd3-4b93-a7da-a08129fa00c8",
+  "https://github.com/user-attachments/assets/d662a544-418d-4ca5-9ad9-c7425f8e0197",
+  "https://github.com/user-attachments/assets/1c6ddd06-b93d-4d25-a73b-3c1a3fdc8cdf",
+  "https://github.com/user-attachments/assets/3ba373f9-0efb-4be8-b486-7cc46ceda219",
+  "https://github.com/user-attachments/assets/6430e35a-f92d-4389-9c9e-3ca22f9a1098",
+  "https://github.com/user-attachments/assets/b174ebee-c3b9-4114-a050-876823db613a",
+  "https://github.com/user-attachments/assets/2f9cc0dc-f70e-4b6c-b54e-ab6d7f77dc1e",
+  "https://github.com/user-attachments/assets/f13b3013-3f63-401b-beb8-bf546ddca34a",
+  "https://github.com/user-attachments/assets/a85ef45d-e122-45eb-9e39-7edcd39d6644",
+  "https://github.com/user-attachments/assets/4630548d-1b43-47a5-bb85-c89b77e59d15",
+  "https://github.com/user-attachments/assets/4ac92f48-da0b-4b17-86b1-d1c7815b28cd",
+  "https://github.com/user-attachments/assets/983b8946-3bb6-48b3-8bc4-a39c5c3cb3da",
+  "https://github.com/user-attachments/assets/5ed431ab-e6cf-4c6b-9cca-1f18ed98990b",
+  "https://github.com/user-attachments/assets/4eee4eb0-8450-47d5-8838-294cb6a0a478",
+  "https://github.com/user-attachments/assets/21fb58b9-14ab-4dc6-821a-44509dacfe2d",
+  "https://github.com/user-attachments/assets/be12e7d9-851d-4ce6-9a18-afe9c5911fad",
   "https://github.com/user-attachments/assets/0068afa0-9fc8-4eb7-926e-ad99f7baee59",
   "https://github.com/user-attachments/assets/41d7af04-2c39-495a-bc3c-34d16c149b0e",
   "https://github.com/user-attachments/assets/3a059c13-c3c1-405f-9807-0cc4b0787f48",
@@ -287,30 +352,23 @@ const PortfolioGallery = () => {
                 animate={{ scale: 1, y: 0, opacity: 1 }}
                 exit={{ scale: 0.9, y: 20, opacity: 0 }}
                 transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                className="w-full max-w-4xl bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
+                className="relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl flex flex-col max-w-[95vw] max-h-[95vh] group"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="relative w-full bg-black flex items-center justify-center">
-                  <img
-                    src={selectedProject.img}
-                    alt={selectedProject.title}
-                    className="w-full max-h-[70vh] object-contain"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="w-16 h-16 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center border border-white/20">
-                      <Video size={24} className="text-white/80" />
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setSelectedProject(null)}
-                    className="absolute top-4 right-4 p-2 rounded-full bg-black/50 backdrop-blur-md hover:bg-white/20 text-white transition-colors border border-white/10 z-10"
-                  >
-                    <X size={20} />
-                  </button>
-                </div>
-                <div className="p-8">
-                  <h3 className="text-3xl font-bold text-white">{selectedProject.title}</h3>
+                <img
+                  src={selectedProject.img}
+                  alt={selectedProject.title}
+                  className="max-w-full max-h-[95vh] object-contain block"
+                  referrerPolicy="no-referrer"
+                />
+                <button
+                  onClick={() => setSelectedProject(null)}
+                  className="absolute top-4 right-4 p-2 rounded-full bg-black/50 backdrop-blur-md hover:bg-white/20 text-white transition-colors border border-white/10 z-10 md:opacity-0 group-hover:opacity-100"
+                >
+                  <X size={20} />
+                </button>
+                <div className="absolute bottom-0 left-0 w-full p-6 md:p-8 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none md:opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <h3 className="text-2xl md:text-3xl font-bold text-white drop-shadow-lg">{selectedProject.title}</h3>
                 </div>
               </motion.div>
             </motion.div>
