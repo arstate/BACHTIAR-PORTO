@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, useTransform, AnimatePresence, useInView, useMotionValue, useSpring } from 'motion/react';
 import { Video, X } from 'lucide-react';
 import { createPortal } from 'react-dom';
+import { useLocation } from 'react-router-dom';
 
 const categories = ['All', 'Ads', 'Animals', 'Corporate', 'Graduation', 'Konser', 'Prewedding', 'Wedding', 'Yearbook'];
 
@@ -143,6 +144,7 @@ const PortfolioGallery = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const location = useLocation();
   
   const rawScroll = useMotionValue(0);
   const scrollY = useSpring(rawScroll, { damping: 50, stiffness: 400, mass: 0.5 });
@@ -184,24 +186,18 @@ const PortfolioGallery = () => {
   }, [rawScroll]);
 
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '');
-      if (hash) {
-        const category = hash.charAt(0).toUpperCase() + hash.slice(1);
-        if (categories.includes(category)) {
-          setActiveCategory(category);
-        } else if (hash.toLowerCase() === 'all') {
-          setActiveCategory('All');
-        }
-      } else {
+    const hash = location.hash.replace('#', '');
+    if (hash) {
+      const category = hash.charAt(0).toUpperCase() + hash.slice(1);
+      if (categories.includes(category)) {
+        setActiveCategory(category);
+      } else if (hash.toLowerCase() === 'all') {
         setActiveCategory('All');
       }
-    };
-
-    handleHashChange();
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
+    } else {
+      setActiveCategory('All');
+    }
+  }, [location.hash]);
 
   const filteredItems = activeCategory === 'All' 
     ? galleryItems 
