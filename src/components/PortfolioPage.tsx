@@ -2,19 +2,80 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { useLocation } from 'react-router-dom';
 
-const ManualRow = ({ cat }: { cat: string }) => {
-  const items = [1, 2, 3, 4, 5, 6, 7, 8]; // Demo items
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+const ManualRow: React.FC<{ cat: string }> = ({ cat }) => {
+  const originalItems = [1, 2, 3, 4, 5, 6, 7, 8]; // Demo items
+  // Triplicate the array: [prepend] + [original] + [append]
+  // This allows us to infinitely scroll visually
+  const items = [...originalItems, ...originalItems, ...originalItems];
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+
+  // Start from the middle section of the duplicated array
+  useEffect(() => {
+    if (scrollRef.current) {
+      const container = scrollRef.current;
+      // Scroll to exactly 1/3 of the total scroll width to be in the "real" middle section
+      container.scrollLeft = container.scrollWidth / 3;
+    }
+  }, []);
+
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+    const container = scrollRef.current;
+
+    // Check boundaries for infinite loop
+    const maxScrollLeft = container.scrollWidth - container.clientWidth;
+    const sectionWidth = container.scrollWidth / 3;
+
+    if (container.scrollLeft <= 0) {
+      // Reached left end, jump back to the right equivalent position
+      container.scrollLeft = container.scrollLeft + sectionWidth;
+    } else if (container.scrollLeft >= maxScrollLeft - 10) {
+      // Reached right end, jump back to the left equivalent position
+      container.scrollLeft = container.scrollLeft - sectionWidth;
+    }
+  };
+
+  const scrollAction = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const scrollAmount = 500; // rough width of one item
+      scrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   return (
     <section id={cat.toLowerCase()} className="pt-24 pb-8 w-full relative">
-      <div className="max-w-7xl mx-auto px-6 mb-8">
+      <div className="max-w-7xl mx-auto px-6 mb-8 flex justify-between items-center">
         <h2 className="text-4xl md:text-5xl font-bold font-display italic text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
           {cat}
         </h2>
+
+        <div className="flex gap-2">
+          <button
+            onClick={() => scrollAction('left')}
+            className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors"
+          >
+            <ChevronLeft size={24} />
+          </button>
+          <button
+            onClick={() => scrollAction('right')}
+            className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors"
+          >
+            <ChevronRight size={24} />
+          </button>
+        </div>
       </div>
 
       <div className="w-full relative group">
-        <div className="flex gap-6 overflow-x-auto overflow-y-hidden px-6 pb-6 md:px-12 snap-x snap-mandatory hide-scrollbar">
+        <div
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="flex gap-6 overflow-x-auto overflow-y-hidden px-6 pb-6 md:px-12 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        >
           {items.map((item, i) => (
             <div
               key={`${i}`}
