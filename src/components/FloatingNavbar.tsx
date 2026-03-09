@@ -27,10 +27,14 @@ const FloatingNavbar = () => {
         const category = hash.charAt(0).toUpperCase() + hash.slice(1);
         setActiveCategory(category);
       } else {
-        setActiveCategory('All');
+        if (isGalleryPage) {
+          setActiveCategory('Konser');
+        } else {
+          setActiveCategory('All');
+        }
       }
     }
-  }, [location.hash, isDropdownPage]);
+  }, [location.hash, isDropdownPage, isGalleryPage]);
 
   // Close dropdown when clicking outside
   useEffect(() => {

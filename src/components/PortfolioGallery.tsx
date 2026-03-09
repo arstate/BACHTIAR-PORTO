@@ -111,7 +111,7 @@ const LoopingColumn = ({ items, speed, scrollY, onProjectClick }: { key?: string
 };
 
 const PortfolioGallery = () => {
-  const [activeCategory, setActiveCategory] = useState('All');
+  const [activeCategory, setActiveCategory] = useState('Konser');
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [isMobile, setIsMobile] = useState(false);
   const location = useLocation();
@@ -169,7 +169,7 @@ const PortfolioGallery = () => {
         setActiveCategory('All');
       }
     } else {
-      setActiveCategory('All');
+      setActiveCategory('Konser');
     }
   }, [location.hash]);
 
