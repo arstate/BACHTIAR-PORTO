@@ -27,61 +27,61 @@ const PortfolioHub = () => {
                 Choose Category
             </motion.h1>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6 w-full max-w-7xl z-10 px-2 lg:px-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8 w-full max-w-[95rem] z-10 px-4 md:px-12">
                 <Link
                     to="/videography"
                     onClick={(e) => { e.preventDefault(); navigateWithTransition('/videography'); }}
-                    className="group relative overflow-hidden rounded-[2rem] bg-white/5 border border-white/10 hover:border-white/30 transition-colors aspect-[16/10] sm:aspect-square lg:aspect-[4/5] flex flex-col items-center justify-center gap-4 lg:gap-6"
+                    className="group relative overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 hover:border-white/30 transition-all duration-500 aspect-[16/10] sm:aspect-square lg:aspect-[4/5] flex flex-col items-center justify-center gap-4 lg:gap-8 p-6"
                 >
                     <div className="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-3xl rounded-full" />
                     <motion.div whileHover={{ scale: 1.1 }} transition={{ type: "spring", stiffness: 400 }}>
                         <Film size={60} className="md:w-[80px] md:h-[80px] text-white/80 group-hover:text-white transition-colors" />
                     </motion.div>
-                    <h2 className="text-xl md:text-2xl font-bold tracking-widest uppercase">Videography</h2>
+                    <h2 className="text-base md:text-lg lg:text-xl font-bold tracking-[0.2em] uppercase text-center px-4 leading-tight">Videography</h2>
                 </Link>
                 <Link
                     to="/gallery"
                     onClick={(e) => { e.preventDefault(); navigateWithTransition('/gallery'); }}
-                    className="group relative overflow-hidden rounded-[2rem] bg-white/5 border border-white/10 hover:border-white/30 transition-colors aspect-[16/10] sm:aspect-square lg:aspect-[4/5] flex flex-col items-center justify-center gap-4 lg:gap-6"
+                    className="group relative overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 hover:border-white/30 transition-all duration-500 aspect-[16/10] sm:aspect-square lg:aspect-[4/5] flex flex-col items-center justify-center gap-4 lg:gap-8 p-6"
                 >
                     <div className="absolute inset-0 bg-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-3xl rounded-full" />
                     <motion.div whileHover={{ scale: 1.1 }} transition={{ type: "spring", stiffness: 400 }}>
                         <ImageIcon size={60} className="md:w-[80px] md:h-[80px] text-white/80 group-hover:text-white transition-colors" />
                     </motion.div>
-                    <h2 className="text-xl md:text-2xl font-bold tracking-widest uppercase">Photography</h2>
+                    <h2 className="text-base md:text-lg lg:text-xl font-bold tracking-[0.2em] uppercase text-center px-4 leading-tight">Photography</h2>
                 </Link>
                 <Link
                     to="#"
                     onClick={(e) => { e.preventDefault(); navigateWithTransition('#'); }}
-                    className="group relative overflow-hidden rounded-[2rem] bg-white/5 border border-white/10 hover:border-white/30 transition-colors aspect-[16/10] sm:aspect-square lg:aspect-[4/5] flex flex-col items-center justify-center gap-4 lg:gap-6"
+                    className="group relative overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 hover:border-white/30 transition-all duration-500 aspect-[16/10] sm:aspect-square lg:aspect-[4/5] flex flex-col items-center justify-center gap-4 lg:gap-8 p-6"
                 >
                     <div className="absolute inset-0 bg-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-3xl rounded-full" />
                     <motion.div whileHover={{ scale: 1.1 }} transition={{ type: "spring", stiffness: 400 }}>
                         <MonitorPlay size={60} className="md:w-[80px] md:h-[80px] text-white/80 group-hover:text-white transition-colors" />
                     </motion.div>
-                    <h2 className="text-xl md:text-2xl font-bold tracking-widest uppercase text-center">Motion<br />Graphics</h2>
+                    <h2 className="text-base md:text-lg lg:text-xl font-bold tracking-[0.2em] uppercase text-center px-4 leading-tight">Motion<br />Graphics</h2>
                 </Link>
                 <Link
                     to="#"
                     onClick={(e) => { e.preventDefault(); navigateWithTransition('#'); }}
-                    className="group relative overflow-hidden rounded-[2rem] bg-white/5 border border-white/10 hover:border-white/30 transition-colors aspect-[16/10] sm:aspect-square lg:aspect-[4/5] flex flex-col items-center justify-center gap-4 lg:gap-6"
+                    className="group relative overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 hover:border-white/30 transition-all duration-500 aspect-[16/10] sm:aspect-square lg:aspect-[4/5] flex flex-col items-center justify-center gap-4 lg:gap-8 p-6"
                 >
                     <div className="absolute inset-0 bg-amber-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-3xl rounded-full" />
                     <motion.div whileHover={{ scale: 1.1 }} transition={{ type: "spring", stiffness: 400 }}>
                         <Clapperboard size={60} className="md:w-[80px] md:h-[80px] text-white/80 group-hover:text-white transition-colors" />
                     </motion.div>
-                    <h2 className="text-xl md:text-2xl font-bold tracking-widest uppercase text-center">Behind The<br />Scenes</h2>
+                    <h2 className="text-base md:text-lg lg:text-xl font-bold tracking-[0.2em] uppercase text-center px-4 leading-tight">Behind The<br />Scenes</h2>
                 </Link>
                 <Link
                     to="#"
                     onClick={(e) => { e.preventDefault(); navigateWithTransition('#'); }}
-                    className="group relative overflow-hidden rounded-[2rem] bg-white/5 border border-white/10 hover:border-white/30 transition-colors aspect-[16/10] sm:aspect-square lg:aspect-[4/5] flex flex-col items-center justify-center gap-4 lg:gap-6"
+                    className="group relative overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 hover:border-white/30 transition-all duration-500 aspect-[16/10] sm:aspect-square lg:aspect-[4/5] flex flex-col items-center justify-center gap-4 lg:gap-8 p-6"
                 >
                     <div className="absolute inset-0 bg-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-3xl rounded-full" />
                     <motion.div whileHover={{ scale: 1.1 }} transition={{ type: "spring", stiffness: 400 }}>
                         <PenTool size={60} className="md:w-[80px] md:h-[80px] text-white/80 group-hover:text-white transition-colors" />
                     </motion.div>
-                    <h2 className="text-xl md:text-2xl font-bold tracking-widest uppercase">Design</h2>
+                    <h2 className="text-base md:text-lg lg:text-xl font-bold tracking-[0.2em] uppercase text-center px-4 leading-tight">Design</h2>
                 </Link>
             </div>
 
