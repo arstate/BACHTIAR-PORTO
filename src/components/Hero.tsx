@@ -229,10 +229,10 @@ const Hero = () => {
                 </div>
 
                 <div className="flex-1 bg-black/50 flex items-center justify-center overflow-hidden">
-                  {/* Placeholder for CV Image */}
+                  {/* CV Image */}
                   <img
-                    src="https://picsum.photos/seed/cv/800/1131.webp"
-                    alt="CV Preview"
+                    src="https://github.com/user-attachments/assets/9fb9adab-7951-4ba9-91ff-cb3f0568a755"
+                    alt="CV Bachtiar Aryansyah Putra"
                     className="w-auto h-auto max-w-full max-h-[80vh] object-contain"
                     referrerPolicy="no-referrer"
                   />

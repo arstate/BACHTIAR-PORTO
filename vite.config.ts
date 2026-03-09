@@ -13,11 +13,19 @@ export default defineConfig(({ mode }) => {
       {
         name: 'git-push-api',
         configureServer(server) {
+          server.middlewares.use('/_git_status', (req, res) => {
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            exec('git status -s', (err, stdout, stderr) => {
+              res.writeHead(200, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ success: !err, output: stdout + (stderr || '') }));
+            });
+          });
+
           server.middlewares.use('/_git_push', (req, res) => {
             res.setHeader('Access-Control-Allow-Origin', '*');
             exec('git add . && git commit -m "chore: auto sync from preview" && git push', (err, stdout, stderr) => {
               res.writeHead(200, { 'Content-Type': 'application/json' });
-              res.end(JSON.stringify({ success: !err, output: stdout + stderr }));
+              res.end(JSON.stringify({ success: !err, output: stdout + (stderr || '') }));
             });
           });
         }
