@@ -15,12 +15,14 @@ import Footer from './components/Footer';
 import LazySection from './components/LazySection';
 import ThreeDCamera from './components/ThreeDCamera';
 import PortfolioGallery from './components/PortfolioGallery';
+import PortfolioHub from './components/PortfolioHub';
+import PortfolioPage from './components/PortfolioPage';
 
 function Home() {
   return (
     <>
       <Hero />
-      
+
       <LazySection id="about-section" placeholderHeight="100vh" className="relative z-20 overflow-hidden">
         <ThreeDCamera index={0}>
           <About />
@@ -90,10 +92,12 @@ export default function App() {
         <CustomCursor />
         <FloatingNavbar />
         <Background />
-        
+
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/portfolio" element={<PortfolioGallery />} />
+          <Route path="/portfolio" element={<PortfolioHub />} />
+          <Route path="/gallery" element={<PortfolioGallery />} />
+          <Route path="/videography" element={<PortfolioPage />} />
         </Routes>
       </div>
     </Router>
