@@ -251,8 +251,10 @@ const PortfolioGallery = () => {
 
     // Disable body scroll on this page
     document.body.style.overflow = 'hidden';
+    document.body.style.overscrollBehavior = 'none';
 
     const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
       rawScroll.set(rawScroll.get() + e.deltaY);
     };
 
@@ -261,6 +263,7 @@ const PortfolioGallery = () => {
       touchStartY = e.touches[0].clientY;
     };
     const handleTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
       const touchY = e.touches[0].clientY;
       const deltaY = touchStartY - touchY;
       rawScroll.set(rawScroll.get() + deltaY * 2);
@@ -268,7 +271,7 @@ const PortfolioGallery = () => {
     };
 
     window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('touchstart', handleTouchStart);
+    window.addEventListener('touchstart', handleTouchStart, { passive: false });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
 
     return () => {
@@ -277,6 +280,7 @@ const PortfolioGallery = () => {
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
       document.body.style.overflow = 'auto';
+      document.body.style.overscrollBehavior = 'auto';
     };
   }, [rawScroll]);
 
