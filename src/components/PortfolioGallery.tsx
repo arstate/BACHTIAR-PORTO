@@ -63,31 +63,22 @@ const getOptimizedUrl = (url: string, width: number) => {
 };
 
 const GalleryItem = ({ item, onClick }: { key?: string, item: any, onClick: () => void }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { margin: "100% 0px 100% 0px" });
-
   return (
     <motion.div 
-      ref={ref}
-      layout
       onClick={onClick}
       className="relative rounded-2xl md:rounded-[2rem] overflow-hidden cursor-pointer group w-full aspect-[3/4] bg-white/5 flex-shrink-0"
     >
-      {isInView && (
-        <>
-          <img 
-            src={getOptimizedUrl(item.img, 600)} 
-            alt={item.title} 
-            loading="lazy"
-            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-            referrerPolicy="no-referrer"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-[#050505]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          <div className="absolute inset-0 p-6 flex flex-col justify-end translate-y-4 group-hover:translate-y-0 transition-transform duration-500 opacity-0 group-hover:opacity-100">
-            <h3 className="text-lg md:text-xl font-bold text-white">{item.title}</h3>
-          </div>
-        </>
-      )}
+      <img 
+        src={getOptimizedUrl(item.img, 600)} 
+        alt={item.title} 
+        loading="lazy"
+        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+        referrerPolicy="no-referrer"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-[#050505]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-0 p-6 flex flex-col justify-end translate-y-4 group-hover:translate-y-0 transition-transform duration-500 opacity-0 group-hover:opacity-100">
+        <h3 className="text-lg md:text-xl font-bold text-white">{item.title}</h3>
+      </div>
     </motion.div>
   );
 };
@@ -120,7 +111,7 @@ const LoopingColumn = ({ items, speed, scrollY, onProjectClick }: { key?: string
     <div className="flex-1 overflow-hidden h-full relative">
       <motion.div 
         ref={columnRef}
-        style={{ y }}
+        style={{ y, willChange: "transform" }}
         className="flex flex-col gap-4 md:gap-6"
       >
         {repeatedItems.map((item, i) => (

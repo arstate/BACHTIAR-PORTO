@@ -1,7 +1,8 @@
 import { motion, useScroll, useTransform, useMotionValueEvent, AnimatePresence } from 'motion/react';
-import { Play, ArrowRight, Download, FileText, X } from 'lucide-react';
+import { Play, ArrowRight, Download, FileText, X, LayoutGrid } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   const { scrollY } = useScroll();
@@ -153,16 +154,26 @@ const Hero = () => {
               Founder & Creative Director of <span className="text-white font-medium">Arstate.Cinema</span>
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto justify-center md:justify-end">
-              <a 
-                href="#portfolio" 
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform flex-shrink-0"
-              >
-                <Play size={20} className="ml-1" fill="currentColor" />
-              </a>
+              <div className="flex items-center gap-3">
+                <a 
+                  href="#portfolio" 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="w-14 h-14 rounded-full bg-white/5 border border-white/10 text-white flex items-center justify-center hover:scale-110 transition-transform flex-shrink-0 backdrop-blur-md"
+                  title="Watch Showreel"
+                >
+                  <Play size={20} className="ml-1" fill="currentColor" />
+                </a>
+                <Link 
+                  to="/portfolio"
+                  className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center hover:scale-110 transition-transform flex-shrink-0"
+                  title="Open Gallery"
+                >
+                  <LayoutGrid size={20} />
+                </Link>
+              </div>
               <div className="flex items-center gap-4 w-full sm:w-auto">
                 <a 
                   href="#contact" 
