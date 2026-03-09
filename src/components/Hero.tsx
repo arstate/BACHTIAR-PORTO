@@ -196,7 +196,7 @@ const Hero = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[9999] flex items-start justify-center px-4 pt-28 pb-8 md:px-8 md:pt-32 bg-black/80 backdrop-blur-sm"
+              className="fixed inset-0 z-[9999] flex items-center justify-center p-4 md:p-8 bg-black/80 backdrop-blur-sm"
               onClick={() => setIsCVModalOpen(false)}
             >
               <motion.div
@@ -204,35 +204,36 @@ const Hero = () => {
                 animate={{ scale: 1, y: 0, opacity: 1 }}
                 exit={{ scale: 0.9, y: 20, opacity: 0 }}
                 transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                className="w-full max-w-3xl bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[80vh]"
+                className="bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col w-[95vw] md:w-auto md:max-w-[90vw] min-w-[300px]"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="flex justify-between items-center p-6 border-b border-white/10">
-                  <h3 className="text-xl font-bold text-white">Curriculum Vitae</h3>
-                  <div className="flex items-center gap-4">
+                <div className="flex justify-between items-center p-5 md:p-6 border-b border-white/10 gap-4">
+                  <h3 className="text-base md:text-xl font-bold text-white tracking-wider uppercase truncate">CV BACHTIAR ARYANSYAH PUTRA</h3>
+                  <div className="flex items-center gap-3 shrink-0">
                     <a
                       href="#" // Replace with actual PDF link
                       download
-                      className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium transition-colors"
+                      className="p-2.5 rounded-full bg-blue-500 hover:bg-blue-600 text-white transition-colors flex items-center justify-center shadow-lg shadow-blue-500/20"
+                      title="Download PDF"
                     >
-                      <Download size={16} />
-                      Download PDF
+                      <Download size={18} />
                     </a>
                     <button
                       onClick={() => setIsCVModalOpen(false)}
-                      className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors border border-white/10"
+                      className="p-2.5 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors border border-white/10"
+                      title="Close"
                     >
-                      <X size={20} />
+                      <X size={18} />
                     </button>
                   </div>
                 </div>
 
-                <div className="p-6 overflow-y-auto flex-1 bg-black/50 flex justify-center">
+                <div className="flex-1 bg-black/50 flex items-center justify-center overflow-hidden">
                   {/* Placeholder for CV Image */}
                   <img
                     src="https://picsum.photos/seed/cv/800/1131.webp"
                     alt="CV Preview"
-                    className="max-w-full h-auto object-contain shadow-2xl border border-white/5"
+                    className="w-auto h-auto max-w-full max-h-[80vh] object-contain"
                     referrerPolicy="no-referrer"
                   />
                 </div>

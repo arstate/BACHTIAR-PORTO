@@ -7,12 +7,12 @@ const PortfolioHub = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="min-h-screen bg-[#050505] text-white flex flex-col justify-center items-center px-6 relative overflow-hidden">
+        <div className="min-h-screen bg-[#050505] text-white flex flex-col md:justify-center items-center px-6 pt-32 pb-16 md:pt-0 relative overflow-y-auto">
             <motion.button
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 onClick={() => navigate('/')}
-                className="absolute top-8 left-8 py-2 px-4 flex items-center gap-2 hover:bg-white/10 rounded-full transition-colors z-10 bg-white/5 border border-white/10 backdrop-blur-md"
+                className="absolute top-6 left-6 md:top-8 md:left-8 py-2 px-4 flex items-center gap-2 hover:bg-white/10 rounded-full transition-colors z-10 bg-white/5 border border-white/10 backdrop-blur-md"
             >
                 <ArrowLeft size={20} />
                 <span className="text-sm font-medium tracking-widest uppercase">Back</span>
@@ -21,7 +21,7 @@ const PortfolioHub = () => {
             <motion.h1
                 initial={{ y: -50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                className="text-5xl md:text-7xl font-[family-name:var(--font-display)] italic font-light mb-16 text-center z-10"
+                className="text-5xl md:text-7xl font-[family-name:var(--font-display)] italic font-light mb-10 md:mb-16 text-center z-10"
             >
                 Choose Category
             </motion.h1>
