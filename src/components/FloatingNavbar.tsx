@@ -2,6 +2,7 @@ import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'motion/
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Home, ArrowLeft, ChevronDown } from 'lucide-react';
+import { Link as RouterLink } from 'react-router-dom';
 
 const FloatingNavbar = () => {
   const { scrollY } = useScroll();
@@ -111,7 +112,7 @@ const FloatingNavbar = () => {
         x: "-50%"
       }}
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed top-6 left-1/2 z-[100] glass-card px-4 md:px-6 py-3 rounded-full flex items-center gap-4 md:gap-8 border border-white/10 shadow-2xl backdrop-blur-xl bg-black/20"
+      className="fixed top-12 left-1/2 z-[100] glass-card px-4 md:px-6 py-3 rounded-full flex items-center gap-4 md:gap-8 border border-white/10 shadow-2xl backdrop-blur-xl bg-black/20"
     >
       {isPortfolioPage && (
         <button 
@@ -149,9 +150,9 @@ const FloatingNavbar = () => {
                 className="absolute top-full left-0 mt-4 w-48 bg-[#0a0a0a]/90 backdrop-blur-2xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl p-2"
               >
                 {portfolioNavLinks.map((link) => (
-                  <a 
+                  <RouterLink 
                     key={link.name} 
-                    href={link.href} 
+                    to={`/portfolio${link.href}`} 
                     onClick={() => {
                       setIsDropdownOpen(false);
                       window.scrollTo(0, 0);
@@ -163,7 +164,7 @@ const FloatingNavbar = () => {
                     }`}
                   >
                     {link.name}
-                  </a>
+                  </RouterLink>
                 ))}
               </motion.div>
             )}
