@@ -107,7 +107,7 @@ const FloatingNavbar = () => {
 
   const handleBackClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    navigate('/');
+    navigate('/portfolio');
     window.scrollTo(0, 0);
   };
 
@@ -168,8 +168,8 @@ const FloatingNavbar = () => {
                       window.scrollTo(0, 0);
                     }}
                     className={`block px-4 py-2.5 rounded-xl text-xs font-medium transition-all ${activeCategory === link.name
-                        ? 'bg-white text-black'
-                        : 'text-white/60 hover:text-white hover:bg-white/5'
+                      ? 'bg-white text-black'
+                      : 'text-white/60 hover:text-white hover:bg-white/5'
                       }`}
                   >
                     {link.name}

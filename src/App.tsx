@@ -17,6 +17,7 @@ import ThreeDCamera from './components/ThreeDCamera';
 import PortfolioGallery from './components/PortfolioGallery';
 import PortfolioHub from './components/PortfolioHub';
 import PortfolioPage from './components/PortfolioPage';
+import PageTransitionOverlay from './components/PageTransitionOverlay';
 
 function Home() {
   return (
@@ -91,6 +92,7 @@ export default function App() {
       <div className="relative min-h-screen w-full overflow-x-hidden selection:bg-blue-500/30 selection:text-white">
         <CustomCursor />
         <FloatingNavbar />
+        <PageTransitionOverlay />
         <Background />
 
         <Routes>

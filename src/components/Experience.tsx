@@ -26,6 +26,15 @@ const Experience = () => {
       bullets: [
         "Developed client acquisition strategies"
       ]
+    },
+    {
+      company: "Tiar Property",
+      period: "2025 - Present",
+      role: "Social Media Specialist, Creative Content Planner, Copywriter, & Digital Imaging",
+      description: "Creative Social Media Strategy & Content Planning for Tiar Property",
+      bullets: [
+        "Tools Used: Instagram, Meta Business Suite, Adobe Photoshop/Canva, AI Tools (Adobe Firefly/nanobananapro)"
+      ]
     }
   ];
 
