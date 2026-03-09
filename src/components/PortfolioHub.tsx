@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Film, Image as ImageIcon, ArrowLeft, Clapperboard, PenTool } from 'lucide-react';
+import { Film, Image as ImageIcon, ArrowLeft, Clapperboard, PenTool, MonitorPlay } from 'lucide-react';
 import { navigateWithTransition } from './PageTransitionOverlay';
 
 const PortfolioHub = () => {
@@ -27,7 +27,7 @@ const PortfolioHub = () => {
                 Choose Category
             </motion.h1>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 w-full max-w-7xl z-10 px-2 lg:px-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6 w-full max-w-7xl z-10 px-2 lg:px-4">
                 <Link
                     to="/videography"
                     onClick={(e) => { e.preventDefault(); navigateWithTransition('/videography'); }}
@@ -49,6 +49,17 @@ const PortfolioHub = () => {
                         <ImageIcon size={60} className="md:w-[80px] md:h-[80px] text-white/80 group-hover:text-white transition-colors" />
                     </motion.div>
                     <h2 className="text-xl md:text-2xl font-bold tracking-widest uppercase">Photography</h2>
+                </Link>
+                <Link
+                    to="#"
+                    onClick={(e) => { e.preventDefault(); navigateWithTransition('#'); }}
+                    className="group relative overflow-hidden rounded-[2rem] bg-white/5 border border-white/10 hover:border-white/30 transition-colors aspect-[16/10] sm:aspect-square lg:aspect-[4/5] flex flex-col items-center justify-center gap-4 lg:gap-6"
+                >
+                    <div className="absolute inset-0 bg-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-3xl rounded-full" />
+                    <motion.div whileHover={{ scale: 1.1 }} transition={{ type: "spring", stiffness: 400 }}>
+                        <MonitorPlay size={60} className="md:w-[80px] md:h-[80px] text-white/80 group-hover:text-white transition-colors" />
+                    </motion.div>
+                    <h2 className="text-xl md:text-2xl font-bold tracking-widest uppercase text-center">Motion<br />Graphics</h2>
                 </Link>
                 <Link
                     to="#"
