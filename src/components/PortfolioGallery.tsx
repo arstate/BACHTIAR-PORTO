@@ -1,41 +1,41 @@
-import { useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
+import { useState, useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform, AnimatePresence, useInView } from 'motion/react';
 import { Video, X } from 'lucide-react';
 import { createPortal } from 'react-dom';
 
-const categories = ['All', 'Wedding', 'Prewedding', 'Ads', 'Konser', 'Corporate'];
+const categories = ['All', 'Wedding', 'Prewedding', 'Ads', 'Konser', 'Corporate', 'Yearbook'];
 
 const konserUrls = [
-  "https://lh3.googleusercontent.com/pw/AP1GczN7G7axgZ0v28RcGhnN3PNLyNJcKXtOxJWnm2KAz7pDO1AlOyZ_jFEH3cXwHbNDxk8DL_83duEV90wIHJ3Ny7tzCzzXpLhJbuDULZyLxn4VzRgwvbk=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczMhhlgTZstaYvsBfBHLWnovG1MmgnaUbkF6Qgz-E7zaVsj31_4RCSDWInzMhcamNwOag4F845K_LLll5tfE9lQ_f-ReHkL0I6iGcvPCiZP5Jfhg_fY=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczMQ_lC5FtjHp7wTUGfmNNJRQhqb7c-hEFYwis3k1R_sE6D0kKh9bf2DTMktk7lWFkZG8l4-UDPmQpx1FOTcybY-PHhvMocKEOajP48f0nahyUPmET0=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczOE6IT0ha02QHyL9pwQORzmOMfRJIVpdIGi2qMfn_7WLU8jG7QWa1xMDUM4-uJfRchJgIX8BBs57pPSzfAvbTbB20buLs5JZcYbfnquMYRl2fL0lWI=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczPiWaHK4WlFa3CrJGSaVHUKynTwxsszdeunwNhvBnunirN98wVw8otvbprSGFB3KDDwvq20j_HU0CMBEVe_8agEjxi89sQsEEpD2w6szi6-sMQUbPw=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczO1eFTOeWMJJLLqzjIbolU46g1E2gAImBxDLc6Lu7MWcStU2JuRiwsGO8lmA0kuE_vfDhL4fCQpMMv3I9EiGnec4jctwPxneltN27aXTFsfz1foQVY=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczPj8YrBFL2hBfLvbyGqloaRtYjLFqH7lZt_c7vM07wWJAneB8g3ebZjbbRxaydoaIiJ9gbLbYrTfk84XdX_7we58c8I-x70YNnyXe92iJf_qzG7R5w=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczPPBb9DGTrs8KVdX97jFAicTMzUPm89S0-yvXPQjew7Xs86Vow-h8JNGYTj065ZOr9HCzIoPHIZsJVfTM8NgsmyYVFTAejRi8_AMYNM5wn3CyzbCrQ=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczPJB2SS1ecInDpw2mLd1XPp6C-dvQlDUK6FfAPm4zcT_0pnAYlS4jOytiT0Oy0iVizSp9pwIlXPYORtSl9ADlobAM4hJVi52u2jmtgZLoZ4dAJT4eE=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczPYYOEAi3B19xS6qI00KfPTjT8acGakUlUbavS9MKLZAC9526Wd7OGdtDH0yGfcLmkA5ybn1gdN7zOU2I8qYaNfkQEH6Nt6cYw8e3qwJ5xyju6HLlQ=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczOUKfzlEZK0yIZgr25JmFNnZgs7iENks9zWmKQP0vMXWrnk5ch2gc6EeSfr7SHzKGdzGNAc_gXo9ogLSSXjjjdh807oGGa4qAkm7nAcOVvKqID4BOs=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczMShUC-99dqLPcLLvKCOkAepHte6uAL0HPWCXmJB4U8UrKl_LiN5z6siFaVYwkXCr6zD6oPp9yHgYjiz77cGZmS6KtWecI1jZ2Yi-gP-hUd-CuOsWw=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczOsnqh2sKh23HvrtmL9Mb0iZArAPPvI4VfHtASUB6zru0B6eBpYCTNjd7EYmCX4FkZxFcJ63A6hSG9C9v9vQHyuUNPRV_WJprn9OAoo0bWBDGGQ8SY=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczMiQD2P932NyeY3lylzG6tN_qiriW0PMiJUb0rNKuILxCjqKAKrAFeq5MJdJJpRnoQAb0B98JMS3eDgIfhL5gTH6aeESTLH2FqxQmOlOkugwThW3CI=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczNdtL1k8XLHOLsG_hCUSogn2u1Lgbo4TEbrbc1TpOYCTU0e01QnpP4OmTy5i26hBIAik6skCfWHD5vTMXEKAffJb8ZMnV3UWfjGdG3kq_XuN3p81W4=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczPSsAPlkt1ho8ktXGl79ZtN5kUYCxXpOrC7kHrGlMFXotwXLX1kWyQ9JBvkGC3dJn4F_Qtug9RkejW9DrSebu00LFuexWIOeUXuI2x9BUgq74p0_Ls=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczMKuQ9-vJMLIVpJNW37cPEuA2RPoscyjqVpLxzcN18HdZRVPHKm3gLzso35EQ3CTzagqzr2Zi-TEQymYsqiecdU42w9C3ebEI8clGJXZ2vqnTExOCM=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczOEUnz_NzTD0EXdEwz-q1PeLYyWtA6AAgB97fQeyYJ65MSjew5AwtxlIjQhDoZ5_Y45cl0YOBMfUGIWa8dnJW8CTAvuokfqJmaz8AgpVSQXiZlzX-4=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczN-7eP8496FFF7n7r0EZ_lwCEQjPeHyZ0bwG4vyZ4kyW1xlhcIDSY9wUBaaOZHt7RDTHA8Ee9N-coB_FEj-5MmxlgXz-STpb4N_kD_X_zFc7Ym_Igc=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczMrapngAtwUtXzt_yA7QYpn0bV7sQoQv_9NSlWjOOnJaVFUSW9vvGCOkAq8BV0rqEXu_Zd02FuGYQtmodrjN38LovBWPWv8nUQj2fD8lXVFcxlDLeA=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczNqVRAH54jllNY6TLUUJgVj4r4I1cGspN9uhW8BfGBn06bAG-bIpWrFE0bbqFAO26VWrHDHt1f26tyKZLAxn-hW0WGUb8-Zt0qViIyEadYruyBIhuc=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczO7OG7yNdoF2warPBW4yJB2QRJxLPQ_Lt6a359OYwlbnO2d0VXmPqrDZo9nvcwu-N-ptjQI7mwf8MiJ4FKHJv3sKBEn4o-QX2bmJPILTDwPxelmneA=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczOXfA6CpyOzb8IFlWVeMlaIAvaSQv1wcn366WlTLZ_ow4EKVTRAdLQ2r8M7PlMDO-rRG803F4FeUoHzcH0xl526DlCULD3bi7oP9H5EUtZt7oe80Wc=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczOVMpOFpUwP-Yd10t-32Vf-YBrGqULQJw23ab9ZlMZqPfyjzAJ74zeeTluK6Wna8yd8oupa5vhXJK9SVr3vCT9tlNY013DR1wGTCQGSZIivwtF9deM=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczM8G2II1BwCktyWXD54fHUWWHVy8eCCNF7YEdNMO8dA8KaMDtKa4vE8_foIiVpSDfN4KJ4c6GKxJtUmRTBaMPqL7nsbvSzgG82_2jmmd3-PlhQuMI0=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczMKaIJsaj7soKIvkYe0kP3ADMAIQ7MZgk090jp-G-gRcreXv_cNmdwdPbfoEdhhmnOOt7iBviDC1co7jiCbVkCPnXd3gVNFOnZPHmrj1iFAAc4eXvs=w2400",
-  "https://lh3.googleusercontent.com/pw/AP1GczPoVFVhyrbcgm1uXEp0o0O8fdiNptzGXOGgFNQ_vymFvPZvNdpzSY3_g4t52TQ0UFdQT987gX5RRbeL791QnGNIt0MuaD_gcAH29Urk0AG1FCWYIhA=w2400"
+  "https://github.com/user-attachments/assets/43b6911a-a5a9-4ebe-b05b-0f11912f46cb",
+  "https://github.com/user-attachments/assets/61987ca9-96c2-4e28-bb8a-1b7d510f7e00",
+  "https://github.com/user-attachments/assets/06877854-c86e-4089-b311-ce08c22b49e5",
+  "https://github.com/user-attachments/assets/b5992f9f-abf4-49b2-ba37-73cb8c1196e4",
+  "https://github.com/user-attachments/assets/5ba43c16-ca93-41d2-89aa-5936f7e353e6",
+  "https://github.com/user-attachments/assets/1d0887d0-f35a-4a33-bce3-1201502df55a",
+  "https://github.com/user-attachments/assets/9df7cf92-aa69-4cf8-b147-95ee64b33965",
+  "https://github.com/user-attachments/assets/3ccc49a3-63f9-43af-9ac0-5550ec8625e8",
+  "https://github.com/user-attachments/assets/6c91cc62-78c9-49a3-9fcf-d3058ddfdddd",
+  "https://github.com/user-attachments/assets/555fea7e-9082-4b7b-b565-35aa81cb6231",
+  "https://github.com/user-attachments/assets/c4880c71-1a80-4508-b82c-3d8c88efe637",
+  "https://github.com/user-attachments/assets/f7526049-e06c-4a47-96ac-3dbf57e6ebfd",
+  "https://github.com/user-attachments/assets/c404a313-8f9e-4190-a8dd-5e017c7f49e8",
+  "https://github.com/user-attachments/assets/7486d470-4e60-4ec7-922e-769a36c9555e",
+  "https://github.com/user-attachments/assets/5880e317-2c9c-4b4d-a872-304b80f63152",
+  "https://github.com/user-attachments/assets/64075589-0df5-4825-a5fc-cb490c622af2",
+  "https://github.com/user-attachments/assets/a73b1e78-a6e4-4d04-b3ea-6fd40da90dc1",
+  "https://github.com/user-attachments/assets/593fb5d5-0e73-43a3-8410-f0794f3938dd",
+  "https://github.com/user-attachments/assets/a14eb195-f64c-4de6-9362-754bf159239d",
+  "https://github.com/user-attachments/assets/87242bf1-0421-4542-9a62-dd8f96e88cf8",
+  "https://github.com/user-attachments/assets/e1f653a5-1e8c-4aa4-b047-0002dce8f4d3",
+  "https://github.com/user-attachments/assets/959a928c-e65b-41a0-a10e-1f184088f5e3",
+  "https://github.com/user-attachments/assets/3afaf4c8-aad3-4f04-89b6-816ad0ea08d2",
+  "https://github.com/user-attachments/assets/de2c07fa-8c43-436c-aab5-5449bd1eb5ee",
+  "https://github.com/user-attachments/assets/47a33a1d-8167-4744-83e9-f1d7b176a748",
+  "https://github.com/user-attachments/assets/a61550f9-1e01-4f64-b6b5-d1826b3ae6c7",
+  "https://github.com/user-attachments/assets/abcb3eec-2493-4515-837d-8a133f5199e2"
 ];
 
-const otherCats = ['Wedding', 'Prewedding', 'Ads', 'Corporate'];
+const otherCats = ['Wedding', 'Prewedding', 'Ads', 'Corporate', 'Yearbook'];
 
 const galleryItems = [
   ...konserUrls.map((url, i) => ({
@@ -54,6 +54,48 @@ const galleryItems = [
     };
   })
 ].sort((a, b) => a.id.localeCompare(b.id));
+
+const getOptimizedUrl = (url: string, width: number) => {
+  if (url.includes('picsum.photos')) {
+    return url.replace('800/1200', `${width}/${Math.round(width * 1.5)}`);
+  }
+  return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=${width}&output=webp&q=80`;
+};
+
+const GalleryItem = ({ item, onClick }: { key?: string, item: any, onClick: () => void }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  // Render when within 100% of viewport to save GPU memory on low-end devices
+  const isInView = useInView(ref, { margin: "100% 0px 100% 0px" });
+
+  return (
+    <motion.div 
+      ref={ref}
+      layout
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      transition={{ duration: 0.4 }}
+      onClick={onClick}
+      className="relative rounded-2xl md:rounded-[2rem] overflow-hidden cursor-pointer group w-full aspect-[3/4] bg-white/5"
+    >
+      {isInView && (
+        <>
+          <img 
+            src={getOptimizedUrl(item.img, 600)} 
+            alt={item.title} 
+            loading="lazy"
+            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+            referrerPolicy="no-referrer"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-[#050505]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="absolute inset-0 p-6 flex flex-col justify-end translate-y-4 group-hover:translate-y-0 transition-transform duration-500 opacity-0 group-hover:opacity-100">
+            <h3 className="text-lg md:text-xl font-bold text-white">{item.title}</h3>
+          </div>
+        </>
+      )}
+    </motion.div>
+  );
+};
 
 const PortfolioGallery = () => {
   const [activeCategory, setActiveCategory] = useState('All');
@@ -144,28 +186,11 @@ const PortfolioGallery = () => {
               >
                 <AnimatePresence mode="popLayout">
                   {colItems.map((item) => (
-                    <motion.div 
-                      layout
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      transition={{ duration: 0.4 }}
-                      key={item.id}
-                      onClick={() => setSelectedProject(item)}
-                      className="relative rounded-2xl md:rounded-[2rem] overflow-hidden cursor-pointer group w-full aspect-[3/4]"
-                    >
-                      <img 
-                        src={item.img} 
-                        alt={item.title} 
-                        loading="lazy"
-                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-[#050505]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      <div className="absolute inset-0 p-6 flex flex-col justify-end translate-y-4 group-hover:translate-y-0 transition-transform duration-500 opacity-0 group-hover:opacity-100">
-                        <h3 className="text-lg md:text-xl font-bold text-white">{item.title}</h3>
-                      </div>
-                    </motion.div>
+                    <GalleryItem 
+                      key={item.id} 
+                      item={item} 
+                      onClick={() => setSelectedProject(item)} 
+                    />
                   ))}
                 </AnimatePresence>
               </motion.div>
@@ -193,11 +218,11 @@ const PortfolioGallery = () => {
                 className="w-full max-w-4xl bg-[#0a0a0a] border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="relative w-full h-[50vh] md:h-[60vh] bg-black">
+                <div className="relative w-full bg-black flex items-center justify-center">
                   <img 
                     src={selectedProject.img} 
                     alt={selectedProject.title} 
-                    className="w-full h-full object-cover"
+                    className="w-full max-h-[70vh] object-contain"
                     referrerPolicy="no-referrer"
                   />
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -207,7 +232,7 @@ const PortfolioGallery = () => {
                   </div>
                   <button 
                     onClick={() => setSelectedProject(null)}
-                    className="absolute top-4 right-4 p-2 rounded-full bg-black/50 backdrop-blur-md hover:bg-white/20 text-white transition-colors border border-white/10"
+                    className="absolute top-4 right-4 p-2 rounded-full bg-black/50 backdrop-blur-md hover:bg-white/20 text-white transition-colors border border-white/10 z-10"
                   >
                     <X size={20} />
                   </button>

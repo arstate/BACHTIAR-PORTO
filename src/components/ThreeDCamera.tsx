@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform, useSpring } from 'motion/react';
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 
 interface ThreeDCameraProps {
   children: React.ReactNode;

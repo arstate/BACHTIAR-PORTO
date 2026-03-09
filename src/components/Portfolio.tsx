@@ -43,12 +43,12 @@ const Portfolio = () => {
       tools: ["Sony FX3", "Premiere Pro", "DaVinci Resolve"]
     },
     { 
-      title: "Corporate Event", 
+      title: "Konser", 
       category: "Documentation", 
-      img: "https://picsum.photos/seed/corporate/800/400.webp", 
+      img: "https://github.com/user-attachments/assets/43b6911a-a5a9-4ebe-b05b-0f11912f46cb", 
       span: "md:col-span-2 md:row-span-1",
-      brief: "Full-day coverage of an annual corporate summit. Delivered a highlight reel and full session recordings with professional audio syncing.",
-      tools: ["Sony A7IV", "DJI Ronin", "Final Cut Pro"]
+      brief: "Professional concert documentation capturing the energy and atmosphere of live performances. High-quality visuals and sound synchronization.",
+      tools: ["Sony A7IV", "DJI Ronin", "Premiere Pro"]
     },
     { 
       title: "Commercial Ad", 
@@ -76,6 +76,13 @@ const Portfolio = () => {
     } else {
       setSelectedProject(project);
     }
+  };
+
+  const getOptimizedUrl = (url: string, width: number) => {
+    if (url.includes('picsum.photos')) {
+      return url; // picsum urls in Portfolio are already sized appropriately
+    }
+    return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=${width}&output=webp&q=80`;
   };
 
   return (
@@ -137,7 +144,7 @@ const Portfolio = () => {
               className={`portfolio-item group relative rounded-[2rem] overflow-hidden cursor-pointer ${project.span}`}
             >
               <img 
-                src={project.img} 
+                src={getOptimizedUrl(project.img, 800)} 
                 alt={project.title} 
                 loading="lazy"
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
@@ -209,11 +216,11 @@ const Portfolio = () => {
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Media Section */}
-                <div className="w-full md:w-3/5 h-64 md:h-auto relative bg-black">
+                <div className="w-full md:w-3/5 h-64 md:h-auto relative bg-black flex items-center justify-center">
                   <img 
                     src={selectedProject.img} 
                     alt={selectedProject.title} 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain max-h-[50vh] md:max-h-[85vh]"
                     referrerPolicy="no-referrer"
                   />
                   {/* Placeholder for video play button if it were a video */}

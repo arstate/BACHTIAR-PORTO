@@ -1,7 +1,7 @@
-import { motion, useScroll, useMotionValueEvent } from 'motion/react';
-import React, { useState, useEffect } from 'react';
+import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'motion/react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Home } from 'lucide-react';
+import { Home, ArrowLeft, ChevronDown } from 'lucide-react';
 
 const FloatingNavbar = () => {
   const { scrollY } = useScroll();
@@ -9,7 +9,35 @@ const FloatingNavbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   const isPortfolioPage = location.pathname === '/portfolio';
+
+  const [activeCategory, setActiveCategory] = useState('All');
+
+  useEffect(() => {
+    if (isPortfolioPage) {
+      const hash = location.hash.replace('#', '');
+      if (hash) {
+        const category = hash.charAt(0).toUpperCase() + hash.slice(1);
+        setActiveCategory(category);
+      } else {
+        setActiveCategory('All');
+      }
+    }
+  }, [location.hash, isPortfolioPage]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Always show navbar on portfolio page, otherwise show after scrolling
   useEffect(() => {
@@ -44,6 +72,7 @@ const FloatingNavbar = () => {
     { name: 'Ads', href: '#ads' },
     { name: 'Konser', href: '#konser' },
     { name: 'Corporate', href: '#corporate' },
+    { name: 'Yearbook', href: '#yearbook' },
   ];
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, href: string) => {
@@ -65,7 +94,7 @@ const FloatingNavbar = () => {
     }
   };
 
-  const handleHomeClick = (e: React.MouseEvent) => {
+  const handleBackClick = (e: React.MouseEvent) => {
     e.preventDefault();
     navigate('/');
     window.scrollTo(0, 0);
@@ -84,26 +113,69 @@ const FloatingNavbar = () => {
     >
       {isPortfolioPage && (
         <button 
-          onClick={handleHomeClick}
-          className="text-white/70 hover:text-white transition-colors flex items-center justify-center p-1"
-          aria-label="Home"
+          onClick={handleBackClick}
+          className="text-white/70 hover:text-white transition-colors flex items-center justify-center p-1 group"
+          aria-label="Back"
         >
-          <Home size={18} />
+          <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
         </button>
       )}
 
       {isPortfolioPage && <div className="w-[1px] h-4 bg-white/20" />}
 
-      {(isPortfolioPage ? portfolioNavLinks : homeNavLinks).map((link) => (
-        <a 
-          key={link.name} 
-          href={link.href} 
-          onClick={(e) => handleScroll(e, link.href)}
-          className="text-[10px] md:text-sm font-medium text-white/70 hover:text-white transition-colors tracking-wide uppercase"
-        >
-          {link.name}
-        </a>
-      ))}
+      {isPortfolioPage ? (
+        <div className="flex items-center gap-3 relative" ref={dropdownRef}>
+          <span className="text-[10px] md:text-xs font-bold text-white/40 uppercase tracking-widest select-none">
+            Category
+          </span>
+          <button 
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-all"
+          >
+            <span className="text-[10px] md:text-sm font-medium text-white uppercase tracking-wide">
+              {activeCategory}
+            </span>
+            <ChevronDown size={14} className={`text-white/50 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+          </button>
+
+          <AnimatePresence>
+            {isDropdownOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                className="absolute top-full left-0 mt-4 w-48 bg-[#0a0a0a]/90 backdrop-blur-2xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl p-2"
+              >
+                {portfolioNavLinks.map((link) => (
+                  <a 
+                    key={link.name} 
+                    href={link.href} 
+                    onClick={() => setIsDropdownOpen(false)}
+                    className={`block px-4 py-2.5 rounded-xl text-xs font-medium transition-all ${
+                      activeCategory === link.name 
+                        ? 'bg-white text-black' 
+                        : 'text-white/60 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    {link.name}
+                  </a>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      ) : (
+        homeNavLinks.map((link) => (
+          <a 
+            key={link.name} 
+            href={link.href} 
+            onClick={(e) => handleScroll(e, link.href)}
+            className="text-[10px] md:text-sm font-medium text-white/70 hover:text-white transition-colors tracking-wide uppercase"
+          >
+            {link.name}
+          </a>
+        ))
+      )}
       
       {!isPortfolioPage && (
         <a 
