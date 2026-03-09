@@ -143,26 +143,46 @@ const Portfolio = () => {
               onClick={() => handleProjectClick(project)}
               className={`portfolio-item group relative rounded-[2rem] overflow-hidden cursor-pointer ${project.span}`}
             >
-              <img 
-                src={getOptimizedUrl(project.img, 800)} 
-                alt={project.title} 
-                loading="lazy"
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-[#050505]/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-              <div className="absolute inset-0 p-8 flex flex-col justify-end translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-blue-400 text-sm font-medium mb-2 tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">{project.category}</p>
-                    <h3 className="text-2xl md:text-3xl font-bold text-white">{project.title}</h3>
+              {!project.isSeeMore ? (
+                <>
+                  <img 
+                    src={getOptimizedUrl(project.img, 800)} 
+                    alt={project.title} 
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-[#050505]/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+                  <div className="absolute inset-0 p-8 flex flex-col justify-end translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-blue-400 text-sm font-medium mb-2 tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">{project.category}</p>
+                        <h3 className="text-2xl md:text-3xl font-bold text-white">{project.title}</h3>
+                      </div>
+                      <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-4 group-hover:translate-x-0">
+                        <ArrowRight size={20} className="text-white" />
+                      </div>
+                    </div>
                   </div>
-                  <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-4 group-hover:translate-x-0">
-                    <ArrowRight size={20} className="text-white" />
+                  <div className="absolute inset-0 border border-white/0 group-hover:border-white/20 rounded-[2rem] transition-colors duration-500 pointer-events-none" />
+                </>
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center p-8 text-center bg-white/15 backdrop-blur-3xl border border-white/20 group-hover:bg-white/25 group-hover:border-white/40 transition-all duration-500">
+                  <div className="mb-6 w-16 h-16 rounded-full bg-white flex items-center justify-center group-hover:scale-110 transition-transform duration-500 shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+                    <ArrowRight size={32} className="text-black" />
+                  </div>
+                  <h3 className="text-3xl md:text-4xl font-bold text-white mb-2">{project.title}</h3>
+                  <p className="text-white/60 font-medium uppercase tracking-widest text-sm">{project.category}</p>
+                  
+                  {/* Decorative elements */}
+                  <div className="absolute top-6 right-6">
+                    <div className="w-2 h-2 rounded-full bg-white/20" />
+                  </div>
+                  <div className="absolute bottom-6 left-6">
+                    <div className="w-12 h-[1px] bg-white/10" />
                   </div>
                 </div>
-              </div>
-              <div className="absolute inset-0 border border-white/0 group-hover:border-white/20 rounded-[2rem] transition-colors duration-500 pointer-events-none" />
+              )}
             </motion.div>
           ))}
         </motion.div>

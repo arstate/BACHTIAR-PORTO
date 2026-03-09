@@ -67,11 +67,13 @@ const FloatingNavbar = () => {
 
   const portfolioNavLinks = [
     { name: 'All', href: '#all' },
-    { name: 'Wedding', href: '#wedding' },
-    { name: 'Prewedding', href: '#prewedding' },
     { name: 'Ads', href: '#ads' },
-    { name: 'Konser', href: '#konser' },
+    { name: 'Animals', href: '#animals' },
     { name: 'Corporate', href: '#corporate' },
+    { name: 'Graduation', href: '#graduation' },
+    { name: 'Konser', href: '#konser' },
+    { name: 'Prewedding', href: '#prewedding' },
+    { name: 'Wedding', href: '#wedding' },
     { name: 'Yearbook', href: '#yearbook' },
   ];
 
@@ -109,7 +111,7 @@ const FloatingNavbar = () => {
         x: "-50%"
       }}
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed top-6 left-1/2 z-50 glass-card px-4 md:px-6 py-3 rounded-full flex items-center gap-4 md:gap-8 border border-white/10 shadow-2xl backdrop-blur-xl bg-black/20"
+      className="fixed top-6 left-1/2 z-[100] glass-card px-4 md:px-6 py-3 rounded-full flex items-center gap-4 md:gap-8 border border-white/10 shadow-2xl backdrop-blur-xl bg-black/20"
     >
       {isPortfolioPage && (
         <button 
@@ -150,7 +152,10 @@ const FloatingNavbar = () => {
                   <a 
                     key={link.name} 
                     href={link.href} 
-                    onClick={() => setIsDropdownOpen(false)}
+                    onClick={() => {
+                      setIsDropdownOpen(false);
+                      window.scrollTo(0, 0);
+                    }}
                     className={`block px-4 py-2.5 rounded-xl text-xs font-medium transition-all ${
                       activeCategory === link.name 
                         ? 'bg-white text-black' 

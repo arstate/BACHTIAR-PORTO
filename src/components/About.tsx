@@ -86,12 +86,12 @@ const About = () => {
                   style={{ transform: "rotateY(180deg)", backfaceVisibility: "hidden" }}
                 >
                   <img 
-                    src="https://picsum.photos/seed/editing/800/1000.webp" 
+                    src="https://github.com/user-attachments/assets/8fbd5b8f-c435-4707-b85d-4e54ce6af50a" 
                     alt="Behind the scenes" 
-                    className="w-full h-full object-cover opacity-60"
+                    className="w-full h-full object-cover scale-150 object-top"
                     referrerPolicy="no-referrer"
                   />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-black/40">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-black/20">
                     <h3 className="text-3xl font-display italic text-white mb-2">Behind the Scenes</h3>
                     <p className="text-sm text-white/80 font-light tracking-wide">
                       Every frame tells a story. From pre-production to the final cut, we craft narratives that resonate.

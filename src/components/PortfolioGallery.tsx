@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence, useInView } from 'motion/react';
+import { motion, useTransform, AnimatePresence, useInView, useMotionValue, useSpring } from 'motion/react';
 import { Video, X } from 'lucide-react';
 import { createPortal } from 'react-dom';
 
-const categories = ['All', 'Wedding', 'Prewedding', 'Ads', 'Konser', 'Corporate', 'Yearbook'];
+const categories = ['All', 'Ads', 'Animals', 'Corporate', 'Graduation', 'Konser', 'Prewedding', 'Wedding', 'Yearbook'];
 
 const konserUrls = [
   "https://github.com/user-attachments/assets/43b6911a-a5a9-4ebe-b05b-0f11912f46cb",
@@ -35,7 +35,7 @@ const konserUrls = [
   "https://github.com/user-attachments/assets/abcb3eec-2493-4515-837d-8a133f5199e2"
 ];
 
-const otherCats = ['Wedding', 'Prewedding', 'Ads', 'Corporate', 'Yearbook'];
+const otherCats = ['Ads', 'Animals', 'Corporate', 'Graduation', 'Konser', 'Prewedding', 'Wedding', 'Yearbook'];
 
 const galleryItems = [
   ...konserUrls.map((url, i) => ({
@@ -44,7 +44,7 @@ const galleryItems = [
     category: 'Konser',
     img: url,
   })),
-  ...Array.from({ length: 16 }).map((_, i) => {
+  ...Array.from({ length: 80 }).map((_, i) => {
     const category = otherCats[i % otherCats.length];
     return {
       id: `other-${i}`,
@@ -64,19 +64,14 @@ const getOptimizedUrl = (url: string, width: number) => {
 
 const GalleryItem = ({ item, onClick }: { key?: string, item: any, onClick: () => void }) => {
   const ref = useRef<HTMLDivElement>(null);
-  // Render when within 100% of viewport to save GPU memory on low-end devices
   const isInView = useInView(ref, { margin: "100% 0px 100% 0px" });
 
   return (
     <motion.div 
       ref={ref}
       layout
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      transition={{ duration: 0.4 }}
       onClick={onClick}
-      className="relative rounded-2xl md:rounded-[2rem] overflow-hidden cursor-pointer group w-full aspect-[3/4] bg-white/5"
+      className="relative rounded-2xl md:rounded-[2rem] overflow-hidden cursor-pointer group w-full aspect-[3/4] bg-white/5 flex-shrink-0"
     >
       {isInView && (
         <>
@@ -97,19 +92,92 @@ const GalleryItem = ({ item, onClick }: { key?: string, item: any, onClick: () =
   );
 };
 
+const LoopingColumn = ({ items, speed, scrollY, onProjectClick }: { key?: string, items: any[], speed: number, scrollY: any, onProjectClick: (item: any) => void }) => {
+  const columnRef = useRef<HTMLDivElement>(null);
+  const [columnHeight, setColumnHeight] = useState(0);
+
+  if (items.length === 0) return null;
+
+  useEffect(() => {
+    if (columnRef.current) {
+      // Height of one set of items
+      setColumnHeight(columnRef.current.scrollHeight / 4);
+    }
+  }, [items]);
+
+  const y = useTransform(scrollY, (latest: number) => {
+    if (columnHeight === 0) return 0;
+    // Calculate wrapped position for infinite loop
+    const totalScroll = latest * speed;
+    const wrapped = ((totalScroll % columnHeight) + columnHeight) % columnHeight;
+    return -wrapped;
+  });
+
+  // Repeat items 4 times to ensure seamless looping
+  const repeatedItems = [...items, ...items, ...items, ...items];
+
+  return (
+    <div className="flex-1 overflow-hidden h-full relative">
+      <motion.div 
+        ref={columnRef}
+        style={{ y }}
+        className="flex flex-col gap-4 md:gap-6"
+      >
+        {repeatedItems.map((item, i) => (
+          <GalleryItem 
+            key={`${item.id}-${i}`} 
+            item={item} 
+            onClick={() => onProjectClick(item)} 
+          />
+        ))}
+      </motion.div>
+    </div>
+  );
+};
+
 const PortfolioGallery = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedProject, setSelectedProject] = useState<any>(null);
-  
-  const { scrollY } = useScroll();
   const [isMobile, setIsMobile] = useState(false);
   
+  const rawScroll = useMotionValue(0);
+  const scrollY = useSpring(rawScroll, { damping: 50, stiffness: 400, mass: 0.5 });
+
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+    
+    // Disable body scroll on this page
+    document.body.style.overflow = 'hidden';
+    
+    const handleWheel = (e: WheelEvent) => {
+      rawScroll.set(rawScroll.get() + e.deltaY);
+    };
+
+    let touchStartY = 0;
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
+    const handleTouchMove = (e: TouchEvent) => {
+      const touchY = e.touches[0].clientY;
+      const deltaY = touchStartY - touchY;
+      rawScroll.set(rawScroll.get() + deltaY * 2);
+      touchStartY = touchY;
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart);
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      document.body.style.overflow = 'auto';
+    };
+  }, [rawScroll]);
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -142,61 +210,35 @@ const PortfolioGallery = () => {
     cols[i % numCols].push(item);
   });
 
-  // Parallax transforms
-  // yDown: moves down relative to normal scroll (scrolls up slower)
-  const yDown = useTransform(scrollY, value => value * 0.2);
-  // yUp: moves up relative to normal scroll (scrolls up faster)
-  const yUp = useTransform(scrollY, value => value * -0.2);
+  // Different speeds for parallax effect
+  const speeds = isMobile ? [1, 1.3, 0.8] : [1, 1.4, 0.7, 1.2];
 
   return (
-    <div className="bg-[#050505] min-h-screen w-full relative overflow-hidden">
+    <div className="bg-[#050505] h-screen w-full relative overflow-hidden">
+      {/* Top and Bottom Gradient Overlays */}
+      <div className="fixed top-0 left-0 w-full h-64 bg-gradient-to-b from-[#050505] via-[#050505]/80 to-transparent z-30 pointer-events-none" />
+      <div className="fixed bottom-0 left-0 w-full h-64 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent z-30 pointer-events-none" />
+
       {/* Header */}
-      <div className="fixed top-0 left-0 w-full z-40 pt-32 pb-8 px-6 bg-gradient-to-b from-[#050505] via-[#050505]/80 to-transparent pointer-events-none">
+      <div className="fixed top-0 left-0 w-full z-50 pt-32 pb-8 px-6 pointer-events-none">
         <div className="max-w-7xl mx-auto pointer-events-auto">
           <h1 className="text-5xl md:text-7xl font-[family-name:var(--font-display)] italic font-light mb-6">
             Gallery
           </h1>
-          <p className="text-white/50 max-w-2xl font-light text-lg">
-            Explore our complete collection of visual stories across various categories.
-          </p>
         </div>
       </div>
 
-      {/* Parallax Gallery */}
-      <div className="pt-72 pb-32 px-4 md:px-8 max-w-7xl mx-auto min-h-[200vh]">
-        <div className="flex gap-4 md:gap-6 items-start">
-          {cols.map((colItems, colIndex) => {
-            let y;
-            let mtClass = "";
-            if (isMobile) {
-              // Mobile: 3 cols. Col 1 up, Col 2 down, Col 3 up
-              y = colIndex === 1 ? yDown : yUp;
-              mtClass = colIndex === 1 ? "" : "mt-12";
-            } else {
-              // Desktop: 4 cols. Col 1 down, Col 2 up, Col 3 down, Col 4 up
-              y = colIndex % 2 === 0 ? yDown : yUp;
-              mtClass = colIndex % 2 === 0 ? "" : "mt-24";
-            }
-
-            return (
-              <motion.div 
-                key={colIndex}
-                style={{ y }}
-                className={`flex-1 flex flex-col gap-4 md:gap-6 ${mtClass}`}
-              >
-                <AnimatePresence mode="popLayout">
-                  {colItems.map((item) => (
-                    <GalleryItem 
-                      key={item.id} 
-                      item={item} 
-                      onClick={() => setSelectedProject(item)} 
-                    />
-                  ))}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })}
-        </div>
+      {/* Infinite Looping Gallery */}
+      <div className="h-full w-full px-4 md:px-8 max-w-7xl mx-auto flex gap-4 md:gap-6">
+        {cols.map((colItems, colIndex) => (
+          <LoopingColumn 
+            key={`${activeCategory}-${colIndex}`}
+            items={colItems}
+            speed={speeds[colIndex]}
+            scrollY={scrollY}
+            onProjectClick={setSelectedProject}
+          />
+        ))}
       </div>
 
       {/* Project Modal */}
