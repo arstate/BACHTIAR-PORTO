@@ -111,7 +111,9 @@ const LoopingColumn = ({ items, speed, scrollY, onProjectClick }: { key?: string
 };
 
 const PortfolioGallery = () => {
-  const [activeCategory, setActiveCategory] = useState('Konser');
+  const [activeCategory, setActiveCategory] = useState('');
+  const [displayCategory, setDisplayCategory] = useState('Konser');
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [isMobile, setIsMobile] = useState(false);
   const location = useLocation();
@@ -161,21 +163,40 @@ const PortfolioGallery = () => {
 
   useEffect(() => {
     const hash = location.hash.replace('#', '');
+    let category = 'Konser';
     if (hash) {
-      const category = hash.charAt(0).toUpperCase() + hash.slice(1);
-      if (categories.includes(category)) {
-        setActiveCategory(category);
+      const parsedCat = hash.charAt(0).toUpperCase() + hash.slice(1);
+      if (categories.includes(parsedCat)) {
+        category = parsedCat;
       } else if (hash.toLowerCase() === 'all') {
-        setActiveCategory('All');
+        category = 'All';
       }
-    } else {
-      setActiveCategory('Konser');
     }
-  }, [location.hash]);
 
-  const filteredItems = activeCategory === 'All'
+    if (!activeCategory) {
+      // First load styling
+      setActiveCategory(category);
+      setDisplayCategory(category);
+      setTimeout(() => setIsLoading(false), 300);
+    } else if (category !== activeCategory) {
+      // Different category clicked
+      setIsLoading(true);
+      setActiveCategory(category);
+
+      // Wait for blur to cover everything
+      setTimeout(() => {
+        setDisplayCategory(category);
+        // Wait a slight margin to guarantee DOM renders new images before unblurring
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 150);
+      }, 500);
+    }
+  }, [location.hash, activeCategory]);
+
+  const filteredItems = displayCategory === 'All'
     ? galleryItems
-    : galleryItems.filter(item => item.category === activeCategory);
+    : galleryItems.filter(item => item.category === displayCategory);
 
   const numCols = isMobile ? 2 : 6;
   const cols = Array.from({ length: numCols }, () => [] as typeof galleryItems);
@@ -202,11 +223,24 @@ const PortfolioGallery = () => {
         </div>
       </div>
 
+      {/* Loading Overlay */}
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            animate={{ opacity: 1, backdropFilter: "blur(24px)" }}
+            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="absolute inset-0 z-20 bg-black/50"
+          />
+        )}
+      </AnimatePresence>
+
       {/* Infinite Looping Gallery */}
-      <div className="h-full w-full px-4 md:px-8 flex gap-4 md:gap-6">
+      <div className="h-full w-full px-4 md:px-8 flex gap-4 md:gap-6 relative z-10">
         {cols.map((colItems, colIndex) => (
           <LoopingColumn
-            key={`${activeCategory}-${colIndex}`}
+            key={`${displayCategory}-${colIndex}`}
             items={colItems}
             speed={speeds[colIndex]}
             scrollY={scrollY}
