@@ -4,7 +4,7 @@ import { Video, X } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { useLocation } from 'react-router-dom';
 
-const categories = ['All', 'Ads', 'Animals', 'Corporate', 'Graduation', 'Konser', 'Prewedding', 'Wedding', 'Yearbook'];
+const categories = ['All', 'Graduation', 'Konser'];
 
 const konserUrls = [
   "https://github.com/user-attachments/assets/43b6911a-a5a9-4ebe-b05b-0f11912f46cb",
@@ -72,8 +72,6 @@ const graduationUrls = [
   "https://github.com/user-attachments/assets/8383127d-7494-41bc-a6ef-145b9874f1be"
 ];
 
-const otherCats = ['Ads', 'Animals', 'Corporate', 'Konser', 'Prewedding', 'Wedding', 'Yearbook']; // Removed Graduation to handle specifically
-
 const galleryItems = [
   ...konserUrls.map((url, i) => ({
     id: `konser-${i}`,
@@ -86,18 +84,8 @@ const galleryItems = [
     title: 'Graduation',
     category: 'Graduation',
     img: url,
-  })),
-  ...Array.from({ length: 80 }).map((_, i) => {
-    const category = otherCats[i % otherCats.length];
-    return {
-      id: `other-${i}`,
-      title: category,
-      category: category,
-      img: `https://picsum.photos/seed/gallery${i}/800/1200.webp`,
-    };
-  })
+  }))
 ].sort((a, b) => a.id.localeCompare(b.id));
-
 const getOptimizedUrl = (url: string, width: number) => {
   if (url.includes('picsum.photos')) {
     return url.replace('800/1200', `${width}/${Math.round(width * 1.5)}`);
@@ -107,13 +95,13 @@ const getOptimizedUrl = (url: string, width: number) => {
 
 const GalleryItem = ({ item, onClick }: { key?: string, item: any, onClick: () => void }) => {
   return (
-    <motion.div 
+    <motion.div
       onClick={onClick}
       className="relative rounded-2xl md:rounded-[2rem] overflow-hidden cursor-pointer group w-full aspect-[3/4] bg-white/5 flex-shrink-0"
     >
-      <img 
-        src={getOptimizedUrl(item.img, 600)} 
-        alt={item.title} 
+      <img
+        src={getOptimizedUrl(item.img, 600)}
+        alt={item.title}
         loading="lazy"
         className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
         referrerPolicy="no-referrer"
@@ -143,7 +131,7 @@ const LoopingColumn = ({ items, speed, scrollY, onProjectClick }: { key?: string
     };
 
     updateHeight();
-    
+
     const resizeObserver = new ResizeObserver(updateHeight);
     if (columnRef.current) {
       resizeObserver.observe(columnRef.current);
@@ -165,16 +153,16 @@ const LoopingColumn = ({ items, speed, scrollY, onProjectClick }: { key?: string
 
   return (
     <div className="flex-1 overflow-hidden h-full relative">
-      <motion.div 
+      <motion.div
         ref={columnRef}
         style={{ y, willChange: "transform" }}
         className="flex flex-col gap-4 md:gap-6 pb-4 md:pb-6"
       >
         {repeatedItems.map((item, i) => (
-          <GalleryItem 
-            key={`${item.id}-${i}`} 
-            item={item} 
-            onClick={() => onProjectClick(item)} 
+          <GalleryItem
+            key={`${item.id}-${i}`}
+            item={item}
+            onClick={() => onProjectClick(item)}
           />
         ))}
       </motion.div>
@@ -187,7 +175,7 @@ const PortfolioGallery = () => {
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [isMobile, setIsMobile] = useState(false);
   const location = useLocation();
-  
+
   const rawScroll = useMotionValue(0);
   const scrollY = useSpring(rawScroll, { damping: 50, stiffness: 400, mass: 0.5 });
 
@@ -195,10 +183,10 @@ const PortfolioGallery = () => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    
+
     // Disable body scroll on this page
     document.body.style.overflow = 'hidden';
-    
+
     const handleWheel = (e: WheelEvent) => {
       rawScroll.set(rawScroll.get() + e.deltaY);
     };
@@ -241,13 +229,13 @@ const PortfolioGallery = () => {
     }
   }, [location.hash]);
 
-  const filteredItems = activeCategory === 'All' 
-    ? galleryItems 
+  const filteredItems = activeCategory === 'All'
+    ? galleryItems
     : galleryItems.filter(item => item.category === activeCategory);
 
   const numCols = isMobile ? 2 : 6;
   const cols = Array.from({ length: numCols }, () => [] as typeof galleryItems);
-  
+
   filteredItems.forEach((item, i) => {
     cols[i % numCols].push(item);
   });
@@ -273,7 +261,7 @@ const PortfolioGallery = () => {
       {/* Infinite Looping Gallery */}
       <div className="h-full w-full px-4 md:px-8 flex gap-4 md:gap-6">
         {cols.map((colItems, colIndex) => (
-          <LoopingColumn 
+          <LoopingColumn
             key={`${activeCategory}-${colIndex}`}
             items={colItems}
             speed={speeds[colIndex]}
@@ -303,9 +291,9 @@ const PortfolioGallery = () => {
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="relative w-full bg-black flex items-center justify-center">
-                  <img 
-                    src={selectedProject.img} 
-                    alt={selectedProject.title} 
+                  <img
+                    src={selectedProject.img}
+                    alt={selectedProject.title}
                     className="w-full max-h-[70vh] object-contain"
                     referrerPolicy="no-referrer"
                   />
@@ -314,7 +302,7 @@ const PortfolioGallery = () => {
                       <Video size={24} className="text-white/80" />
                     </div>
                   </div>
-                  <button 
+                  <button
                     onClick={() => setSelectedProject(null)}
                     className="absolute top-4 right-4 p-2 rounded-full bg-black/50 backdrop-blur-md hover:bg-white/20 text-white transition-colors border border-white/10 z-10"
                   >
