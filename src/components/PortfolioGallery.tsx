@@ -90,14 +90,27 @@ const LoopingColumn = ({ items, speed, scrollY, onProjectClick }: { key?: string
   if (items.length === 0) return null;
 
   useEffect(() => {
+    const updateHeight = () => {
+      if (columnRef.current) {
+        // We repeat items 4 times. 
+        // By adding padding-bottom equal to the gap, 
+        // scrollHeight / 4 gives us the exact height of one set including its trailing gap.
+        setColumnHeight(columnRef.current.scrollHeight / 4);
+      }
+    };
+
+    updateHeight();
+    
+    const resizeObserver = new ResizeObserver(updateHeight);
     if (columnRef.current) {
-      // Height of one set of items
-      setColumnHeight(columnRef.current.scrollHeight / 4);
+      resizeObserver.observe(columnRef.current);
     }
+
+    return () => resizeObserver.disconnect();
   }, [items]);
 
   const y = useTransform(scrollY, (latest: number) => {
-    if (columnHeight === 0) return 0;
+    if (columnHeight <= 0) return 0;
     // Calculate wrapped position for infinite loop
     const totalScroll = latest * speed;
     const wrapped = ((totalScroll % columnHeight) + columnHeight) % columnHeight;
@@ -112,7 +125,7 @@ const LoopingColumn = ({ items, speed, scrollY, onProjectClick }: { key?: string
       <motion.div 
         ref={columnRef}
         style={{ y, willChange: "transform" }}
-        className="flex flex-col gap-4 md:gap-6"
+        className="flex flex-col gap-4 md:gap-6 pb-4 md:pb-6"
       >
         {repeatedItems.map((item, i) => (
           <GalleryItem 
@@ -129,19 +142,15 @@ const LoopingColumn = ({ items, speed, scrollY, onProjectClick }: { key?: string
 const PortfolioGallery = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [selectedProject, setSelectedProject] = useState<any>(null);
-  const [colsCount, setColsCount] = useState(4);
+  const [isMobile, setIsMobile] = useState(false);
   
   const rawScroll = useMotionValue(0);
   const scrollY = useSpring(rawScroll, { damping: 50, stiffness: 400, mass: 0.5 });
 
   useEffect(() => {
-    const updateCols = () => {
-      if (window.innerWidth < 768) setColsCount(3);
-      else if (window.innerWidth < 1400) setColsCount(4);
-      else setColsCount(6);
-    };
-    updateCols();
-    window.addEventListener('resize', updateCols);
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
     
     // Disable body scroll on this page
     document.body.style.overflow = 'hidden';
@@ -166,7 +175,7 @@ const PortfolioGallery = () => {
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
 
     return () => {
-      window.removeEventListener('resize', updateCols);
+      window.removeEventListener('resize', checkMobile);
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
@@ -198,7 +207,7 @@ const PortfolioGallery = () => {
     ? galleryItems 
     : galleryItems.filter(item => item.category === activeCategory);
 
-  const numCols = colsCount;
+  const numCols = isMobile ? 2 : 6;
   const cols = Array.from({ length: numCols }, () => [] as typeof galleryItems);
   
   filteredItems.forEach((item, i) => {
@@ -206,9 +215,7 @@ const PortfolioGallery = () => {
   });
 
   // Different speeds for parallax effect
-  const speeds = colsCount === 3 
-    ? [1, 1.3, 0.8] 
-    : (colsCount === 4 ? [1, 1.4, 0.7, 1.2] : [1, 1.4, 0.7, 1.2, 0.9, 1.1]);
+  const speeds = isMobile ? [1, 1.4] : [1, 1.4, 0.7, 1.2, 0.9, 1.5];
 
   return (
     <div className="bg-[#050505] h-screen w-full relative overflow-hidden">
@@ -218,7 +225,7 @@ const PortfolioGallery = () => {
 
       {/* Header */}
       <div className="fixed top-0 left-0 w-full z-50 pt-24 pb-8 px-6 pointer-events-none">
-        <div className="max-w-[1600px] mx-auto pointer-events-auto">
+        <div className="max-w-7xl mx-auto pointer-events-auto">
           <h1 className="text-5xl md:text-7xl font-[family-name:var(--font-display)] italic font-light mb-6">
             Gallery
           </h1>
@@ -226,7 +233,7 @@ const PortfolioGallery = () => {
       </div>
 
       {/* Infinite Looping Gallery */}
-      <div className="h-full w-full px-4 md:px-8 max-w-[1600px] mx-auto flex gap-4 md:gap-6">
+      <div className="h-full w-full px-4 md:px-8 max-w-7xl mx-auto flex gap-4 md:gap-6">
         {cols.map((colItems, colIndex) => (
           <LoopingColumn 
             key={`${activeCategory}-${colIndex}`}
