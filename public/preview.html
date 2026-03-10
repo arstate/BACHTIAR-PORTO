@@ -444,73 +444,244 @@
     btnCloseLog.addEventListener('click', closeLog);
     btnCancelPush.addEventListener('click', closeLog);
 
-    btnGithubAuth.addEventListener('click', () => {
-      logContent.innerHTML = ''; // clear logs
+    async function showRepoSelection(token) {
+      appendLog('\n> Fetching your repositories...', 'neutral');
+      try {
+        const userRes = await fetch('https://api.github.com/user', { headers: { Authorization: `Bearer ${token}` }});
+        if (!userRes.ok) throw new Error('Token might be expired');
+        const user = await userRes.json();
+        
+        const reposRes = await fetch('https://api.github.com/user/repos?sort=updated&per_page=100', { headers: { Authorization: `Bearer ${token}` }});
+        const repos = await reposRes.json();
+        
+        logContent.innerHTML = '';
+        const options = Array.isArray(repos) ? repos.map(r => `<option value="${r.clone_url}">${r.full_name}</option>`).join('') : '';
+        
+        const userInfoHtml = `
+          <div class="mb-6 p-4 bg-green-900/20 border border-green-500/30 rounded-lg flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <img src="${user.avatar_url}" class="w-10 h-10 rounded-full border border-[#404040]">
+              <div>
+                <p class="text-white font-medium">Logged in to GitHub</p>
+                <p class="text-green-400 text-sm">@${user.login}</p>
+              </div>
+            </div>
+            <button id="btn-logout-gh" class="px-3 py-1.5 text-red-400 hover:bg-red-500/10 rounded-md transition-colors text-sm font-medium border border-red-500/20">
+              Putus Auth (Logout)
+            </button>
+          </div>
+        `;
+        
+        const repoHtml = `
+          <div class="space-y-4">
+            <h3 class="text-blue-400 font-bold mb-2 pb-2 border-b border-[#404040]">Repository Sync</h3>
+            <div>
+              <label class="block text-sm text-gray-400 mb-1">Existing Repository (will overwrite existing):</label>
+              <select id="repo-select" class="w-full bg-[#1a1a1a] border border-[#404040] px-3 py-2 rounded-md text-white outline-none">
+                <option value="">-- Or Create New Below --</option>
+                ${options}
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm text-gray-400 mb-1">Create New Repository:</label>
+              <div class="flex gap-2">
+                <input type="text" id="new-repo-name" placeholder="e.g. my-awesome-project" class="flex-1 bg-[#1a1a1a] border border-[#404040] px-3 py-2 rounded-md text-white outline-none">
+                <button id="btn-create-repo" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors">Create</button>
+              </div>
+            </div>
+            <div class="pt-4 border-t border-[#404040] flex justify-end gap-3">
+               <button id="btn-sync-repo" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md font-medium transition-colors flex items-center gap-2">
+                 <i data-lucide="git-commit" class="w-4 h-4"></i> Connect & Push
+               </button>
+            </div>
+          </div>
+        `;
+        appendLog(userInfoHtml + repoHtml, 'neutral', true);
+        lucide.createIcons();
+        
+        document.getElementById('btn-logout-gh').addEventListener('click', () => {
+           localStorage.removeItem('gh_token');
+           appendLog('\n✅ Berhasil putus otorisasi (Logged out).', 'warning');
+           setTimeout(() => {
+             logModal.classList.add('hidden');
+           }, 1000);
+        });
+        
+        document.getElementById('btn-create-repo').addEventListener('click', async () => {
+          const name = document.getElementById('new-repo-name').value.trim();
+          if(!name) return;
+          const btnCreate = document.getElementById('btn-create-repo');
+          btnCreate.textContent = '...';
+          btnCreate.disabled = true;
+          
+          try {
+            const createRes = await fetch('https://api.github.com/user/repos', {
+               method: 'POST',
+               headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+               body: JSON.stringify({ name, auto_init: true })
+            });
+            const newRepo = await createRes.json();
+            if(newRepo.clone_url) {
+               appendLog(`> Created new repository: ${newRepo.full_name}`, 'success');
+               document.getElementById('repo-select').innerHTML += `<option value="${newRepo.clone_url}">${newRepo.full_name}</option>`;
+               document.getElementById('repo-select').value = newRepo.clone_url;
+               document.getElementById('new-repo-name').value = '';
+            } else {
+               appendLog(`> Failed to create repository: ${newRepo.message || 'Error'}`, 'error');
+            }
+          } catch(err) {
+            appendLog(`> Network Error: ${err.message}`, 'error');
+          }
+          btnCreate.textContent = 'Create';
+          btnCreate.disabled = false;
+        });
+        
+        document.getElementById('btn-sync-repo').addEventListener('click', async () => {
+          const repoUrl = document.getElementById('repo-select').value;
+          if(!repoUrl) { alert('Please select a repository to push to.'); return; }
+          const btnSync = document.getElementById('btn-sync-repo');
+          btnSync.textContent = 'Processing...';
+          btnSync.disabled = true;
+          
+          appendLog(`\n> Linking to ${repoUrl}...`, 'neutral');
+          
+          try {
+            const configRes = await fetch('/_github_auth', {
+               method: 'POST',
+               body: JSON.stringify({ 
+                 name: user.name || user.login, 
+                 email: user.email || `${user.login}@users.noreply.github.com`, 
+                 repoUrl, 
+                 token 
+               }),
+               headers: { 'Content-Type': 'application/json' }
+            });
+            const configData = await configRes.json();
+            
+            if(configData.success) {
+               appendLog('> Repo connected successfully. Committing and Pushing...', 'success');
+               // Trigger normal push logic
+               logActions.classList.add('hidden');
+               const pushRes = await fetch('/_git_push');
+               const pushData = await pushRes.json();
+               if (pushData.success) {
+                  appendLog('\n> Process Output:', 'neutral');
+                  appendLog(pushData.output, 'success');
+                  appendLog('\n✅ Successfully pushed to GitHub!', 'success');
+               } else {
+                  appendLog('\n❌ Push failed: ' + pushData.output, 'error');
+               }
+            } else {
+               appendLog('\n> Error connecting repo: ' + configData.output, 'error');
+            }
+          } catch(err) {
+             appendLog(`\n> Network Error: ${err.message}`, 'error');
+          }
+          btnSync.textContent = 'Connect & Push';
+          btnSync.disabled = false;
+        });
+
+      } catch(e) {
+        appendLog(`> Error fetching repositories: ${e.message}`, 'error');
+        localStorage.removeItem('gh_token');
+        appendLog('Cleared invalid token. Please authenticate again.', 'warning');
+      }
+    }
+
+    btnGithubAuth.addEventListener('click', async () => {
+      logContent.innerHTML = '';
       logModal.classList.remove('hidden');
       logActions.classList.remove('hidden');
-      document.getElementById('btn-confirm-push').classList.add('hidden'); // Hide the Commit & Push button for auth view
+      document.getElementById('btn-confirm-push').classList.add('hidden');
 
-      appendLog(`GitHub Interactive Authentication`, 'title');
+      const ghToken = localStorage.getItem('gh_token');
+      if (ghToken) {
+        await showRepoSelection(ghToken);
+        return;
+      }
+
+      appendLog(`GitHub Device Authentication`, 'title');
+      appendLog('\n> Requesting auth code from GitHub...', 'neutral');
       
-      const formHtml = `
-<div class="space-y-4 text-gray-300">
-  <p>Fill out your details to automatically configure Git authentication.</p>
-  
-  <div class="flex flex-col gap-3">
-    <input type="text" id="auth-name" placeholder="Git Name (e.g. John Doe)" class="bg-[#1a1a1a] border border-[#404040] px-3 py-2 rounded-md outline-none focus:border-blue-500">
-    <input type="email" id="auth-email" placeholder="Git Email (e.g. john@example.com)" class="bg-[#1a1a1a] border border-[#404040] px-3 py-2 rounded-md outline-none focus:border-blue-500">
-    <input type="text" id="auth-username" placeholder="GitHub Username" class="bg-[#1a1a1a] border border-[#404040] px-3 py-2 rounded-md outline-none focus:border-blue-500">
-    <input type="password" id="auth-token" placeholder="GitHub Personal Access Token (PAT)" class="bg-[#1a1a1a] border border-[#404040] px-3 py-2 rounded-md outline-none focus:border-blue-500">
-  </div>
-
-  <div class="flex justify-end mt-2">
-    <button id="btn-save-auth" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors">
-      Authenticate and Save
-    </button>
-  </div>
-</div>
-      `;
-      appendLog(formHtml, 'neutral', true);
-
-      document.getElementById('btn-save-auth').addEventListener('click', async (e) => {
-        const btnSave = e.currentTarget;
-        const name = document.getElementById('auth-name').value.trim();
-        const email = document.getElementById('auth-email').value.trim();
-        const username = document.getElementById('auth-username').value.trim();
-        const token = document.getElementById('auth-token').value.trim();
+      try {
+        const res = await fetch('/_github_device_code');
+        const data = await res.json();
         
-        if (!name || !email || !username || !token) {
-          alert('Please fill out all fields.');
-          return;
-        }
-
-        btnSave.textContent = 'Saving...';
-        btnSave.disabled = true;
-
-        appendLog(`\n> Configuring Git identity and remote credentials...`, 'neutral');
+        if (!data.user_code) throw new Error('Failed to get device code');
         
-        try {
-          const res = await fetch('/_github_auth', {
-            method: 'POST',
-            body: JSON.stringify({ name, email, username, token }),
-            headers: { 'Content-Type': 'application/json' }
-          });
-          const data = await res.json();
-          
-          if (data.success) {
-            appendLog(data.output, 'success');
-            setTimeout(closeLog, 2000);
-          } else {
-            appendLog(`> Error saving config: ${data.output}`, 'error');
-            btnSave.textContent = 'Authenticate and Save';
-            btnSave.disabled = false;
-          }
-        } catch (err) {
-          appendLog(`> Network Error saving config: ${err.message}`, 'error');
-          btnSave.textContent = 'Authenticate and Save';
-          btnSave.disabled = false;
-        }
-      });
+        const promptHtml = `
+          <div class="space-y-4 my-4 p-4 border border-blue-500/30 bg-blue-500/10 rounded-lg">
+            <p class="text-white text-lg font-medium">Please authenticate to continue:</p>
+            <ol class="list-decimal list-inside space-y-2 text-gray-300">
+              <li>Copy this verification code: <b class="text-white bg-[#1a1a1a] px-3 py-1 rounded text-xl border border-[#404040] select-all cursor-copy">${data.user_code}</b></li>
+              <li>Open <a href="${data.verification_uri}" target="_blank" class="text-blue-400 hover:text-blue-300 underline font-medium">GitHub Verification Page</a></li>
+              <li>Paste the code and authorize the application.</li>
+            </ol>
+            <div class="text-sm text-yellow-500 flex items-center gap-2 mt-4" id="auth-wait-msg">
+              <i data-lucide="loader-2" class="w-4 h-4 animate-spin block"></i> 
+              Waiting for authorization...
+            </div>
+          </div>
+        `;
+        appendLog(promptHtml, 'neutral', true);
+        lucide.createIcons();
+        
+        let pollingIntervalSeconds = data.interval || 5;
+        let isPolling = true;
+        
+        const pollToken = () => {
+          if (!isPolling) return;
+          setTimeout(async () => {
+             try {
+               const pollRes = await fetch('/_github_device_token', { 
+                 method: 'POST', 
+                 body: JSON.stringify({ device_code: data.device_code }),
+                 headers: { 'Content-Type': 'application/json' }
+               });
+               const pollData = await pollRes.json();
+               
+               if (pollData.access_token) {
+                 isPolling = false;
+                 localStorage.setItem('gh_token', pollData.access_token);
+                 const waitMsg = document.getElementById('auth-wait-msg');
+                 if (waitMsg) waitMsg.innerHTML = '<span class="text-green-400">✅ Authorized successfully!</span>';
+                 appendLog(`\n✅ Login successful! Loading repositories...`, 'success');
+                 setTimeout(() => {
+                   logContent.innerHTML = '';
+                   showRepoSelection(pollData.access_token);
+                 }, 1500);
+               } else if (pollData.error) {
+                 if (pollData.error === 'authorization_pending') {
+                   // Keep polling with current interval
+                   pollToken();
+                 } else if (pollData.error === 'slow_down') {
+                   // GitHub requests slowing down polling
+                   pollingIntervalSeconds += 5;
+                   pollToken();
+                 } else if (pollData.error === 'expired_token') {
+                   isPolling = false;
+                   appendLog(`\n❌ Code expired. Please close this and click Auth again.`, 'error');
+                 } else {
+                   isPolling = false;
+                   appendLog(`\n❌ Authentication failed: ${pollData.error_description || pollData.error}`, 'error');
+                 }
+               }
+             } catch(e) {
+               // On network error: wait a bit and retry
+               setTimeout(pollToken, 5000);
+             }
+          }, pollingIntervalSeconds * 1000);
+        };
+        
+        // Start polling loop
+        pollToken();
+        
+        // Ensure polling stops if modal is closed
+        btnCloseLog.addEventListener('click', () => isPolling = false, { once: true });
+        
+      } catch (err) {
+        appendLog(`\n❌ Network Error: ${err.message}`, 'error');
+      }
     });
 
     // Reset push modal state when clicking push
