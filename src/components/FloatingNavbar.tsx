@@ -77,6 +77,7 @@ const FloatingNavbar = () => {
     { name: 'All', href: '#all' },
     { name: 'Graduation', href: '#graduation' },
     { name: 'Konser', href: '#konser' },
+    { name: 'Wedding', href: '#wedding' },
   ];
 
   const videographyNavLinks = [
