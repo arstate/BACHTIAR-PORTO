@@ -28,6 +28,94 @@ export default defineConfig(({ mode }) => {
               res.end(JSON.stringify({ success: !err, output: stdout + (stderr || '') }));
             });
           });
+
+          server.middlewares.use('/_git_config', (req, res) => {
+            let body = '';
+            req.on('data', chunk => { body += chunk.toString(); });
+            req.on('end', () => {
+              try {
+                const { name, email } = JSON.parse(body);
+                // Basic sanitization
+                const safeName = name.replace(/"/g, '\\"');
+                const safeEmail = email.replace(/"/g, '\\"');
+                exec(`git config --global user.name "${safeName}" && git config --global user.email "${safeEmail}"`, (err, stdout, stderr) => {
+                  res.setHeader('Access-Control-Allow-Origin', '*');
+                  res.writeHead(200, { 'Content-Type': 'application/json' });
+                  res.end(JSON.stringify({ success: !err, output: stdout + (stderr || '') }));
+                });
+              } catch (e) {
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, output: 'Invalid JSON' }));
+              }
+            });
+          });
+
+          server.middlewares.use('/_execute_cmd', (req, res) => {
+            let body = '';
+            req.on('data', chunk => { body += chunk.toString(); });
+            req.on('end', () => {
+              try {
+                const { cmd } = JSON.parse(body);
+                if (typeof cmd !== 'string') throw new Error('Invalid Command');
+                exec(cmd, (err, stdout, stderr) => {
+                  res.setHeader('Access-Control-Allow-Origin', '*');
+                  res.writeHead(200, { 'Content-Type': 'application/json' });
+                  res.end(JSON.stringify({ success: !err, output: stdout + (stderr || '') }));
+                });
+              } catch (e) {
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, output: 'Error Executing' }));
+              }
+            });
+          });
+
+          server.middlewares.use('/_github_auth', (req, res) => {
+            let body = '';
+            req.on('data', chunk => { body += chunk.toString(); });
+            req.on('end', () => {
+              try {
+                const { name, email, username, token } = JSON.parse(body);
+                const safeName = name?.replace(/"/g, '\\"');
+                const safeEmail = email?.replace(/"/g, '\\"');
+                
+                exec('git config --get remote.origin.url', (errUrl, stdoutUrl, stderrUrl) => {
+                  let originUrl = stdoutUrl.trim();
+                  
+                  if (errUrl || !originUrl) {
+                    // Fallback just in case, though unlikely
+                    originUrl = `https://github.com/${username}/repository.git`;
+                  }
+                  
+                  // Clean up existing credentials if any
+                  originUrl = originUrl.replace(/https:\/\/[^@]*@/, 'https://');
+                  
+                  let newOriginUrl = originUrl;
+                  if (token && username) {
+                     newOriginUrl = originUrl.replace('https://', `https://${username}:${token}@`);
+                  }
+                  
+                  const commands = [];
+                  if (safeName && safeEmail) {
+                    commands.push(`git config --global user.name "${safeName}"`);
+                    commands.push(`git config --global user.email "${safeEmail}"`);
+                  }
+                  commands.push(`git remote set-url origin "${newOriginUrl}"`);
+                  
+                  exec(commands.join(' && '), (err, stdout, stderr) => {
+                    res.setHeader('Access-Control-Allow-Origin', '*');
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ success: !err, output: 'GitHub credentials updated successfully!\n' + (stderr || '') }));
+                  });
+                });
+              } catch (e) {
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                res.writeHead(400, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, output: 'Invalid JSON' }));
+              }
+            });
+          });
         }
       }
     ],
