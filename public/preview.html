@@ -455,7 +455,8 @@
         const repos = await reposRes.json();
         
         logContent.innerHTML = '';
-        const options = Array.isArray(repos) ? repos.map(r => `<option value="${r.clone_url}">${r.full_name}</option>`).join('') : '';
+        const savedRepo = localStorage.getItem('gh_repo');
+        const options = Array.isArray(repos) ? repos.map(r => `<option value="${r.clone_url}" ${r.clone_url === savedRepo ? 'selected' : ''}>${r.full_name}</option>`).join('') : '';
         
         const userInfoHtml = `
           <div class="mb-6 p-4 bg-green-900/20 border border-green-500/30 rounded-lg flex items-center justify-between">
@@ -501,6 +502,7 @@
         
         document.getElementById('btn-logout-gh').addEventListener('click', () => {
            localStorage.removeItem('gh_token');
+           localStorage.removeItem('gh_repo');
            appendLog('\n✅ Berhasil putus otorisasi (Logged out).', 'warning');
            setTimeout(() => {
              logModal.classList.add('hidden');
@@ -559,6 +561,7 @@
             const configData = await configRes.json();
             
             if(configData.success) {
+               localStorage.setItem('gh_repo', repoUrl);
                appendLog('> Repo connected successfully. Committing and Pushing...', 'success');
                // Trigger normal push logic
                logActions.classList.add('hidden');
