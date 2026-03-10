@@ -80,6 +80,7 @@ const FloatingNavbar = () => {
     { name: 'Wedding', href: '#wedding' },
     { name: 'Event', href: '#event' },
     { name: 'Prewedding', href: '#prewedding' },
+    { name: 'Animals', href: '#animals' },
   ];
 
   const videographyNavLinks = [
