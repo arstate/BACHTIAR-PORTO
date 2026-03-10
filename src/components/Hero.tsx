@@ -112,7 +112,7 @@ const Hero = () => {
               transition={{ delay: 0.4, duration: 1, ease: [0.16, 1, 0.3, 1] }}
               className="text-5xl sm:text-7xl md:text-[9vw] font-bold tracking-tighter uppercase text-white"
             >
-              TES
+              Capturing
             </motion.h1>
           </motion.div>
 
