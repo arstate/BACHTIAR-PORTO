@@ -62,6 +62,12 @@ body {
   -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.4);
   -webkit-font-smoothing: antialiased;
   paint-order: stroke fill;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.text-outline:hover {
+  color: #ffffff;
+  -webkit-text-stroke-color: transparent;
 }
 
 /* Hide scrollbar completely globally for all elements */

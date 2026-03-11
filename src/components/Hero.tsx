@@ -10,6 +10,60 @@ const Hero = () => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(true);
   const [isCVModalOpen, setIsCVModalOpen] = useState(false);
 
+  // Typewriter logic
+  const phrases = [
+    "CAPTURING moments",
+    "DIRECTING visuals",
+    "CRAFTING stories",
+    "FRAMING aesthetics",
+    "EDITING realities",
+    "MAKE YOUR moments"
+  ];
+  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
+  const [currentText, setCurrentText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [typingSpeed, setTypingSpeed] = useState(150);
+
+  useEffect(() => {
+    const handleTyping = () => {
+      const fullText = phrases[currentPhraseIndex];
+      
+      if (!isDeleting) {
+        // Typing
+        setCurrentText(fullText.substring(0, currentText.length + 1));
+        setTypingSpeed(100 + Math.random() * 50); // Natural typing speed
+
+        if (currentText === fullText) {
+          setIsDeleting(true);
+          setTypingSpeed(2000); // Pause at end
+        }
+      } else {
+        // Deleting
+        setCurrentText(fullText.substring(0, currentText.length - 1));
+        setTypingSpeed(50); // Faster deleting
+
+        if (currentText === "") {
+          setIsDeleting(false);
+          setCurrentPhraseIndex((prev) => (prev + 1) % phrases.length);
+          setTypingSpeed(500); // Pause before next phrase
+        }
+      }
+    };
+
+    const timer = setTimeout(handleTyping, typingSpeed);
+    return () => clearTimeout(timer);
+  }, [currentText, isDeleting, currentPhraseIndex, phrases]);
+
+  // Derived state for typewriter layout
+  const currentFullText = phrases[currentPhraseIndex];
+  const words = currentFullText.split(' ');
+  const firstWordLimit = words.length > 2 ? 2 : 1;
+  const firstPartFull = words.slice(0, firstWordLimit).join(' ');
+  
+  const isTypingSecondPart = currentText.length > firstPartFull.length;
+  const firstPartText = isTypingSecondPart ? firstPartFull : currentText;
+  const secondPartText = isTypingSecondPart ? currentText.substring(firstPartFull.length + 1) : "";
+
   // Prevent scrolling when modal is open
   useEffect(() => {
     if (isCVModalOpen) {
@@ -104,38 +158,33 @@ const Hero = () => {
           Bachtiar Aryansyah Putra
         </motion.div>
 
-        <div className="flex flex-col items-center justify-center leading-[0.85] mb-12 w-full">
-          <motion.div style={{ y: yTitle1, opacity: opacityTitle1 }}>
+        <div className="flex flex-col items-center justify-center mb-12 w-full min-h-[160px] md:min-h-[280px]">
+          <div className="flex flex-col items-center justify-center text-center">
+            {/* First Word (Bold/Sans) */}
             <motion.h1
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="text-5xl sm:text-7xl md:text-[9vw] font-bold tracking-tighter uppercase text-white"
+              className="text-5xl sm:text-7xl md:text-[8vw] font-bold tracking-tighter uppercase text-white leading-[0.9]"
             >
-              Capturing
+              {firstPartText || <span className="opacity-0">A</span>}
+              <span className={`text-white ml-1 inline-block w-[4px] h-[0.8em] bg-white align-middle ${!isTypingSecondPart ? 'animate-[pulse_1s_infinite]' : 'opacity-0'}`} style={{ verticalAlign: 'middle' }}></span>
             </motion.h1>
-          </motion.div>
 
-          <motion.div
-            style={{ y: yTitle2, opacity: opacityTitle2 }}
-            initial={{ opacity: 0, x: -40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="flex items-center gap-4 md:gap-8"
-          >
-            <div className="hidden md:block w-12 md:w-24 h-[2px] bg-white/30" />
-            <h1 className="text-6xl sm:text-8xl md:text-[11vw] font-[family-name:var(--font-display)] italic font-light text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 lowercase pr-4">
-              moments
-            </h1>
-            <div className="hidden md:block w-12 md:w-24 h-[2px] bg-white/30" />
-          </motion.div>
+            {/* Second Word (Italic/Serif/Gradient) */}
+            <div className="flex items-center gap-4 md:gap-8 mt-2 md:mt-4">
+              <div className="hidden md:block w-12 md:w-24 h-[2px] bg-white/20" />
+              <h1 className="text-4xl sm:text-6xl md:text-[9vw] font-[family-name:var(--font-display)] italic font-light text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 lowercase leading-[0.9]">
+                {secondPartText || <span className="opacity-0 pointer-events-none select-none">a</span>}
+                <span className={`text-white ml-1 inline-block w-[4px] h-[0.8em] bg-white align-middle ${isTypingSecondPart ? 'animate-[pulse_1s_infinite]' : 'opacity-0'}`} style={{ verticalAlign: 'middle' }}></span>
+              </h1>
+              <div className="hidden md:block w-12 md:w-24 h-[2px] bg-white/20" />
+            </div>
+          </div>
 
-          <motion.div style={{ y: yTitle3, opacity: opacityTitle3 }}>
+          <motion.div style={{ y: yTitle3, opacity: opacityTitle3 }} className="mt-8 md:mt-12">
             <motion.h1
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="text-4xl sm:text-6xl md:text-[7vw] font-bold tracking-tighter uppercase text-outline"
+              className="text-4xl sm:text-6xl md:text-[6.5vw] font-bold tracking-tighter uppercase text-outline leading-none"
             >
               Masterpieces
             </motion.h1>
