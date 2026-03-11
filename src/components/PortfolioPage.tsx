@@ -6,6 +6,13 @@ import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { getDatabase } from '../utils/database';
 
+const ytAnimStyles = `
+  @keyframes ytThumbFade {
+    0%, 24.99% { opacity: 0.6; z-index: 0; }
+    25%, 100% { opacity: 0; z-index: -1; }
+  }
+`;
+
 const VideoCard: React.FC<{ item: string; cat: string; i: number; onSelectVideo: (url: string) => void }> = ({ item, cat, i, onSelectVideo }) => {
   const [activeThumb, setActiveThumb] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -30,14 +37,6 @@ const VideoCard: React.FC<{ item: string; cat: string; i: number; onSelectVideo:
     `https://img.youtube.com/vi/${ytId}/hq3.jpg`,
   ] : [];
 
-  useEffect(() => {
-    if (ytThumbnails.length === 0 || isHovered) return;
-    const interval = setInterval(() => {
-      setActiveThumb((prev) => (prev + 1) % ytThumbnails.length);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, [ytThumbnails.length, isHovered]);
-
   if (ytId) {
     url = `https://www.youtube.com/embed/${ytId}?autoplay=1`;
   }
@@ -55,6 +54,7 @@ const VideoCard: React.FC<{ item: string; cat: string; i: number; onSelectVideo:
       onClick={() => url.startsWith('http') && onSelectVideo(url)}
       className="w-[85vw] md:w-[500px] aspect-video bg-[#0a0a0a] rounded-[2rem] border border-white/10 flex items-center justify-center flex-shrink-0 hover:border-white/30 transition-colors duration-500 cursor-pointer overflow-hidden relative snap-center md:snap-start group"
     >
+      <style>{ytAnimStyles}</style>
       <div 
         className="absolute inset-0 opacity-40 group-hover:opacity-20 transition-opacity duration-300 pointer-events-none"
         style={{ background: `linear-gradient(135deg, hsl(${hue1}, 20%, 30%), hsl(${hue2}, 30%, 15%))` }} 
@@ -79,9 +79,12 @@ const VideoCard: React.FC<{ item: string; cat: string; i: number; onSelectVideo:
               }
             }}
             alt={title} 
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-              activeThumb === idx ? 'opacity-60 z-0' : 'opacity-0 z-[-1]'
-            }`} 
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ 
+               opacity: 0, 
+               animation: 'ytThumbFade 10s infinite',
+               animationDelay: `${idx * 2.5}s`
+            }} 
           />
         ))
       ) : explicitThumbnail ? (
@@ -119,35 +122,55 @@ const ManualRow: React.FC<{ cat: string; onSelectVideo: (url: string) => void }>
   }
 
   const originalItems = dbItems;
-  // Triplicate the array: [prepend] + [original] + [append]
-  // This allows us to infinitely scroll visually
-  const items = [...originalItems, ...originalItems, ...originalItems];
+  // Use 9 duplicates for massive scroll bounds so user never hits the edge while swiping
+  const items = [...originalItems, ...originalItems, ...originalItems, ...originalItems, ...originalItems, ...originalItems, ...originalItems, ...originalItems, ...originalItems];
   const scrollRef = React.useRef<HTMLDivElement>(null);
+  const isJumping = React.useRef(false);
+  const debounceTimer = React.useRef<NodeJS.Timeout | null>(null);
 
-  // Start from the middle section of the duplicated array
+  // Start from the precise middle section
   useEffect(() => {
-    if (scrollRef.current) {
-      const container = scrollRef.current;
-      // Scroll to exactly 1/3 of the total scroll width to be in the "real" middle section
-      container.scrollLeft = container.scrollWidth / 3;
-    }
-  }, []);
+    const setInitialPos = () => {
+      if (scrollRef.current) {
+        const container = scrollRef.current;
+        const sectionWidth = container.scrollWidth / 9;
+        container.scrollTo({ left: sectionWidth * 4, behavior: 'instant' as any });
+      }
+    };
+    
+    setInitialPos();
+    const timer = setTimeout(setInitialPos, 100);
+    const timer2 = setTimeout(setInitialPos, 1000);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(timer2);
+    };
+  }, [items.length]);
 
   const handleScroll = () => {
-    if (!scrollRef.current) return;
-    const container = scrollRef.current;
+    if (!scrollRef.current || isJumping.current) return;
+    
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
 
-    // Check boundaries for infinite loop
-    const maxScrollLeft = container.scrollWidth - container.clientWidth;
-    const sectionWidth = container.scrollWidth / 3;
+    // Only fire jump logic 150ms after the user completely STOPS scrolling
+    // This perfectly preserves native browser scroll inertia
+    debounceTimer.current = setTimeout(() => {
+        const container = scrollRef.current;
+        if (!container) return;
 
-    if (container.scrollLeft <= 0) {
-      // Reached left end, jump back to the right equivalent position
-      container.scrollLeft = container.scrollLeft + sectionWidth;
-    } else if (container.scrollLeft >= maxScrollLeft - 10) {
-      // Reached right end, jump back to the left equivalent position
-      container.scrollLeft = container.scrollLeft - sectionWidth;
-    }
+        const sectionWidth = container.scrollWidth / 9;
+        const scrollLeft = container.scrollLeft;
+
+        // If we drifted outside the central 3 buffer zones
+        if (scrollLeft < sectionWidth * 3 || scrollLeft > sectionWidth * 6) {
+            isJumping.current = true;
+            // Snaps precisely to the exact offset inside the center-most slice (index 4)
+            const relativeOffset = scrollLeft % sectionWidth;
+            container.scrollTo({ left: sectionWidth * 4 + relativeOffset, behavior: 'auto' as any });
+            
+            requestAnimationFrame(() => { isJumping.current = false; });
+        }
+    }, 150);
   };
 
   const scrollAction = (direction: 'left' | 'right') => {
@@ -187,7 +210,7 @@ const ManualRow: React.FC<{ cat: string; onSelectVideo: (url: string) => void }>
         <div
           ref={scrollRef}
           onScroll={handleScroll}
-          className="flex gap-6 overflow-x-auto overflow-y-hidden px-6 pb-6 md:px-12 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          className="flex gap-6 overflow-x-auto overflow-y-hidden pb-6 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {items.map((item, i) => (
             <VideoCard key={i} item={item} cat={cat} i={i} onSelectVideo={onSelectVideo} />
