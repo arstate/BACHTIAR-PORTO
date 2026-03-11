@@ -162,6 +162,37 @@ const PortfolioGallery = () => {
 
   const rawScroll = useMotionValue(0);
   const scrollY = useSpring(rawScroll, { damping: 50, stiffness: 400, mass: 0.5 });
+  
+  const isInteracting = useRef(false);
+  const interactionTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  // When a photo is closed, wait 5 seconds before resuming
+  useEffect(() => {
+    if (!selectedProject) {
+      isInteracting.current = true;
+      if (interactionTimeout.current) clearTimeout(interactionTimeout.current);
+      interactionTimeout.current = setTimeout(() => {
+        isInteracting.current = false;
+      }, 5000);
+    } else {
+      isInteracting.current = true;
+    }
+  }, [selectedProject]);
+
+  useEffect(() => {
+    let animationFrameId: number;
+
+    const autoScroll = () => {
+      // Slow and smooth scroll if not interacting and no project is open
+      if (!isInteracting.current && !selectedProject && !isLoading) {
+        rawScroll.set(rawScroll.get() + 0.3); // Reduced scroll speed
+      }
+      animationFrameId = requestAnimationFrame(autoScroll);
+    };
+
+    animationFrameId = requestAnimationFrame(autoScroll);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [selectedProject, rawScroll, isLoading]);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -171,6 +202,14 @@ const PortfolioGallery = () => {
     // Disable body scroll on this page
     document.body.style.overflow = 'hidden';
     document.body.style.overscrollBehavior = 'none';
+
+    // First load auto scroll trigger
+    // Because the other Effect puts it on 5s pause when selectedProject initially becomes null,
+    // we clear it here initially so it scrolls instantly on page open!
+    if (!selectedProject && isLoading) {
+      isInteracting.current = false;
+      if (interactionTimeout.current) clearTimeout(interactionTimeout.current);
+    }
 
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
