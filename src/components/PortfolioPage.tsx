@@ -92,14 +92,6 @@ const VideoCard: React.FC<{ item: string; cat: string; i: number; onSelectVideo:
         )
       )}
       
-      {title && hasPipe && (
-        <div className={`absolute inset-0 flex items-center justify-center pointer-events-none z-10 transition-opacity duration-300 ${isHovered ? 'opacity-0' : 'opacity-100'}`}>
-           <span className="text-white/20 font-display italic text-6xl md:text-8xl font-black truncate max-w-[120%] -rotate-6 mix-blend-overlay">
-             {title.split(' ')[0]}
-           </span>
-        </div>
-      )}
-      
       <div className={`z-20 w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 transition-all duration-300 ${isHovered ? 'opacity-0 scale-50' : 'opacity-100 scale-100'}`}>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
           <path d="M5 3L19 12L5 21V3Z" />
