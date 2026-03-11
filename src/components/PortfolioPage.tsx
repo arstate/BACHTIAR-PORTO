@@ -13,13 +13,14 @@ const ytAnimStyles = `
   }
 `;
 
-const VideoCard: React.FC<{ item: string; cat: string; i: number; onSelectVideo: (url: string) => void }> = ({ item, cat, i, onSelectVideo }) => {
+const VideoCard: React.FC<{ group: any; cat: string; i: number; onSelectVideo: (data: any) => void }> = ({ group, cat, i, onSelectVideo }) => {
   const [activeThumb, setActiveThumb] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
-  const parts = item.split('|').map(p => p.trim());
+  const item = group?.mainItem || (typeof group === 'string' ? group : '');
+  const parts = item.split('|').map((p: string) => p.trim());
   const hasPipe = parts.length > 1;
-  const title = hasPipe ? parts[0] : (item.startsWith('http') ? `${cat} Project` : item);
+  const title = group?.baseTitle || (hasPipe ? parts[0] : (item.startsWith('http') ? `${cat} Project` : item));
   let url = hasPipe ? parts[1] : item;
   let explicitThumbnail = parts.length >= 3 ? parts[2] : null;
 
@@ -51,7 +52,7 @@ const VideoCard: React.FC<{ item: string; cat: string; i: number; onSelectVideo:
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={() => url.startsWith('http') && onSelectVideo(url)}
+      onClick={() => url.startsWith('http') && onSelectVideo(group)}
       className="w-[85vw] md:w-[500px] aspect-video bg-[#0a0a0a] rounded-[2rem] border border-white/10 flex items-center justify-center flex-shrink-0 hover:border-white/30 transition-colors duration-500 cursor-pointer overflow-hidden relative snap-center md:snap-start group"
     >
       <style>{ytAnimStyles}</style>
@@ -111,17 +112,48 @@ const VideoCard: React.FC<{ item: string; cat: string; i: number; onSelectVideo:
   );
 };
 
-const ManualRow: React.FC<{ cat: string; onSelectVideo: (url: string) => void }> = ({ cat, onSelectVideo }) => {
+const ManualRow: React.FC<{ cat: string; onSelectVideo: (data: any) => void }> = ({ cat, onSelectVideo }) => {
   const db = getDatabase();
   const videographyDb = db['videography'] || {};
   let dbItems = videographyDb[cat.toLowerCase()] || [];
 
-  // Basic fallback if text file is empty
-  if (dbItems.length === 0) {
-    dbItems = ['Placeholder Video 1', 'Placeholder Video 2', 'Placeholder Video 3'];
+  const groupedItemsMap = new Map<string, any>();
+  dbItems.forEach((item: string) => {
+    if (!item) return;
+    const parts = item.split('|').map(p => p.trim());
+    const rawTitle = parts.length > 0 ? parts[0] : item;
+    let url = parts.length > 1 ? parts[1] : item;
+    
+    // Auto-convert any YouTube URL to an embed URL for the variants modal
+    const ytMatch = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i);
+    if (ytMatch) url = `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1`;
+    
+    // Extract labels like (Teaser), (Full), (Akad), (Resepsi D1)
+    const match = rawTitle.match(/^(.*?)\s*\((Teaser|Full|Akad|Resepsi.*?)\)$/i);
+    let baseTitle = rawTitle;
+    let label = "Video";
+    if (match) {
+      baseTitle = match[1].trim();
+      label = match[2];
+    }
+    
+    if (!groupedItemsMap.has(baseTitle)) {
+      groupedItemsMap.set(baseTitle, { baseTitle, mainItem: item, variants: [] });
+    }
+    const group = groupedItemsMap.get(baseTitle)!;
+    group.variants.push({ label, url, rawTitle });
+    
+    // If it's a teaser, prefer using it as the main thumbnail video
+    if (label.toLowerCase() === 'teaser') {
+      group.mainItem = item;
+    }
+  });
+
+  const originalItems = Array.from(groupedItemsMap.values());
+  if (originalItems.length === 0) {
+    originalItems.push({ baseTitle: 'Placeholder', mainItem: 'Placeholder', variants: [] });
   }
 
-  const originalItems = dbItems;
   // Use 9 duplicates for massive scroll bounds so user never hits the edge while swiping
   const items = [...originalItems, ...originalItems, ...originalItems, ...originalItems, ...originalItems, ...originalItems, ...originalItems, ...originalItems, ...originalItems];
   const scrollRef = React.useRef<HTMLDivElement>(null);
@@ -212,8 +244,8 @@ const ManualRow: React.FC<{ cat: string; onSelectVideo: (url: string) => void }>
           onScroll={handleScroll}
           className="flex gap-6 overflow-x-auto overflow-y-hidden pb-6 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
-          {items.map((item, i) => (
-            <VideoCard key={i} item={item} cat={cat} i={i} onSelectVideo={onSelectVideo} />
+          {items.map((group, i) => (
+            <VideoCard key={i} group={group} cat={cat} i={i} onSelectVideo={onSelectVideo} />
           ))}
         </div>
 
@@ -229,7 +261,14 @@ const PortfolioPage = () => {
   const categories = ["Ads", "Angkatan", "Corporate", "Konser", "Prewedding", "Wedding"];
   const location = useLocation();
   const [activeCategory, setActiveCategory] = useState("All");
-  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+  const [selectedVideo, setSelectedVideo] = useState<any | null>(null);
+  const [activeUrl, setActiveUrl] = useState<string>('');
+
+  useEffect(() => {
+    if (selectedVideo) {
+       setActiveUrl(selectedVideo.variants?.[0]?.url || selectedVideo.mainItem?.split('|')[1] || selectedVideo.url);
+    }
+  }, [selectedVideo]);
 
   useEffect(() => {
     // Disable body scroll native behavior if you want, but this is a slider page so vertical scroll is needed
@@ -279,24 +318,69 @@ const PortfolioPage = () => {
            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 md:p-8"
         >
            {selectedVideo && (
-             <div className="relative w-full max-w-6xl aspect-video bg-black rounded-lg overflow-hidden border border-white/10 shadow-2xl flex flex-col items-center justify-center">
+             <div className={`relative w-full max-w-[90vw] lg:max-w-7xl flex flex-col lg:flex-row gap-6 ${selectedVideo.variants && selectedVideo.variants.length > 1 ? 'h-[85vh] lg:h-[80vh]' : 'aspect-video max-w-6xl'}`}>
                <button
                  onClick={() => setSelectedVideo(null)}
-                 className="absolute top-4 right-4 z-50 p-2 bg-black/50 hover:bg-white/10 rounded-full text-white transition-colors"
+                 className="absolute -top-12 right-0 z-50 p-2 bg-black/50 hover:bg-white/10 rounded-full text-white transition-colors"
                >
                  <X size={24} />
                </button>
-               {/* 
-                 For Google Drive videos, it uses an iframe with the /preview URL. 
-                 Otherwise, fall back to a generic iframe or video tag. 
-               */}
-               <iframe
-                 src={selectedVideo}
-                 className="w-full h-full border-0 absolute inset-0"
-                 allow="autoplay; fullscreen; picture-in-picture"
-                 allowFullScreen
-                 sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-presentation"
-               ></iframe>
+               
+               {/* Left/Main Side: Video Player */}
+               <div className={`bg-black rounded-xl overflow-hidden shadow-2xl relative border border-white/10 ${selectedVideo.variants && selectedVideo.variants.length > 1 ? 'w-full lg:w-3/4 h-[50vh] lg:h-full' : 'w-full h-full absolute inset-0'}`}>
+                 <iframe
+                   src={activeUrl}
+                   className="w-full h-full border-0 absolute inset-0"
+                   allow="autoplay; fullscreen; picture-in-picture"
+                   allowFullScreen
+                   sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-presentation"
+                 ></iframe>
+               </div>
+               
+               {/* Right Side: Playlist/Variants */}
+               {selectedVideo.variants && selectedVideo.variants.length > 1 && (
+                 <div className="w-full lg:w-1/4 h-full flex flex-col gap-4 bg-[#0a0a0a] rounded-xl border border-white/10 p-4 overflow-y-auto">
+                    <h3 className="text-xl font-bold font-display italic text-white/90 border-b border-white/10 pb-4 mb-2">
+                      {selectedVideo.baseTitle}
+                    </h3>
+                    <div className="flex flex-col gap-3">
+                      {selectedVideo.variants.map((v: any, i: number) => {
+                          const isActive = activeUrl === v.url;
+                          // Extract a generic thumbnail for the sidebar, fallback to default thumbnail if needed
+                          let thumbUrl = selectedVideo.mainItem?.split('|')[2] || "https://picsum.photos/400/225";
+                          const ytMatch = v.url.match(/embed\/([^"?]+)/);
+                          if (ytMatch) {
+                            thumbUrl = `https://img.youtube.com/vi/${ytMatch[1]}/mqdefault.jpg`;
+                          }
+
+                          return (
+                            <button 
+                               key={i} 
+                               onClick={() => setActiveUrl(v.url)}
+                               className={`flex items-start gap-4 p-2 rounded-lg transition-all text-left ${isActive ? 'bg-white/10 border border-white/20' : 'hover:bg-white/5 border border-transparent'}`}
+                            >
+                              <div className="w-24 md:w-32 aspect-video bg-black/50 rounded-md overflow-hidden flex-shrink-0 relative">
+                                <img src={thumbUrl} alt={v.label} className="w-full h-full object-cover" />
+                                {isActive && (
+                                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                    <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+                                  </div>
+                                )}
+                              </div>
+                              <div className="flex flex-col flex-1 py-1 overflow-hidden">
+                                <span className={`text-sm md:text-base font-bold truncate ${isActive ? 'text-white' : 'text-white/70'}`}>
+                                  {v.label}
+                                </span>
+                                <span className="text-xs text-white/40 mt-1 line-clamp-2">
+                                  {v.rawTitle}
+                                </span>
+                              </div>
+                            </button>
+                          );
+                      })}
+                    </div>
+                 </div>
+               )}
              </div>
            )}
         </motion.div>,
