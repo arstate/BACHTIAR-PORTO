@@ -75,23 +75,24 @@ const FloatingNavbar = () => {
 
   const galleryNavLinks = [
     { name: 'All', href: '#all' },
+    { name: 'Animals', href: '#animals' },
+    { name: 'Event', href: '#event' },
     { name: 'Graduation', href: '#graduation' },
     { name: 'Konser', href: '#konser' },
-    { name: 'Wedding', href: '#wedding' },
-    { name: 'Event', href: '#event' },
+    { name: 'Landscape', href: '#landscape' },
     { name: 'Prewedding', href: '#prewedding' },
-    { name: 'Animals', href: '#animals' },
+    { name: 'Wedding', href: '#wedding' },
     { name: 'Yearbook', href: '#yearbook' },
   ];
 
   const videographyNavLinks = [
     { name: 'All', href: '#all' },
-    { name: 'Angkatan', href: '#angkatan' },
-    { name: 'Wedding', href: '#wedding' },
-    { name: 'Prewedding', href: '#prewedding' },
     { name: 'Ads', href: '#ads' },
-    { name: 'Konser', href: '#konser' },
+    { name: 'Angkatan', href: '#angkatan' },
     { name: 'Corporate', href: '#corporate' },
+    { name: 'Konser', href: '#konser' },
+    { name: 'Prewedding', href: '#prewedding' },
+    { name: 'Wedding', href: '#wedding' },
   ];
 
   const activeNavLinks = isVideographyPage ? videographyNavLinks : galleryNavLinks;
