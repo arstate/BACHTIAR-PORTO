@@ -19,6 +19,21 @@ const FloatingNavbar = () => {
   const isDropdownPage = isGalleryPage || isVideographyPage;
 
   const [activeCategory, setActiveCategory] = useState('All');
+  const [isTutorialActive, setIsTutorialActive] = useState(false);
+
+  useEffect(() => {
+    const handleTutorial = (e: any) => setIsTutorialActive(e.detail);
+    window.addEventListener('galleryTutorial', handleTutorial);
+    
+    // Only set to true if they haven't seen it this session (SPA)
+    if (isGalleryPage && !(window as any).__hasSeenGalleryTutorial) {
+       setIsTutorialActive(true);
+    } else {
+       setIsTutorialActive(false);
+    }
+    
+    return () => window.removeEventListener('galleryTutorial', handleTutorial);
+  }, [isGalleryPage]);
 
   useEffect(() => {
     if (isDropdownPage) {
@@ -152,15 +167,26 @@ const FloatingNavbar = () => {
           <span className="text-[10px] md:text-xs font-bold text-white/40 uppercase tracking-widest select-none">
             Category
           </span>
-          <button
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-all"
-          >
-            <span className="text-[10px] md:text-sm font-medium text-white uppercase tracking-wide">
-              {activeCategory}
-            </span>
-            <ChevronDown size={14} className={`text-white/50 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
-          </button>
+          <div className="relative group">
+            <button
+              onClick={() => {
+                 setIsDropdownOpen(!isDropdownOpen);
+                 if (isTutorialActive) {
+                    setIsTutorialActive(false);
+                    window.dispatchEvent(new Event('dismissGalleryTutorial'));
+                 }
+              }}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-all z-10 relative"
+            >
+              <span className="text-[10px] md:text-sm font-medium text-white uppercase tracking-wide">
+                {activeCategory}
+              </span>
+              <ChevronDown size={14} className={`text-white/50 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {isTutorialActive && (
+              <div className="absolute inset-[-6px] rounded-full border-2 border-white/80 animate-[pulse_1.5s_ease-in-out_infinite] pointer-events-none z-0"></div>
+            )}
+          </div>
 
           <AnimatePresence>
             {isDropdownOpen && (

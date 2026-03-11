@@ -158,7 +158,25 @@ const PortfolioGallery = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    if (!(window as any).__hasSeenGalleryTutorial) {
+      setShowTutorial(true);
+      window.dispatchEvent(new CustomEvent('galleryTutorial', { detail: true }));
+    }
+
+    const handleExternalDismiss = () => dismissTutorial();
+    window.addEventListener('dismissGalleryTutorial', handleExternalDismiss);
+    return () => window.removeEventListener('dismissGalleryTutorial', handleExternalDismiss);
+  }, []);
+
+  const dismissTutorial = () => {
+    setShowTutorial(false);
+    (window as any).__hasSeenGalleryTutorial = true;
+    window.dispatchEvent(new CustomEvent('galleryTutorial', { detail: false }));
+  };
 
   const rawScroll = useMotionValue(0);
   const scrollY = useSpring(rawScroll, { damping: 50, stiffness: 400, mass: 0.5 });
@@ -314,6 +332,35 @@ const PortfolioGallery = () => {
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="absolute inset-0 z-20 bg-black/50"
           />
+        )}
+      </AnimatePresence>
+
+      {/* Tutorial Overlay */}
+      <AnimatePresence>
+        {showTutorial && !isLoading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={dismissTutorial}
+            className="fixed inset-0 z-[90] flex flex-col items-center justify-start pt-32 bg-black/80 backdrop-blur-sm cursor-pointer"
+          >
+            <div className="relative mt-8 max-w-sm text-center px-6">
+              <div className="mb-4 flex justify-center translate-x-16 -translate-y-4">
+                <svg width="80" height="110" viewBox="0 0 80 110" fill="none" className="text-white opacity-80 animate-[pulse_2s_ease-in-out_infinite]" style={{ filter: 'drop-shadow(0px 0px 8px rgba(255,255,255,0.6))' }}>
+                  {/* Hand-drawn style S-curving arrow pointing up-right */}
+                  <path d="M10 100 C 20 60, 70 60, 65 10" stroke="currentColor" strokeWidth="3.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M45 25 L 65 10 L 80 25" stroke="currentColor" strokeWidth="3.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+              <h2 className="text-3xl font-display italic font-bold text-white mb-3">Change Categories Here</h2>
+              <p className="text-white/70 text-sm md:text-base leading-relaxed">
+                Click the category button in the navigation bar above to explore different photo collections.
+                <br /><br />
+                <span className="opacity-50">Tap anywhere to continue</span>
+              </p>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
 
