@@ -4,7 +4,7 @@ import { Video, X } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { useLocation } from 'react-router-dom';
 
-const categories = ['All', 'Graduation', 'Konser', 'Wedding', 'Event', 'Prewedding', 'Animals'];
+const categories = ['All', 'Graduation', 'Konser', 'Wedding', 'Event', 'Prewedding', 'Animals', 'Yearbook'];
 import { getDatabase } from '../utils/database';
 
 const db = getDatabase();
@@ -15,6 +15,7 @@ const weddingUrls = photographyDb['wedding'] || [];
 const eventUrls = photographyDb['event'] || [];
 const preweddingUrls = photographyDb['prewedding'] || [];
 const animalsUrls = photographyDb['animals'] || [];
+const yearbookUrls = photographyDb['yearbook'] || [];
 
 const galleryItems = [
   ...konserUrls.map((url, i) => ({
@@ -51,6 +52,12 @@ const galleryItems = [
     id: `animals-${i}`,
     title: 'Animals',
     category: 'Animals',
+    img: url,
+  })),
+  ...yearbookUrls.map((url, i) => ({
+    id: `yearbook-${i}`,
+    title: 'Yearbook',
+    category: 'Yearbook',
     img: url,
   }))
 ].sort((a, b) => a.id.localeCompare(b.id));
