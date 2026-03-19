@@ -231,8 +231,8 @@ const FloatingNavbar = () => {
 
       {!isDropdownPage && (
         <a
-          href="#footer-section"
-          onClick={(e) => handleScroll(e, '#footer-section')}
+          href="#contact-form-section"
+          onClick={(e) => handleScroll(e, '#contact-form-section')}
           className="text-[10px] md:text-sm font-medium text-black bg-white px-3 md:px-4 py-1.5 md:py-2 rounded-full hover:scale-105 transition-transform tracking-wide uppercase"
         >
           Let's Talk

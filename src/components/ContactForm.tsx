@@ -23,10 +23,15 @@ const ContactForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission (replace with actual API call)
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Format message for WhatsApp
+    const whatsappMessage = `Halo, saya ${formData.name}.\n\n${formData.message}`;
+    const encodedMessage = encodeURIComponent(whatsappMessage);
+    const phoneNumber = '6289617323344'; // 0896 1732 3344 in international format
     
-    console.log('Form submitted:', formData);
+    // Redirect to WhatsApp
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+    window.open(whatsappUrl, '_blank');
+    
     setSubmitStatus('success');
     setIsSubmitting(false);
     setFormData({ name: '', message: '' });
