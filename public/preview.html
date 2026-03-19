@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local Preview - Bachtiar Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --bg-color: #1a1a1a;
+      --panel-color: #262626;
+      --text-color: #e5e5e5;
+      --border-color: #404040;
+      --accent-color: #3b82f6;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .toolbar {
+      background-color: var(--panel-color);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      z-index: 10;
+    }
+
+    .preview-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: auto;
+      background-color: #000;
+      background-image: radial-gradient(var(--border-color) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    .iframe-wrapper {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      overflow: hidden;
+      background-color: white;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn.active {
+      background: var(--accent-color);
+      border-color: var(--accent-color);
+      color: white;
+    }
+
+    select,
+    input {
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--accent-color);
+    }
+
+    .free-size-inputs {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .free-size-inputs input {
+      width: 70px;
+      text-align: center;
+    }
+
+    /* Device Sizes */
+    .device-full {
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+      border: none;
+    }
+
+    .device-mobile {
+      width: 375px;
+      height: 812px;
+    }
+
+    .device-mobile-rotated {
+      width: 812px;
+      height: 375px;
+    }
+
+    .device-tablet {
+      width: 768px;
+      height: 1024px;
+    }
+
+    .device-tablet-rotated {
+      width: 1024px;
+      height: 768px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="toolbar">
+    <div class="font-bold text-lg mr-4 flex items-center gap-2">
+      <i data-lucide="monitor-smartphone"></i>
+      Preview
+    </div>
+
+    <div class="flex items-center gap-2 bg-[#1a1a1a] p-1 rounded-md border border-[#404040]">
+      <button class="btn active !border-none !py-1.5" id="btn-full" title="Current screen size">
+        <i data-lucide="monitor" class="w-4 h-4"></i>
+        <span>Responsive</span>
+      </button>
+      <button class="btn !border-none !py-1.5" id="btn-mobile" title="Mobile">
+        <i data-lucide="smartphone" class="w-4 h-4"></i>
+        <span>Mobile</span>
+      </button>
+      <button class="btn !border-none !py-1.5" id="btn-tablet" title="Tablet">
+        <i data-lucide="tablet" class="w-4 h-4"></i>
+        <span>Tablet</span>
+      </button>
+      <button class="btn !border-none !py-1.5" id="btn-free" title="Free Size">
+        <i data-lucide="scaling" class="w-4 h-4"></i>
+        <span>Free Size</span>
+      </button>
+    </div>
+
+    <div class="h-6 w-px bg-[#404040] mx-2"></div>
+
+    <button class="btn" id="btn-rotate" title="Rotate Device" disabled>
+      <i data-lucide="rotate-cw" class="w-4 h-4"></i>
+      Rotate
+    </button>
+
+    <div class="free-size-inputs hidden ml-2" id="free-size-controls">
+      <input type="number" id="input-width" value="1200" min="320" max="4000">
+      <span class="text-sm text-gray-400">×</span>
+      <input type="number" id="input-height" value="800" min="320" max="4000">
+      <button class="btn !px-2" id="btn-apply-size">Apply</button>
+    </div>
+
+    <div class="flex-1"></div>
+
+    <div class="flex items-center gap-2">
+      <button class="btn"
+        style="background: rgba(59, 130, 246, 0.1); color: #60a5fa; border-color: rgba(59, 130, 246, 0.3);" id="btn-github-auth"
+        title="Authorize GitHub">
+        <i data-lucide="key" class="w-4 h-4"></i>
+        <span class="font-semibold" style="font-size: 0.75rem;">Auth</span>
+      </button>
+      <button class="btn"
+        style="background: rgba(34, 197, 94, 0.1); color: #4ade80; border-color: rgba(34, 197, 94, 0.3);" id="btn-push"
+        title="Push UI to GitHub">
+        <i data-lucide="github" class="w-4 h-4"></i>
+        <span class="font-semibold" style="font-size: 0.75rem;">Push</span>
+      </button>
+    </div>
+    <div class="h-6 w-px bg-[#404040] mx-2"></div>
+
+    <div class="flex items-center gap-2">
+      <input type="text" id="url-input" value="http://localhost:3000" class="w-64" placeholder="Enter URL/Path...">
+      <button class="btn" id="btn-reload" title="Reload">
+        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+      </button>
+      <a href="http://localhost:3000" id="btn-external" target="_blank" class="btn" title="Open in New Tab">
+        <i data-lucide="external-link" class="w-4 h-4"></i>
+      </a>
+      <button class="btn" id="btn-fullscreen" title="Toggle Fullscreen">
+        <i data-lucide="maximize" class="w-4 h-4" id="fullscreen-icon"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="preview-container">
+    <div class="iframe-wrapper device-full" id="iframe-wrapper">
+      <iframe id="preview-frame" src="http://localhost:3000" allow="fullscreen"></iframe>
+    </div>
+  </div>
+
+  <!-- Git Log Modal -->
+  <div id="git-log-modal"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 hidden">
+    <div class="bg-[#1a1a1a] border border-[#404040] rounded-xl shadow-2xl w-full max-w-2xl flex flex-col max-h-[80vh]">
+      <div
+        class="flex items-center justify-between px-4 py-3 border-b border-[#404040] bg-[#262626] rounded-t-xl shrink-0">
+        <h3 class="text-white font-bold flex items-center gap-2">
+          <i data-lucide="terminal" class="w-4 h-4"></i> GitHub Sync Log
+        </h3>
+        <button id="btn-close-log" class="text-gray-400 hover:text-white transition-colors">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div id="git-log-content"
+        class="flex-1 overflow-y-auto p-4 font-mono text-sm text-green-400 space-y-1 bg-black whitespace-pre-wrap">
+      </div>
+      <div id="git-log-actions"
+        class="p-4 flex flex-col gap-3 hidden shrink-0 bg-[#1a1a1a] rounded-b-xl border-t border-[#404040]">
+        <div class="flex justify-end gap-3 w-full">
+          <button id="btn-cancel-push"
+            class="px-4 py-2 rounded-md border border-[#404040] text-gray-300 hover:bg-white/5 transition-colors font-medium">Close / Cancel</button>
+          <button id="btn-confirm-push"
+            class="px-4 py-2 rounded-md bg-green-600 hover:bg-green-700 text-white font-medium transition-colors flex items-center gap-2">
+            <i data-lucide="git-commit" class="w-4 h-4"></i> Commit & Push
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize icons
+    lucide.createIcons();
+
+    // DOM Elements
+    const wrapper = document.getElementById('iframe-wrapper');
+    const iframe = document.getElementById('preview-frame');
+    const btnFull = document.getElementById('btn-full');
+    const btnMobile = document.getElementById('btn-mobile');
+    const btnTablet = document.getElementById('btn-tablet');
+    const btnFree = document.getElementById('btn-free');
+    const btnRotate = document.getElementById('btn-rotate');
+    const freeSizeControls = document.getElementById('free-size-controls');
+    const inputWidth = document.getElementById('input-width');
+    const inputHeight = document.getElementById('input-height');
+    const btnApplySize = document.getElementById('btn-apply-size');
+    const urlInput = document.getElementById('url-input');
+    const btnReload = document.getElementById('btn-reload');
+    const btnFullscreen = document.getElementById('btn-fullscreen');
+    const fullscreenIcon = document.getElementById('fullscreen-icon');
+    const previewContainer = document.querySelector('.preview-container');
+
+    let currentMode = 'full';
+    let isRotated = false;
+
+    const deviceBtns = [btnFull, btnMobile, btnTablet, btnFree];
+
+    // Simulated Domain Logic
+    const SIMULATED_DOMAIN = 'domain.com';
+    const REAL_HOST = window.location.protocol === 'file:' ? 'http://localhost:3000' : window.location.origin;
+
+    const getSimulatedUrl = (realUrl) => {
+       try {
+         const urlObj = new URL(realUrl);
+         return SIMULATED_DOMAIN + urlObj.pathname + urlObj.search + urlObj.hash;
+       } catch {
+         return SIMULATED_DOMAIN;
+       }
+    };
+
+    const getRealUrl = (simulatedUrl) => {
+       let str = simulatedUrl.replace(/^https?:\/\//, '');
+       if (str.startsWith(SIMULATED_DOMAIN)) {
+         return REAL_HOST + str.slice(SIMULATED_DOMAIN.length);
+       }
+       return 'http://' + str;
+    };
+
+    urlInput.value = SIMULATED_DOMAIN;
+    iframe.src = REAL_HOST;
+    document.getElementById('btn-external').href = REAL_HOST;
+
+    // Continuously sync iframe's real URL to the fake domain UI
+    setInterval(() => {
+      try {
+        if (iframe.contentWindow && iframe.contentWindow.location && iframe.contentWindow.location.href) {
+          const currentReal = iframe.contentWindow.location.href;
+          if (currentReal !== 'about:blank' && currentReal.startsWith(REAL_HOST) && document.activeElement !== urlInput) {
+             urlInput.value = getSimulatedUrl(currentReal);
+             document.getElementById('btn-external').href = currentReal;
+          }
+        }
+      } catch (e) {
+        // Ignore cross-origin errors if navigating outside
+      }
+    }, 300);
+
+    function updateActiveBtn(activeBtn) {
+      deviceBtns.forEach(btn => btn.classList.remove('active'));
+      activeBtn.classList.add('active');
+    }
+
+    function applySize() {
+      // Remove all device classes
+      wrapper.className = 'iframe-wrapper';
+      wrapper.style.width = '';
+      wrapper.style.height = '';
+
+      if (currentMode === 'full') {
+        wrapper.classList.add('device-full');
+        btnRotate.disabled = true;
+        freeSizeControls.classList.add('hidden');
+      } else if (currentMode === 'mobile') {
+        wrapper.classList.add(isRotated ? 'device-mobile-rotated' : 'device-mobile');
+        btnRotate.disabled = false;
+        freeSizeControls.classList.add('hidden');
+      } else if (currentMode === 'tablet') {
+        wrapper.classList.add(isRotated ? 'device-tablet-rotated' : 'device-tablet');
+        btnRotate.disabled = false;
+        freeSizeControls.classList.add('hidden');
+      } else if (currentMode === 'free') {
+        wrapper.style.width = `${inputWidth.value}px`;
+        wrapper.style.height = `${inputHeight.value}px`;
+        btnRotate.disabled = true; // rotation handled manually by input swap if needed
+        freeSizeControls.classList.remove('hidden');
+      }
+    }
+
+    btnFull.addEventListener('click', () => {
+      currentMode = 'full';
+      isRotated = false;
+      updateActiveBtn(btnFull);
+      applySize();
+    });
+
+    btnMobile.addEventListener('click', () => {
+      currentMode = 'mobile';
+      isRotated = false;
+      updateActiveBtn(btnMobile);
+      applySize();
+    });
+
+    btnTablet.addEventListener('click', () => {
+      currentMode = 'tablet';
+      isRotated = false;
+      updateActiveBtn(btnTablet);
+      applySize();
+    });
+
+    btnFree.addEventListener('click', () => {
+      currentMode = 'free';
+      isRotated = false;
+      updateActiveBtn(btnFree);
+      applySize();
+    });
+
+    btnRotate.addEventListener('click', () => {
+      isRotated = !isRotated;
+      applySize();
+    });
+
+    btnApplySize.addEventListener('click', () => {
+      if (currentMode === 'free') {
+        applySize();
+      }
+    });
+
+    // Handle URL changes
+    urlInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        let val = urlInput.value.trim();
+        let realUrl = getRealUrl(val);
+        iframe.src = realUrl;
+        document.getElementById('btn-external').href = realUrl;
+        urlInput.blur(); // Remove focus to allow interval to sync again
+      }
+    });
+
+    btnReload.addEventListener('click', () => {
+      const currentSrc = iframe.src;
+      iframe.src = 'about:blank';
+      setTimeout(() => {
+        iframe.src = currentSrc;
+      }, 50);
+    });
+
+    // Fullscreen handling
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        if (previewContainer.requestFullscreen) {
+          previewContainer.requestFullscreen();
+        } else if (previewContainer.webkitRequestFullscreen) { /* Safari */
+          previewContainer.webkitRequestFullscreen();
+        } else if (previewContainer.msRequestFullscreen) { /* IE11 */
+          previewContainer.msRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE11 */
+          document.msExitFullscreen();
+        }
+      }
+    }
+
+    btnFullscreen.addEventListener('click', toggleFullscreen);
+
+    document.addEventListener('fullscreenchange', () => {
+      if (document.fullscreenElement) {
+        fullscreenIcon.setAttribute('data-lucide', 'minimize');
+        lucide.createIcons();
+      } else {
+        fullscreenIcon.setAttribute('data-lucide', 'maximize');
+        lucide.createIcons();
+      }
+    });
+
+    const btnPush = document.getElementById('btn-push');
+    const btnGithubAuth = document.getElementById('btn-github-auth');
+    const logModal = document.getElementById('git-log-modal');
+    const btnCloseLog = document.getElementById('btn-close-log');
+    const btnCancelPush = document.getElementById('btn-cancel-push');
+    const btnConfirmPush = document.getElementById('btn-confirm-push');
+    const logContent = document.getElementById('git-log-content');
+    const logActions = document.getElementById('git-log-actions');
+
+    const appendLog = (text, type = 'info', isHtml = false) => {
+      const line = document.createElement('div');
+      if (isHtml) line.innerHTML = text;
+      else line.textContent = text;
+      if (type === 'error') line.className = 'text-red-400';
+      if (type === 'warning') line.className = 'text-yellow-400';
+      if (type === 'success') line.className = 'text-green-400';
+      if (type === 'neutral') line.className = 'text-gray-300';
+      if (type === 'title') line.className = 'text-blue-400 font-bold mb-2 pb-2 border-b border-[#404040]';
+      logContent.appendChild(line);
+      logContent.scrollTop = logContent.scrollHeight;
+    };
+
+    const closeLog = () => {
+      logModal.classList.add('hidden');
+    };
+
+    btnCloseLog.addEventListener('click', closeLog);
+    btnCancelPush.addEventListener('click', closeLog);
+
+    async function showRepoSelection(token) {
+      appendLog('\n> Fetching your repositories...', 'neutral');
+      try {
+        const userRes = await fetch('https://api.github.com/user', { headers: { Authorization: `Bearer ${token}` }});
+        if (!userRes.ok) throw new Error('Token might be expired');
+        const user = await userRes.json();
+        
+        const reposRes = await fetch('https://api.github.com/user/repos?sort=updated&per_page=100', { headers: { Authorization: `Bearer ${token}` }});
+        const repos = await reposRes.json();
+        
+        logContent.innerHTML = '';
+        const savedRepo = localStorage.getItem('gh_repo');
+        const options = Array.isArray(repos) ? repos.map(r => `<option value="${r.clone_url}" ${r.clone_url === savedRepo ? 'selected' : ''}>${r.full_name}</option>`).join('') : '';
+        
+        const userInfoHtml = `
+          <div class="mb-6 p-4 bg-green-900/20 border border-green-500/30 rounded-lg flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <img src="${user.avatar_url}" class="w-10 h-10 rounded-full border border-[#404040]">
+              <div>
+                <p class="text-white font-medium">Logged in to GitHub</p>
+                <p class="text-green-400 text-sm">@${user.login}</p>
+              </div>
+            </div>
+            <button id="btn-logout-gh" class="px-3 py-1.5 text-red-400 hover:bg-red-500/10 rounded-md transition-colors text-sm font-medium border border-red-500/20">
+              Putus Auth (Logout)
+            </button>
+          </div>
+        `;
+        
+        const repoHtml = `
+          <div class="space-y-4">
+            <h3 class="text-blue-400 font-bold mb-2 pb-2 border-b border-[#404040]">Repository Sync</h3>
+            <div>
+              <label class="block text-sm text-gray-400 mb-1">Existing Repository (will overwrite existing):</label>
+              <select id="repo-select" class="w-full bg-[#1a1a1a] border border-[#404040] px-3 py-2 rounded-md text-white outline-none">
+                <option value="">-- Or Create New Below --</option>
+                ${options}
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm text-gray-400 mb-1">Create New Repository:</label>
+              <div class="flex gap-2">
+                <input type="text" id="new-repo-name" placeholder="e.g. my-awesome-project" class="flex-1 bg-[#1a1a1a] border border-[#404040] px-3 py-2 rounded-md text-white outline-none">
+                <button id="btn-create-repo" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors">Create</button>
+              </div>
+            </div>
+            <div class="pt-4 border-t border-[#404040] flex justify-end gap-3">
+               <button id="btn-sync-repo" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md font-medium transition-colors flex items-center gap-2">
+                 <i data-lucide="git-commit" class="w-4 h-4"></i> Connect & Push
+               </button>
+            </div>
+          </div>
+        `;
+        appendLog(userInfoHtml + repoHtml, 'neutral', true);
+        lucide.createIcons();
+        
+        document.getElementById('btn-logout-gh').addEventListener('click', () => {
+           localStorage.removeItem('gh_token');
+           localStorage.removeItem('gh_repo');
+           appendLog('\n✅ Berhasil putus otorisasi (Logged out).', 'warning');
+           setTimeout(() => {
+             logModal.classList.add('hidden');
+           }, 1000);
+        });
+        
+        document.getElementById('btn-create-repo').addEventListener('click', async () => {
+          const name = document.getElementById('new-repo-name').value.trim();
+          if(!name) return;
+          const btnCreate = document.getElementById('btn-create-repo');
+          btnCreate.textContent = '...';
+          btnCreate.disabled = true;
+          
+          try {
+            const createRes = await fetch('https://api.github.com/user/repos', {
+               method: 'POST',
+               headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+               body: JSON.stringify({ name, auto_init: true })
+            });
+            const newRepo = await createRes.json();
+            if(newRepo.clone_url) {
+               appendLog(`> Created new repository: ${newRepo.full_name}`, 'success');
+               document.getElementById('repo-select').innerHTML += `<option value="${newRepo.clone_url}">${newRepo.full_name}</option>`;
+               document.getElementById('repo-select').value = newRepo.clone_url;
+               document.getElementById('new-repo-name').value = '';
+            } else {
+               appendLog(`> Failed to create repository: ${newRepo.message || 'Error'}`, 'error');
+            }
+          } catch(err) {
+            appendLog(`> Network Error: ${err.message}`, 'error');
+          }
+          btnCreate.textContent = 'Create';
+          btnCreate.disabled = false;
+        });
+        
+        document.getElementById('btn-sync-repo').addEventListener('click', async () => {
+          const repoUrl = document.getElementById('repo-select').value;
+          if(!repoUrl) { alert('Please select a repository to push to.'); return; }
+          const btnSync = document.getElementById('btn-sync-repo');
+          btnSync.textContent = 'Processing...';
+          btnSync.disabled = true;
+          
+          appendLog(`\n> Linking to ${repoUrl}...`, 'neutral');
+          
+          try {
+            const configRes = await fetch('/_github_auth', {
+               method: 'POST',
+               body: JSON.stringify({ 
+                 name: user.name || user.login, 
+                 email: user.email || `${user.login}@users.noreply.github.com`, 
+                 repoUrl, 
+                 token 
+               }),
+               headers: { 'Content-Type': 'application/json' }
+            });
+            const configData = await configRes.json();
+            
+            if(configData.success) {
+               localStorage.setItem('gh_repo', repoUrl);
+               appendLog('> Repo connected successfully. Committing and Pushing...', 'success');
+               // Trigger normal push logic
+               logActions.classList.add('hidden');
+               const pushRes = await fetch('/_git_push');
+               const pushData = await pushRes.json();
+               if (pushData.success) {
+                  appendLog('\n> Process Output:', 'neutral');
+                  appendLog(pushData.output, 'success');
+                  appendLog('\n✅ Successfully pushed to GitHub!', 'success');
+               } else {
+                  appendLog('\n❌ Push failed: ' + pushData.output, 'error');
+               }
+            } else {
+               appendLog('\n> Error connecting repo: ' + configData.output, 'error');
+            }
+          } catch(err) {
+             appendLog(`\n> Network Error: ${err.message}`, 'error');
+          }
+          btnSync.textContent = 'Connect & Push';
+          btnSync.disabled = false;
+        });
+
+      } catch(e) {
+        appendLog(`> Error fetching repositories: ${e.message}`, 'error');
+        localStorage.removeItem('gh_token');
+        appendLog('Cleared invalid token. Please authenticate again.', 'warning');
+      }
+    }
+
+    btnGithubAuth.addEventListener('click', async () => {
+      logContent.innerHTML = '';
+      logModal.classList.remove('hidden');
+      logActions.classList.remove('hidden');
+      document.getElementById('btn-confirm-push').classList.add('hidden');
+
+      const ghToken = localStorage.getItem('gh_token');
+      if (ghToken) {
+        await showRepoSelection(ghToken);
+        return;
+      }
+
+      appendLog(`GitHub Device Authentication`, 'title');
+      appendLog('\n> Requesting auth code from GitHub...', 'neutral');
+      
+      try {
+        const res = await fetch('/_github_device_code');
+        const data = await res.json();
+        
+        if (!data.user_code) throw new Error('Failed to get device code');
+        
+        const promptHtml = `
+          <div class="space-y-4 my-4 p-4 border border-blue-500/30 bg-blue-500/10 rounded-lg">
+            <p class="text-white text-lg font-medium">Please authenticate to continue:</p>
+            <ol class="list-decimal list-inside space-y-2 text-gray-300">
+              <li>Copy this verification code: <b class="text-white bg-[#1a1a1a] px-3 py-1 rounded text-xl border border-[#404040] select-all cursor-copy">${data.user_code}</b></li>
+              <li>Open <a href="${data.verification_uri}" target="_blank" class="text-blue-400 hover:text-blue-300 underline font-medium">GitHub Verification Page</a></li>
+              <li>Paste the code and authorize the application.</li>
+            </ol>
+            <div class="text-sm text-yellow-500 flex items-center gap-2 mt-4" id="auth-wait-msg">
+              <i data-lucide="loader-2" class="w-4 h-4 animate-spin block"></i> 
+              Waiting for authorization...
+            </div>
+          </div>
+        `;
+        appendLog(promptHtml, 'neutral', true);
+        lucide.createIcons();
+        
+        let pollingIntervalSeconds = data.interval || 5;
+        let isPolling = true;
+        
+        const pollToken = () => {
+          if (!isPolling) return;
+          setTimeout(async () => {
+             try {
+               const pollRes = await fetch('/_github_device_token', { 
+                 method: 'POST', 
+                 body: JSON.stringify({ device_code: data.device_code }),
+                 headers: { 'Content-Type': 'application/json' }
+               });
+               const pollData = await pollRes.json();
+               
+               if (pollData.access_token) {
+                 isPolling = false;
+                 localStorage.setItem('gh_token', pollData.access_token);
+                 const waitMsg = document.getElementById('auth-wait-msg');
+                 if (waitMsg) waitMsg.innerHTML = '<span class="text-green-400">✅ Authorized successfully!</span>';
+                 appendLog(`\n✅ Login successful! Loading repositories...`, 'success');
+                 setTimeout(() => {
+                   logContent.innerHTML = '';
+                   showRepoSelection(pollData.access_token);
+                 }, 1500);
+               } else if (pollData.error) {
+                 if (pollData.error === 'authorization_pending') {
+                   // Keep polling with current interval
+                   pollToken();
+                 } else if (pollData.error === 'slow_down') {
+                   // GitHub requests slowing down polling
+                   pollingIntervalSeconds += 5;
+                   pollToken();
+                 } else if (pollData.error === 'expired_token') {
+                   isPolling = false;
+                   appendLog(`\n❌ Code expired. Please close this and click Auth again.`, 'error');
+                 } else {
+                   isPolling = false;
+                   appendLog(`\n❌ Authentication failed: ${pollData.error_description || pollData.error}`, 'error');
+                 }
+               }
+             } catch(e) {
+               // On network error: wait a bit and retry
+               setTimeout(pollToken, 5000);
+             }
+          }, pollingIntervalSeconds * 1000);
+        };
+        
+        // Start polling loop
+        pollToken();
+        
+        // Ensure polling stops if modal is closed
+        btnCloseLog.addEventListener('click', () => isPolling = false, { once: true });
+        
+      } catch (err) {
+        appendLog(`\n❌ Network Error: ${err.message}`, 'error');
+      }
+    });
+
+    // Reset push modal state when clicking push
+    btnPush.addEventListener('click', async () => {
+      document.getElementById('btn-confirm-push').classList.remove('hidden');
+      logContent.innerHTML = ''; // clear logs
+      logModal.classList.remove('hidden');
+      logActions.classList.add('hidden');
+      appendLog('> Checking git status...', 'neutral');
+
+      try {
+        const res = await fetch('/_git_status');
+        const data = await res.json();
+
+        if (data.output && data.output.trim() !== '') {
+          appendLog('> Changes detected:');
+          appendLog(data.output, 'neutral');
+          appendLog('\nReady to commit and push?');
+          logActions.classList.remove('hidden');
+        } else {
+          appendLog('> No commit changes', 'warning');
+          appendLog('Your working tree is completely clean!', 'neutral');
+        }
+      } catch (err) {
+        appendLog(`> Error fetching status: ${err.message}`, 'error');
+      }
+    });
+
+    btnConfirmPush.addEventListener('click', async () => {
+      logActions.classList.add('hidden');
+      appendLog('\n> Executing git add, commit, and push...', 'neutral');
+
+      try {
+        const res = await fetch('/_git_push');
+        const data = await res.json();
+
+        if (data.success) {
+          appendLog('\n> Process Output:', 'neutral');
+          appendLog(data.output, 'success');
+          appendLog('\n✅ Successfully pushed to GitHub!', 'success');
+        } else {
+          appendLog('\n> Process Output:', 'neutral');
+          appendLog(data.output, 'error');
+
+          if (data.output && (data.output.includes('Author identity unknown') || data.output.includes('tell me who you are'))) {
+            appendLog('\n⚠️ Git identity not found. Please set your Name and Email below to continue:', 'warning');
+            
+            const configForm = document.createElement('div');
+            configForm.id = 'git-config-form';
+            configForm.className = 'mt-4 p-4 border border-[#404040] rounded-lg bg-[#262626] flex flex-col gap-3 font-sans';
+            configForm.innerHTML = `
+              <div class="flex gap-3 text-white">
+                <input type="text" id="git-name" placeholder="Name (e.g. John Doe)" class="flex-1 w-1/2 bg-[#1a1a1a] border border-[#404040] px-3 py-2 rounded-md outline-none focus:border-blue-500">
+                <input type="email" id="git-email" placeholder="Email (e.g. john@example.com)" class="flex-1 w-1/2 bg-[#1a1a1a] border border-[#404040] px-3 py-2 rounded-md outline-none focus:border-blue-500">
+              </div>
+              <div class="flex justify-end mt-1">
+                <button id="btn-save-git-config" class="px-4 py-2 bg-[#16a34a] hover:bg-[#15803d] text-white rounded-md font-medium transition-colors">
+                  Save Config & Retry
+                </button>
+              </div>
+            `;
+            logContent.appendChild(configForm);
+            logContent.scrollTop = logContent.scrollHeight;
+            
+            document.getElementById('btn-save-git-config').addEventListener('click', async () => {
+              const name = document.getElementById('git-name').value.trim();
+              const email = document.getElementById('git-email').value.trim();
+              
+              if (!name || !email) {
+                alert('Please fill out both Name and Email.');
+                return;
+              }
+              
+              const btnSave = document.getElementById('btn-save-git-config');
+              btnSave.textContent = 'Saving...';
+              btnSave.disabled = true;
+              
+              appendLog(`\n> Setting global Git config for ${name} <${email}>...`, 'neutral');
+              try {
+                const configRes = await fetch('/_git_config', {
+                  method: 'POST',
+                  body: JSON.stringify({ name, email }),
+                  headers: { 'Content-Type': 'application/json' }
+                });
+                const configData = await configRes.json();
+                
+                if (configData.success || !configData.output.includes('fatal')) {
+                  appendLog('> Git configuration saved successfully.', 'success');
+                  configForm.remove();
+                  btnConfirmPush.click();
+                } else {
+                  appendLog(`> Error saving config: ${configData.output}`, 'error');
+                  btnSave.textContent = 'Save Config & Retry';
+                  btnSave.disabled = false;
+                }
+              } catch (err) {
+                appendLog(`> Network Error saving config: ${err.message}`, 'error');
+                btnSave.textContent = 'Save Config & Retry';
+                btnSave.disabled = false;
+              }
+            });
+          } else {
+            appendLog('\n❌ Failed to push to GitHub.', 'error');
+          }
+        }
+      } catch (err) {
+        appendLog(`\n❌ Network / Server Error: ${err.message}`, 'error');
+      }
+    });
+
+  </script>
+</body>
+
+</html>

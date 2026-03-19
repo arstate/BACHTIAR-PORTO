@@ -1,0 +1,520 @@
+import { useState, useEffect, useRef } from 'react';
+import { motion, useTransform, AnimatePresence, useInView, useMotionValue, useSpring } from 'motion/react';
+import { Video, X } from 'lucide-react';
+import { createPortal } from 'react-dom';
+import { useLocation } from 'react-router-dom';
+
+const categories = ['All', 'Animals', 'Event', 'Graduation', 'Konser', 'Landscape', 'Prewedding', 'Wedding', 'Yearbook'];
+import { getDatabase } from '../utils/database';
+
+const db = getDatabase();
+const photographyDb = db['photography'] || {};
+const konserUrls = photographyDb['konser'] || [];
+const graduationUrls = photographyDb['graduation'] || [];
+const weddingUrls = photographyDb['wedding'] || [];
+const eventUrls = photographyDb['event'] || [];
+const preweddingUrls = photographyDb['prewedding'] || [];
+const animalsUrls = photographyDb['animals'] || [];
+const yearbookUrls = photographyDb['yearbook'] || [];
+const landscapeUrls = photographyDb['landscape'] || [];
+
+const galleryItems = [
+  ...konserUrls.map((url, i) => ({
+    id: `konser-${i}`,
+    title: 'Konser',
+    category: 'Konser',
+    img: url,
+  })),
+  ...graduationUrls.map((url, i) => ({
+    id: `graduation-${i}`,
+    title: 'Graduation',
+    category: 'Graduation',
+    img: url,
+  })),
+  ...weddingUrls.map((url, i) => ({
+    id: `wedding-${i}`,
+    title: 'Wedding',
+    category: 'Wedding',
+    img: url,
+  })),
+  ...eventUrls.map((url, i) => ({
+    id: `event-${i}`,
+    title: 'Event',
+    category: 'Event',
+    img: url,
+  })),
+  ...preweddingUrls.map((url, i) => ({
+    id: `prewedding-${i}`,
+    title: 'Prewedding',
+    category: 'Prewedding',
+    img: url,
+  })),
+  ...animalsUrls.map((url, i) => ({
+    id: `animals-${i}`,
+    title: 'Animals',
+    category: 'Animals',
+    img: url,
+  })),
+  ...yearbookUrls.map((url, i) => ({
+    id: `yearbook-${i}`,
+    title: 'Yearbook',
+    category: 'Yearbook',
+    img: url,
+  })),
+  ...landscapeUrls.map((url, i) => ({
+    id: `landscape-${i}`,
+    title: 'Landscape',
+    category: 'Landscape',
+    img: url,
+  }))
+].sort((a, b) => a.id.localeCompare(b.id));
+
+// Verified Pocari Sweat IONation 6 image URLs (confirmed by visual inspection)
+const pocariImageUrls = new Set([
+  "https://github.com/user-attachments/assets/88247a29-7145-4a89-b945-e2db00f27d97",
+  "https://github.com/user-attachments/assets/86c40cf3-3f66-4e2e-bcc5-2cce6247ce2d",
+  "https://github.com/user-attachments/assets/1828eceb-8ff4-405a-baef-d6557be297e8",
+  "https://github.com/user-attachments/assets/1f48c8f8-0a43-46c0-b27d-0728019f896a",
+  "https://github.com/user-attachments/assets/358e11a1-51be-4a43-9e64-709a6b6488db",
+  "https://github.com/user-attachments/assets/59ee2731-b232-4703-847d-71f736a23928",
+  "https://github.com/user-attachments/assets/1f5bb4b7-d70c-4164-acca-c99a46116843",
+  "https://github.com/user-attachments/assets/786e29bb-f6d1-4d5d-9051-c578a7e956d9",
+  "https://github.com/user-attachments/assets/6a7cf57e-66a0-4c66-8bde-7e7133e44ba2",
+  "https://github.com/user-attachments/assets/eb17cc62-926a-4c37-94fb-e711df9bdf71",
+  "https://github.com/user-attachments/assets/2bcefcd6-51fe-46f4-815b-9f25c9b81431",
+  "https://github.com/user-attachments/assets/2dde89ad-0ece-4ce6-bf61-e42ff9ba7db3",
+  "https://github.com/user-attachments/assets/212cfec6-5472-4f5c-874f-617f08a2661d",
+  "https://github.com/user-attachments/assets/0cd7b468-a89c-443e-bd71-9a8895cad380",
+  "https://github.com/user-attachments/assets/dcd7f952-f931-4d8b-b6f0-a5521ad3a83b",
+  "https://github.com/user-attachments/assets/eece42c1-736a-4264-b8cf-b8f50ce8b0cf",
+  "https://github.com/user-attachments/assets/4816fa2b-8ce4-4946-9d1f-1b8b32400060",
+]);
+
+const eventProjectInfo = {
+  date: "2025",
+  city: "Surabaya",
+  duration: "1 day shoot, 2 days editing",
+  description: "Official photography documentation for Pocari Sweat IONation 6 event held in Surabaya. The project covered the full event — from participant activities and brand installations to crowd atmosphere and key moments on stage. Visuals were produced for social media publication and brand archive purposes.",
+  tools: ["Sony A7II", "Sony A7SII", "Flash Godox", "Lightroom"]
+};
+
+const getOptimizedUrl = (url: string, width: number) => {
+  if (url.includes('picsum.photos')) {
+    return url.replace('800/1200', `${width}/${Math.round(width * 1.5)}`);
+  }
+  return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=${width}&output=webp&q=80`;
+};
+
+const GalleryItem = ({ item, onClick }: { key?: string, item: any, onClick: () => void }) => {
+  return (
+    <motion.div
+      onClick={onClick}
+      className="relative rounded-2xl md:rounded-[2rem] overflow-hidden cursor-pointer group w-full aspect-[3/4] bg-white/5 flex-shrink-0"
+    >
+      <img
+        src={getOptimizedUrl(item.img, 600)}
+        alt={item.title}
+        loading="lazy"
+        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+        referrerPolicy="no-referrer"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/90 via-[#050505]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-0 p-6 flex flex-col justify-end translate-y-4 group-hover:translate-y-0 transition-transform duration-500 opacity-0 group-hover:opacity-100">
+        <h3 className="text-lg md:text-xl font-bold text-white">{item.title}</h3>
+      </div>
+    </motion.div>
+  );
+};
+
+const LoopingColumn = ({ items, speed, scrollY, onProjectClick }: { key?: string, items: any[], speed: number, scrollY: any, onProjectClick: (item: any) => void }) => {
+  const columnRef = useRef<HTMLDivElement>(null);
+  const [columnHeight, setColumnHeight] = useState(0);
+
+  if (items.length === 0) return null;
+
+  useEffect(() => {
+    const updateHeight = () => {
+      if (columnRef.current) {
+        // We repeat items 4 times. 
+        // By adding padding-bottom equal to the gap, 
+        // scrollHeight / 4 gives us the exact height of one set including its trailing gap.
+        setColumnHeight(columnRef.current.scrollHeight / 4);
+      }
+    };
+
+    updateHeight();
+
+    const resizeObserver = new ResizeObserver(updateHeight);
+    if (columnRef.current) {
+      resizeObserver.observe(columnRef.current);
+    }
+
+    return () => resizeObserver.disconnect();
+  }, [items]);
+
+  const y = useTransform(scrollY, (latest: number) => {
+    if (columnHeight <= 0) return 0;
+    // Calculate wrapped position for infinite loop
+    const totalScroll = latest * speed;
+    const wrapped = ((totalScroll % columnHeight) + columnHeight) % columnHeight;
+    return -wrapped;
+  });
+
+  // Repeat items 4 times to ensure seamless looping
+  const repeatedItems = [...items, ...items, ...items, ...items];
+
+  return (
+    <div className="flex-1 overflow-hidden h-full relative">
+      <motion.div
+        ref={columnRef}
+        style={{ y, willChange: "transform" }}
+        className="flex flex-col gap-4 md:gap-6 pb-4 md:pb-6"
+      >
+        {repeatedItems.map((item, i) => (
+          <GalleryItem
+            key={`${item.id}-${i}`}
+            item={item}
+            onClick={() => onProjectClick(item)}
+          />
+        ))}
+      </motion.div>
+    </div>
+  );
+};
+
+const PortfolioGallery = () => {
+  const [activeCategory, setActiveCategory] = useState('');
+  const [displayCategory, setDisplayCategory] = useState('Konser');
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!(window as any).__hasSeenGalleryTutorial) {
+      setShowTutorial(true);
+      window.dispatchEvent(new CustomEvent('galleryTutorial', { detail: true }));
+    }
+
+    const handleExternalDismiss = () => dismissTutorial();
+    window.addEventListener('dismissGalleryTutorial', handleExternalDismiss);
+    return () => window.removeEventListener('dismissGalleryTutorial', handleExternalDismiss);
+  }, []);
+
+  const dismissTutorial = () => {
+    setShowTutorial(false);
+    (window as any).__hasSeenGalleryTutorial = true;
+    window.dispatchEvent(new CustomEvent('galleryTutorial', { detail: false }));
+  };
+
+  const rawScroll = useMotionValue(0);
+  const scrollY = useSpring(rawScroll, { damping: 50, stiffness: 400, mass: 0.5 });
+  
+  const isInteracting = useRef(false);
+  const interactionTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  // When a photo is closed, wait 5 seconds before resuming
+  useEffect(() => {
+    if (!selectedProject) {
+      isInteracting.current = true;
+      if (interactionTimeout.current) clearTimeout(interactionTimeout.current);
+      interactionTimeout.current = setTimeout(() => {
+        isInteracting.current = false;
+      }, 5000);
+    } else {
+      isInteracting.current = true;
+    }
+  }, [selectedProject]);
+
+  useEffect(() => {
+    let animationFrameId: number;
+
+    const autoScroll = () => {
+      // Slow and smooth scroll if not interacting and no project is open
+      if (!isInteracting.current && !selectedProject && !isLoading) {
+        rawScroll.set(rawScroll.get() + 0.3); // Reduced scroll speed
+      }
+      animationFrameId = requestAnimationFrame(autoScroll);
+    };
+
+    animationFrameId = requestAnimationFrame(autoScroll);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [selectedProject, rawScroll, isLoading]);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    // Disable body scroll on this page
+    document.body.style.overflow = 'hidden';
+    document.body.style.overscrollBehavior = 'none';
+
+    // First load auto scroll trigger
+    // Because the other Effect puts it on 5s pause when selectedProject initially becomes null,
+    // we clear it here initially so it scrolls instantly on page open!
+    if (!selectedProject && isLoading) {
+      isInteracting.current = false;
+      if (interactionTimeout.current) clearTimeout(interactionTimeout.current);
+    }
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      rawScroll.set(rawScroll.get() + e.deltaY);
+    };
+
+    let touchStartY = 0;
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
+    const handleTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
+      const touchY = e.touches[0].clientY;
+      const deltaY = touchStartY - touchY;
+      rawScroll.set(rawScroll.get() + deltaY * 2);
+      touchStartY = touchY;
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: false });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      document.body.style.overflow = 'auto';
+      document.body.style.overscrollBehavior = 'auto';
+    };
+  }, [rawScroll]);
+
+  useEffect(() => {
+    const hash = location.hash.replace('#', '');
+    let category = 'Konser';
+    if (hash) {
+      const parsedCat = hash.charAt(0).toUpperCase() + hash.slice(1);
+      if (categories.includes(parsedCat)) {
+        category = parsedCat;
+      } else if (hash.toLowerCase() === 'all') {
+        category = 'All';
+      }
+    }
+
+    if (!activeCategory) {
+      // First load styling
+      setActiveCategory(category);
+      setDisplayCategory(category);
+      setTimeout(() => setIsLoading(false), 300);
+    } else if (category !== activeCategory) {
+      // Different category clicked
+      setIsLoading(true);
+      setActiveCategory(category);
+
+      // Wait for blur to cover everything
+      setTimeout(() => {
+        setDisplayCategory(category);
+        // Wait a slight margin to guarantee DOM renders new images before unblurring
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 150);
+      }, 500);
+    }
+  }, [location.hash, activeCategory]);
+
+  const filteredItems = displayCategory === 'All'
+    ? galleryItems
+    : galleryItems.filter(item => item.category === displayCategory);
+
+  const numCols = isMobile ? 2 : 6;
+  const cols = Array.from({ length: numCols }, () => [] as typeof galleryItems);
+
+  filteredItems.forEach((item, i) => {
+    cols[i % numCols].push(item);
+  });
+
+  // Different speeds for parallax effect
+  const speeds = isMobile ? [1, 1.4] : [1, 1.4, 0.7, 1.2, 0.9, 1.5];
+
+  return (
+    <div className="bg-[#050505] h-screen w-full relative overflow-hidden">
+      {/* Top and Bottom Gradient Overlays */}
+      <div className="fixed top-0 left-0 w-full h-64 bg-gradient-to-b from-[#050505] via-[#050505]/80 to-transparent z-30 pointer-events-none" />
+      <div className="fixed bottom-0 left-0 w-full h-64 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent z-30 pointer-events-none" />
+
+      {/* Header */}
+      <div className="fixed top-0 left-0 w-full z-50 pt-24 pb-8 px-6 pointer-events-none">
+        <div className="w-full pointer-events-auto">
+          <h1 className="text-5xl md:text-7xl font-[family-name:var(--font-display)] italic font-light mb-6">
+            Gallery
+          </h1>
+        </div>
+      </div>
+
+      {/* Loading Overlay */}
+      <AnimatePresence>
+        {isLoading && (
+          <motion.div
+            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            animate={{ opacity: 1, backdropFilter: "blur(24px)" }}
+            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="absolute inset-0 z-20 bg-black/50"
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Tutorial Overlay */}
+      <AnimatePresence>
+        {showTutorial && !isLoading && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={dismissTutorial}
+            className="fixed inset-0 z-[90] flex flex-col items-center justify-start pt-32 bg-black/80 backdrop-blur-sm cursor-pointer"
+          >
+            <div className="relative mt-8 max-w-sm text-center px-6">
+              <div className="mb-4 flex justify-center translate-x-16 -translate-y-4">
+                <svg width="80" height="110" viewBox="0 0 80 110" fill="none" className="text-white opacity-80 animate-[pulse_2s_ease-in-out_infinite]" style={{ filter: 'drop-shadow(0px 0px 8px rgba(255,255,255,0.6))' }}>
+                  {/* Hand-drawn style S-curving arrow pointing up-right */}
+                  <path d="M10 100 C 20 60, 70 60, 65 10" stroke="currentColor" strokeWidth="3.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M45 25 L 65 10 L 80 25" stroke="currentColor" strokeWidth="3.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+              <h2 className="text-3xl font-display italic font-bold text-white mb-3">Change Categories Here</h2>
+              <p className="text-white/70 text-sm md:text-base leading-relaxed">
+                Click the category button in the navigation bar above to explore different photo collections.
+                <br /><br />
+                <span className="opacity-50">Tap anywhere to continue</span>
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Infinite Looping Gallery */}
+      <div className="h-full w-full px-4 md:px-8 flex gap-4 md:gap-6 relative z-10">
+        {cols.map((colItems, colIndex) => (
+          <LoopingColumn
+            key={`${displayCategory}-${colIndex}`}
+            items={colItems}
+            speed={speeds[colIndex]}
+            scrollY={scrollY}
+            onProjectClick={setSelectedProject}
+          />
+        ))}
+      </div>
+
+      {/* Project Modal */}
+      {createPortal(
+        <AnimatePresence>
+          {selectedProject && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[9999] flex items-center justify-center px-4 bg-black/80 backdrop-blur-sm"
+              onClick={() => setSelectedProject(null)}
+            >
+              <motion.div
+                initial={{ scale: 0.9, y: 20, opacity: 0 }}
+                animate={{ scale: 1, y: 0, opacity: 1 }}
+                exit={{ scale: 0.9, y: 20, opacity: 0 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                className={`relative rounded-xl md:rounded-3xl overflow-hidden shadow-2xl flex ${
+                  pocariImageUrls.has(selectedProject.img)
+                    ? 'flex-col md:flex-row max-w-[95vw] max-h-[90vh] bg-[#0a0a0a] border border-white/10'
+                    : 'flex-col max-w-[95vw] max-h-[95vh] group'
+                }`}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Image */}
+                <div className={`relative flex items-center justify-center bg-[#050505] ${
+                  pocariImageUrls.has(selectedProject.img) ? 'flex-1 min-h-[40vh] md:min-h-0' : ''
+                }`}>
+                  <img
+                    src={selectedProject.img}
+                    alt={selectedProject.title}
+                    className={pocariImageUrls.has(selectedProject.img)
+                      ? 'max-w-full max-h-[50vh] md:max-h-[90vh] w-auto h-auto object-contain block'
+                      : 'max-w-full max-h-[95vh] object-contain block'
+                    }
+                    referrerPolicy="no-referrer"
+                  />
+                  {!pocariImageUrls.has(selectedProject.img) && (
+                    <>
+                      <button
+                        onClick={() => setSelectedProject(null)}
+                        className="absolute top-4 right-4 p-2 rounded-full bg-black/50 backdrop-blur-md hover:bg-white/20 text-white transition-colors border border-white/10 z-10 md:opacity-0 group-hover:opacity-100"
+                      >
+                        <X size={20} />
+                      </button>
+                      <div className="absolute bottom-0 left-0 w-full p-6 md:p-8 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none md:opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <h3 className="text-2xl md:text-3xl font-bold text-white drop-shadow-lg">{selectedProject.title}</h3>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                {/* Detail Panel — only for confirmed Pocari photos */}
+                {pocariImageUrls.has(selectedProject.img) && (
+                  <div className="w-full md:w-[420px] p-8 md:p-10 flex flex-col overflow-y-auto shrink-0 border-t md:border-t-0 md:border-l border-white/10">
+                    <div className="flex justify-between items-start mb-8">
+                      <div>
+                        <p className="text-blue-400 text-sm font-medium mb-2 tracking-widest uppercase">Photography</p>
+                        <h3 className="text-2xl md:text-3xl font-bold text-white leading-tight">Event Photography</h3>
+                      </div>
+                      <button
+                        onClick={() => setSelectedProject(null)}
+                        className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors border border-white/10 shrink-0 ml-4"
+                      >
+                        <X size={20} />
+                      </button>
+                    </div>
+
+                    {/* Meta grid */}
+                    <div className="grid grid-cols-2 gap-4 mb-8 pb-8 border-b border-white/10">
+                      <div>
+                        <p className="text-white/30 text-xs uppercase tracking-widest mb-1">Date</p>
+                        <p className="text-white font-medium">{eventProjectInfo.date}</p>
+                      </div>
+                      <div>
+                        <p className="text-white/30 text-xs uppercase tracking-widest mb-1">City</p>
+                        <p className="text-white font-medium">{eventProjectInfo.city}</p>
+                      </div>
+                      <div className="col-span-2">
+                        <p className="text-white/30 text-xs uppercase tracking-widest mb-1">Project Duration</p>
+                        <p className="text-white font-medium">{eventProjectInfo.duration}</p>
+                      </div>
+                    </div>
+
+                    <div className="mb-8">
+                      <h4 className="text-sm uppercase tracking-widest text-white/50 mb-3">Description</h4>
+                      <p className="text-white/80 font-light leading-relaxed">{eventProjectInfo.description}</p>
+                    </div>
+
+                    <div className="mt-auto">
+                      <h4 className="text-sm uppercase tracking-widest text-white/50 mb-3">Tools Used</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {eventProjectInfo.tools.map((tool, i) => (
+                          <span key={i} className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white/70 text-sm">
+                            {tool}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
+    </div>
+  );
+};
+
+export default PortfolioGallery;
