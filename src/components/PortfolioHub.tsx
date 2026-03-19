@@ -15,8 +15,8 @@ const PortfolioHub = () => {
         { title: "Videography", path: "/videography", icon: Film, color: "blue" },
         { title: "Photography", path: "/gallery", icon: ImageIcon, color: "purple" },
         { title: "Motion Graphics", path: "/motion", icon: MonitorPlay, color: "cyan" },
-        { title: "Behind The Scenes", path: "#", icon: Clapperboard, color: "amber" },
-        { title: "Design", path: "#", icon: PenTool, color: "emerald" },
+        { title: "Behind The Scenes", path: "/bts", icon: Clapperboard, color: "amber" },
+        { title: "Design", path: "/design", icon: PenTool, color: "emerald" },
     ];
 
     const containerVariants = {

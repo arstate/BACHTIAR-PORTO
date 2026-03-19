@@ -19,6 +19,8 @@ import PortfolioGallery from './components/PortfolioGallery';
 import PortfolioHub from './components/PortfolioHub';
 import PortfolioPage from './components/PortfolioPage';
 import MotionPage from './components/MotionPage';
+import BTSPage from './components/BTSPage';
+import DesignPage from './components/DesignPage';
 import PageTransitionOverlay from './components/PageTransitionOverlay';
 import CustomScrollbar from './components/CustomScrollbar';
 
@@ -111,6 +113,8 @@ export default function App() {
           <Route path="/gallery" element={<PortfolioGallery />} />
           <Route path="/videography" element={<PortfolioPage />} />
           <Route path="/motion" element={<MotionPage />} />
+          <Route path="/bts" element={<BTSPage />} />
+          <Route path="/design" element={<DesignPage />} />
         </Routes>
       </div>
     </Router>
