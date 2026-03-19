@@ -18,6 +18,7 @@ import ThreeDCamera from './components/ThreeDCamera';
 import PortfolioGallery from './components/PortfolioGallery';
 import PortfolioHub from './components/PortfolioHub';
 import PortfolioPage from './components/PortfolioPage';
+import MotionPage from './components/MotionPage';
 import PageTransitionOverlay from './components/PageTransitionOverlay';
 import CustomScrollbar from './components/CustomScrollbar';
 
@@ -109,6 +110,7 @@ export default function App() {
           <Route path="/portfolio" element={<PortfolioHub />} />
           <Route path="/gallery" element={<PortfolioGallery />} />
           <Route path="/videography" element={<PortfolioPage />} />
+          <Route path="/motion" element={<MotionPage />} />
         </Routes>
       </div>
     </Router>
