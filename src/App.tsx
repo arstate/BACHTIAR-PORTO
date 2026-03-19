@@ -11,6 +11,7 @@ import Experience from './components/Experience';
 import Skills from './components/Skills';
 import Portfolio from './components/Portfolio';
 import Clients from './components/Clients';
+import ContactForm from './components/ContactForm';
 import Footer from './components/Footer';
 import LazySection from './components/LazySection';
 import ThreeDCamera from './components/ThreeDCamera';
@@ -55,8 +56,14 @@ function Home() {
         </ThreeDCamera>
       </LazySection>
 
-      <LazySection id="footer-section" placeholderHeight="50vh" className="relative z-20 overflow-hidden">
+      <LazySection id="contact-form-section" placeholderHeight="50vh" className="relative z-20 overflow-hidden">
         <ThreeDCamera index={5}>
+          <ContactForm />
+        </ThreeDCamera>
+      </LazySection>
+
+      <LazySection id="footer-section" placeholderHeight="50vh" className="relative z-20 overflow-hidden">
+        <ThreeDCamera index={6}>
           <Footer />
         </ThreeDCamera>
       </LazySection>
