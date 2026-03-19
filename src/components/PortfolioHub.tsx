@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Film, Image as ImageIcon, ArrowLeft, Clapperboard, PenTool, MonitorPlay } from 'lucide-react';
 import { navigateWithTransition } from './PageTransitionOverlay';
+import YouTubeBackground from './YouTubeBackground';
 
 const MotionLink = motion.create(Link);
 
@@ -89,13 +90,16 @@ const PortfolioHub = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#050505] text-white flex flex-col md:justify-center items-center px-6 pt-32 pb-16 md:pt-0 relative overflow-y-auto">
+        <div className="min-h-screen bg-transparent text-white flex flex-col md:justify-center items-center px-6 pt-32 pb-16 md:pt-0 relative overflow-hidden">
+            {/* YouTube Background Video */}
+            <YouTubeBackground videoId="-G_Ln2Z3Rgw" overlayOpacity={0.7} />
+
             <motion.button
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
                 onClick={() => navigate('/')}
-                className="absolute top-6 left-6 md:top-8 md:left-8 py-2 px-4 flex items-center gap-2 hover:bg-white/10 rounded-full transition-colors z-[100] bg-white/5 border border-white/10 backdrop-blur-md"
+                className="fixed top-6 left-6 md:top-8 md:left-8 py-2 px-4 flex items-center gap-2 hover:bg-white/10 rounded-full transition-colors z-[100] bg-white/5 border border-white/10 backdrop-blur-md"
             >
                 <ArrowLeft size={20} />
                 <span className="text-sm font-medium tracking-widest uppercase">Back</span>
@@ -105,7 +109,7 @@ const PortfolioHub = () => {
                 initial={{ y: -20, opacity: 0, filter: 'blur(10px)' }}
                 animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
                 transition={{ duration: 1, delay: 0.05 }}
-                className="text-5xl md:text-7xl font-[family-name:var(--font-display)] italic font-light mb-10 md:mb-16 text-center z-10"
+                className="text-5xl md:text-7xl font-[family-name:var(--font-display)] italic font-light mb-10 md:mb-16 text-center z-50 drop-shadow-2xl"
             >
                 Choose Category
             </motion.h1>
@@ -114,7 +118,7 @@ const PortfolioHub = () => {
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8 w-full max-w-[95rem] z-10 px-4 md:px-12"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8 w-full max-w-[95rem] z-50 px-4 md:px-12"
             >
                 {categories.map((cat, idx) => (
                     <MotionLink
@@ -123,7 +127,7 @@ const PortfolioHub = () => {
                         to={cat.path}
                         onClick={(e) => handleCategoryClick(e, cat.path, idx)}
                         animate={isNavigating ? (clickedIndex === idx ? "clicked" : "fadeOut") : undefined}
-                        className="group relative overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 hover:border-white/30 transition-all duration-500 aspect-[16/10] sm:aspect-square lg:aspect-[4/5] flex flex-col items-center justify-center gap-4 lg:gap-8 p-6"
+                        className="group relative overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 hover:border-white/30 backdrop-blur-xl transition-all duration-500 aspect-[16/10] sm:aspect-square lg:aspect-[4/5] flex flex-col items-center justify-center gap-4 lg:gap-8 p-6"
                     >
                         {/* Glow Background */}
                         <div className={`absolute inset-0 ${colors[cat.color]} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-3xl rounded-full`} />
@@ -156,9 +160,6 @@ const PortfolioHub = () => {
                     </MotionLink>
                 ))}
             </motion.div>
-
-            {/* Decorative Background gradient */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_60%)] pointer-events-none" />
         </div>
     );
 };

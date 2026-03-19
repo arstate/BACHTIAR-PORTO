@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, Play } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import FloatingNavbar from './FloatingNavbar';
 
 const BTSPage = () => {
   const navigate = useNavigate();
@@ -94,6 +95,8 @@ const BTSPage = () => {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white relative overflow-hidden">
+      <FloatingNavbar />
+      
       {/* Animated Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-amber-900/10 via-transparent to-orange-900/10" />
       
@@ -103,18 +106,6 @@ const BTSPage = () => {
         transition={{ duration: 3, repeat: Infinity, ease: "linear", repeatDelay: 2 }}
         className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/[0.03] to-transparent pointer-events-none"
       />
-
-      {/* Back Button */}
-      <motion.button
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.3 }}
-        onClick={() => navigate('/portfolio')}
-        className="fixed top-6 left-6 z-50 py-3 px-6 flex items-center gap-3 hover:bg-white/10 rounded-full transition-all duration-300 bg-white/5 border border-white/10 backdrop-blur-md group"
-      >
-        <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-        <span className="text-sm font-medium tracking-widest uppercase">Back</span>
-      </motion.button>
 
       <div className="relative z-10 container mx-auto px-6 py-32">
         {/* Header */}

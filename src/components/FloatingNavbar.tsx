@@ -15,8 +15,11 @@ const FloatingNavbar = () => {
 
   const isGalleryPage = location.pathname === '/gallery';
   const isVideographyPage = location.pathname === '/videography';
+  const isMotionPage = location.pathname === '/motion';
+  const isBTSPage = location.pathname === '/bts';
+  const isDesignPage = location.pathname === '/design';
   const isHubPage = location.pathname === '/portfolio';
-  const isDropdownPage = isGalleryPage || isVideographyPage;
+  const isDropdownPage = isGalleryPage || isVideographyPage || isMotionPage || isBTSPage || isDesignPage;
 
   const [activeCategory, setActiveCategory] = useState('All');
   const [isTutorialActive, setIsTutorialActive] = useState(false);
@@ -110,7 +113,32 @@ const FloatingNavbar = () => {
     { name: 'Wedding', href: '#wedding' },
   ];
 
-  const activeNavLinks = isVideographyPage ? videographyNavLinks : galleryNavLinks;
+  const motionNavLinks = [
+    { name: 'All', href: '#all' },
+    { name: 'Animation', href: '#animation' },
+    { name: 'VFX', href: '#vfx' },
+    { name: 'Title Design', href: '#title-design' },
+  ];
+
+  const btsNavLinks = [
+    { name: 'All', href: '#all' },
+    { name: 'Photoshoot', href: '#photoshoot' },
+    { name: 'Videography', href: '#videography' },
+    { name: 'Events', href: '#events' },
+  ];
+
+  const designNavLinks = [
+    { name: 'All', href: '#all' },
+    { name: 'Posters', href: '#posters' },
+    { name: 'Logos', href: '#logos' },
+    { name: 'Social Media', href: '#social-media' },
+  ];
+
+  const activeNavLinks = isVideographyPage ? videographyNavLinks : 
+                         isMotionPage ? motionNavLinks :
+                         isBTSPage ? btsNavLinks :
+                         isDesignPage ? designNavLinks :
+                         galleryNavLinks;
 
   const handleScroll = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, href: string) => {
     if (isDropdownPage && href.startsWith('#')) {
@@ -176,12 +204,24 @@ const FloatingNavbar = () => {
                     window.dispatchEvent(new Event('dismissGalleryTutorial'));
                  }
               }}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-all z-10 relative"
+              className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/20 hover:border-white/40 transition-all duration-500 z-10 relative overflow-hidden group"
             >
-              <span className="text-[10px] md:text-sm font-medium text-white uppercase tracking-wide">
+              {/* Shimmer/White Light Effect */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 pointer-events-none"
+                initial={{ x: '-150%' }}
+                animate={{ x: '150%' }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  repeatDelay: 3,
+                  ease: "easeInOut"
+                }}
+              />
+              <span className="text-[10px] md:text-sm font-medium text-white uppercase tracking-wide relative z-10">
                 {activeCategory}
               </span>
-              <ChevronDown size={14} className={`text-white/50 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown size={14} className={`text-white/50 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''} relative z-10`} />
             </button>
             {isTutorialActive && (
               <div className="absolute inset-[-6px] rounded-full border-2 border-white/80 animate-[pulse_1.5s_ease-in-out_infinite] pointer-events-none z-0"></div>
@@ -230,13 +270,34 @@ const FloatingNavbar = () => {
       )}
 
       {!isDropdownPage && (
-        <a
-          href="#contact-form-section"
-          onClick={(e) => handleScroll(e, '#contact-form-section')}
-          className="text-[10px] md:text-sm font-medium text-black bg-white px-3 md:px-4 py-1.5 md:py-2 rounded-full hover:scale-105 transition-transform tracking-wide uppercase"
-        >
-          Let's Talk
-        </a>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate('/portfolio')}
+            className="text-[10px] md:text-sm font-medium text-white/80 hover:text-white bg-white/10 hover:bg-white/20 px-3 md:px-4 py-1.5 md:py-2 rounded-full transition-all tracking-wide uppercase border border-white/10 hover:border-white/30 relative overflow-hidden group"
+          >
+            {/* Shimmer/White Light Effect */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 pointer-events-none"
+              initial={{ x: '-150%' }}
+              animate={{ x: '150%' }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatDelay: 3,
+                ease: "easeInOut"
+              }}
+            />
+            <span className="relative z-10">My Project</span>
+          </button>
+          
+          <a
+            href="#contact-form-section"
+            onClick={(e) => handleScroll(e, '#contact-form-section')}
+            className="text-[10px] md:text-sm font-medium text-black bg-white px-3 md:px-4 py-1.5 md:py-2 rounded-full hover:scale-105 transition-transform tracking-wide uppercase"
+          >
+            Let's Talk
+          </a>
+        </div>
       )}
     </motion.nav>
   );
