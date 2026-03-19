@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => {
 
           server.middlewares.use('/_git_push', (req, res) => {
             res.setHeader('Access-Control-Allow-Origin', '*');
-            exec('git add . && git commit -m "chore: auto sync from preview" ; git push -f origin HEAD', (err, stdout, stderr) => {
+            exec('git add . && git commit -m "chore: auto sync from preview" ; git push -f origin HEAD:main', (err, stdout, stderr) => {
               res.writeHead(200, { 'Content-Type': 'application/json' });
               res.end(JSON.stringify({ success: !err, output: stdout + (stderr || '') }));
             });
