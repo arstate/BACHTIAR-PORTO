@@ -12,7 +12,7 @@ const ScrambleText = ({ text, className }: { text: string; className?: string })
     let frameId: number;
     let iteration = 0;
     const maxIterations = 15;
-    
+
     setIsScrambling(true);
 
     const scramble = () => {
@@ -202,22 +202,25 @@ const Clients = () => {
         </motion.div>
       </div>
 
-      <div 
+      <div
         className="relative flex py-8 mb-32"
         style={{ maskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)' }}
       >
-        <motion.div 
+        <motion.div
           className="flex gap-8 md:gap-12 pr-8 md:pr-12 items-center"
           animate={{ x: "-50%" }}
           transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
         >
           {[...clients, ...clients].map((logo, i) => (
             <div key={i} className="flex-shrink-0 group">
-              <div className="w-28 h-28 md:w-40 md:h-40 rounded-2xl bg-white flex items-center justify-center p-2 md:p-4 group-hover:scale-105 transition-all duration-500" style={{ boxShadow: '0 0 0 1px rgba(99,102,241,0.5), 0 0 30px 8px rgba(59,130,246,0.45), 0 8px 24px rgba(0,0,0,0.6)' }}>
-                <img 
-                  src={logo} 
-                  alt="Client Logo" 
-                  className="w-full h-full object-contain group-hover:scale-110 transition-all duration-500"
+              <div
+                className="w-28 h-28 md:w-40 md:h-40 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center p-2 md:p-4 group-hover:scale-105 group-hover:bg-white group-hover:border-transparent transition-all duration-500"
+                style={{ boxShadow: '0 0 0 1px rgba(99,102,241,0.5), 0 0 30px 8px rgba(59,130,246,0.45), 0 8px 24px rgba(0,0,0,0.6)' }}
+              >
+                <img
+                  src={logo}
+                  alt="Client Logo"
+                  className="w-full h-full object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"
                   loading="lazy"
                   referrerPolicy="no-referrer"
                 />
@@ -254,12 +257,12 @@ const Clients = () => {
               <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
                 <Quote size={64} className="text-blue-400" />
               </div>
-              
+
               <div className="relative z-10 flex flex-col h-full">
                 <div className="text-white/80 font-light leading-relaxed mb-8 italic text-lg line-clamp-4">
                   "<ScrambleText text={testimonial.quote} />"
                 </div>
-                
+
                 <div className="mt-auto pt-6 border-t border-white/10">
                   <h4 className="text-white font-medium text-lg">
                     <ScrambleText text={testimonial.name} />
