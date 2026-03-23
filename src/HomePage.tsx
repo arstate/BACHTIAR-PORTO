@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import Lenis from 'lenis';
 
-import CustomCursor from './components/CustomCursor';
 import Background from './components/Background';
 import FloatingNavbar from './components/FloatingNavbar';
 import Hero from './components/Hero';
@@ -40,7 +39,6 @@ export default function HomePage() {
 
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden selection:bg-blue-500/30 selection:text-white">
-      <CustomCursor />
       <FloatingNavbar />
       <Background />
       <Hero />
