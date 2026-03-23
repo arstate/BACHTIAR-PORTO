@@ -11,7 +11,7 @@ This document contains the web version documentation for the **Bachtiar Aryansya
 | Field | Details |
 |-------|---------|
 | **Project Name** | Bachtiar Aryansyah Putra Portfolio |
-| **Version** | 0.0.0 |
+| **Version** | 1.0.0 |
 | **Type** | Personal Portfolio & Creative Showcase |
 | **Framework** | React 19 + Vite |
 | **Styling** | Tailwind CSS v4 |
@@ -234,5 +234,7 @@ This project is private and proprietary. All rights reserved.
 - **Latest Commit**: 4022a5c
 
 ---
+
+**Release Version:** 1.0.0
 
 *Document generated: 2026-03-23*
