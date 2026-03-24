@@ -91,8 +91,8 @@ const PortfolioHub = () => {
 
     return (
         <div className="min-h-screen bg-transparent text-white flex flex-col md:justify-center items-center px-6 pt-32 pb-16 md:pt-0 relative overflow-hidden">
-            {/* YouTube Background Video */}
-            <YouTubeBackground videoId="-G_Ln2Z3Rgw" overlayOpacity={0.7} />
+            {/* YouTube Background Video - Localized to this component for performance */}
+            <YouTubeBackground videoId="-G_Ln2Z3Rgw" overlayOpacity={0.8} />
 
             <motion.button
                 initial={{ opacity: 0, x: -20 }}
