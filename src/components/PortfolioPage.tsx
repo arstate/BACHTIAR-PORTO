@@ -261,7 +261,7 @@ const ManualRow: React.FC<{ cat: string; onSelectVideo: (data: any) => void }> =
 };
 
 const PortfolioPage = () => {
-  const categories = ["Ads", "Angkatan", "Corporate/Event", "Prewedding", "Wedding"];
+  const categories = ["Ads", "Angkatan", "Corporate/Event", "Prewedding", "Wedding", "Wisuda"];
   const location = useLocation();
   const [activeCategory, setActiveCategory] = useState("All");
   const [selectedVideo, setSelectedVideo] = useState<any | null>(null);

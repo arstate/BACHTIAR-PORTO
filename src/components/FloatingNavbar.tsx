@@ -110,6 +110,7 @@ const FloatingNavbar = () => {
     { name: 'Corporate/Event', href: '#corporate/event' },
     { name: 'Prewedding', href: '#prewedding' },
     { name: 'Wedding', href: '#wedding' },
+    { name: 'Wisuda', href: '#wisuda' },
   ];
 
   const motionNavLinks = [
