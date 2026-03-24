@@ -14,38 +14,33 @@ const ThreeDCamera = ({ children, className = "", index = 0 }: ThreeDCameraProps
     offset: ["start end", "end start"]
   });
 
-  // Optimized spring configuration for balanced smoothness and responsiveness
-  const smoothProgress = useSpring(scrollYProgress, { damping: 40, stiffness: 60, mass: 1 });
+  // Removed useSpring entirely! 7 simultaneous physics engines running on scroll 
+  // causes a pure JS main-thread bottleneck (1 CPU core maxed at 20%), destroying scroll performance.
 
   // Varied rotations based on index (even/odd)
   const isEven = index % 2 === 0;
 
-  // Increased rotation intensity for a more noticeable 3D effect
-  // Rotates in, stabilizes in center, rotates out
+  // Direct mapping to scrollYProgress (Hardware/Compositor friendly)
   const rotateX = useTransform(
-    smoothProgress, 
+    scrollYProgress, 
     [0, 0.2, 0.5, 0.8, 1], 
     [20, 8, 0, -8, -20]
   );
   
   const rotateY = useTransform(
-    smoothProgress, 
+    scrollYProgress, 
     [0, 0.5, 1], 
     isEven ? [-12, 0, 12] : [12, 0, -12]
   );
 
-  // Re-introduced subtle Z-rotation for organic feel
   const rotateZ = useTransform(
-    smoothProgress, 
+    scrollYProgress, 
     [0, 0.5, 1], 
     isEven ? [-3, 0, 3] : [3, 0, -3]
   );
 
-  // Stronger scale effect for depth
-  const scale = useTransform(smoothProgress, [0, 0.5, 1], [0.85, 1, 0.85]);
-  
-  // Smoother opacity transition
-  const opacity = useTransform(smoothProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.85, 1, 0.85]);
+  const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
 
   return (
     <div 
@@ -66,7 +61,7 @@ const ThreeDCamera = ({ children, className = "", index = 0 }: ThreeDCameraProps
           // Removed transformStyle: "preserve-3d" for massive performance boost.
           // The parent is rotated in 3D, but children are flattened to a single texture.
         }}
-        className="w-full h-full origin-center will-change-transform"
+        className="w-full h-full origin-center"
       >
         <div className="w-full h-full"> 
           {children}

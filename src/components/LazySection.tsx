@@ -38,9 +38,14 @@ const LazySection = ({ children, className = "", id = "", placeholderHeight = "5
       ref={ref} 
       className={className} 
       id={id}
-      style={{ minHeight: height }}
+      style={{ 
+        minHeight: height,
+        contentVisibility: "auto",
+        containIntrinsicSize: `auto ${typeof height === 'number' ? height + 'px' : height}`
+      }}
     >
-      {isInView ? children : null}
+      {/* Kept mounted to prevent layout thrashing on scroll! */}
+      {(hasLoaded || isInView) ? children : null}
     </div>
   );
 };

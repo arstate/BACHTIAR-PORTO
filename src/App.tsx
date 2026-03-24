@@ -85,15 +85,18 @@ export default function App() {
       touchMultiplier: 2,
     });
 
+    let reqId: number;
+
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      reqId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    reqId = requestAnimationFrame(raf);
 
     return () => {
       lenis.destroy();
+      cancelAnimationFrame(reqId);
     };
   }, []);
 
