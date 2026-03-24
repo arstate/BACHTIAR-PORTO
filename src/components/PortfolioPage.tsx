@@ -115,7 +115,10 @@ const VideoCard: React.FC<{ group: any; cat: string; i: number; onSelectVideo: (
 const ManualRow: React.FC<{ cat: string; onSelectVideo: (data: any) => void }> = ({ cat, onSelectVideo }) => {
   const db = getDatabase();
   const videographyDb = db['videography'] || {};
-  let dbItems = videographyDb[cat.toLowerCase()] || [];
+  
+  // Map category names to database keys
+  const dbKey = cat.toLowerCase().replace('/event', '');
+  let dbItems = videographyDb[dbKey] || [];
 
   const groupedItemsMap = new Map<string, any>();
   dbItems.forEach((item: string) => {
@@ -258,7 +261,7 @@ const ManualRow: React.FC<{ cat: string; onSelectVideo: (data: any) => void }> =
 };
 
 const PortfolioPage = () => {
-  const categories = ["Ads", "Angkatan", "Corporate", "Konser", "Prewedding", "Wedding"];
+  const categories = ["Ads", "Angkatan", "Corporate/Event", "Prewedding", "Wedding"];
   const location = useLocation();
   const [activeCategory, setActiveCategory] = useState("All");
   const [selectedVideo, setSelectedVideo] = useState<any | null>(null);
@@ -279,7 +282,14 @@ const PortfolioPage = () => {
   useEffect(() => {
     const hash = location.hash.replace('#', '');
     if (hash) {
-      const category = hash.charAt(0).toUpperCase() + hash.slice(1);
+      // Handle special category names with slashes
+      let category = hash;
+      if (hash.includes('/')) {
+        category = hash.split('/').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join('/');
+      } else {
+        category = hash.charAt(0).toUpperCase() + hash.slice(1);
+      }
+      
       if (categories.includes(category)) {
         setActiveCategory(category);
       } else {

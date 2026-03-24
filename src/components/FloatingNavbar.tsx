@@ -46,7 +46,7 @@ const FloatingNavbar = () => {
         setActiveCategory(category);
       } else {
         if (isGalleryPage) {
-          setActiveCategory('Konser');
+          setActiveCategory('All');
         } else {
           setActiveCategory('All');
         }
@@ -107,8 +107,7 @@ const FloatingNavbar = () => {
     { name: 'All', href: '#all' },
     { name: 'Ads', href: '#ads' },
     { name: 'Angkatan', href: '#angkatan' },
-    { name: 'Corporate', href: '#corporate' },
-    { name: 'Konser', href: '#konser' },
+    { name: 'Corporate/Event', href: '#corporate/event' },
     { name: 'Prewedding', href: '#prewedding' },
     { name: 'Wedding', href: '#wedding' },
   ];

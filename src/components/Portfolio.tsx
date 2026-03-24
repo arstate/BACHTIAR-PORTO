@@ -56,10 +56,10 @@ const Portfolio = () => {
       brief: "A professional wedding photography capturing the emotional journey of the couple's special day. Focus on storytelling, candid moments, and elegant aesthetics.",
       tools: ["Sony A7II", "Sony A7SII", "Lightroom", "Photoshop"]
     },
-    { 
-      title: "Konser", 
-      category: "Documentation", 
-      img: "https://github.com/user-attachments/assets/43b6911a-a5a9-4ebe-b05b-0f11912f46cb", 
+    {
+      title: "Videography",
+      category: "Documentation",
+      img: "https://github.com/user-attachments/assets/43b6911a-a5a9-4ebe-b05b-0f11912f46cb",
       images: [
         "https://github.com/user-attachments/assets/43b6911a-a5a9-4ebe-b05b-0f11912f46cb",
         "https://github.com/user-attachments/assets/61987ca9-96c2-4e28-bb8a-1b7d510f7e00",
@@ -68,7 +68,7 @@ const Portfolio = () => {
         "https://github.com/user-attachments/assets/5ba43c16-ca93-41d2-89aa-5936f7e353e6"
       ],
       span: "md:col-span-2 md:row-span-1",
-      brief: "Professional concert documentation capturing the energy and atmosphere of live performances. High-quality visuals synced with the rhythm of the night.",
+      brief: "Professional videography documentation capturing the energy and atmosphere of live events. High-quality visuals synced with the rhythm of the moment.",
       tools: ["Sony A7II", "Sony A7SII", "DJI Ronin", "Premiere Pro"]
     },
     { 

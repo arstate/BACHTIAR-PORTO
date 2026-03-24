@@ -4,12 +4,11 @@ import { Video, X } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { useLocation } from 'react-router-dom';
 
-const categories = ['All', 'Animals', 'Event', 'Graduation', 'Konser', 'Landscape', 'Prewedding', 'Wedding', 'Yearbook'];
+const categories = ['All', 'Animals', 'Event', 'Graduation', 'Landscape', 'Prewedding', 'Wedding', 'Yearbook'];
 import { getDatabase } from '../utils/database';
 
 const db = getDatabase();
 const photographyDb = db['photography'] || {};
-const konserUrls = photographyDb['konser'] || [];
 const graduationUrls = photographyDb['graduation'] || [];
 const weddingUrls = photographyDb['wedding'] || [];
 const eventUrls = photographyDb['event'] || [];
@@ -19,12 +18,6 @@ const yearbookUrls = photographyDb['yearbook'] || [];
 const landscapeUrls = photographyDb['landscape'] || [];
 
 const galleryItems = [
-  ...konserUrls.map((url, i) => ({
-    id: `konser-${i}`,
-    title: 'Konser',
-    category: 'Konser',
-    img: url,
-  })),
   ...graduationUrls.map((url, i) => ({
     id: `graduation-${i}`,
     title: 'Graduation',
@@ -184,7 +177,7 @@ const LoopingColumn = ({ items, speed, scrollY, onProjectClick }: { key?: string
 
 const PortfolioGallery = () => {
   const [activeCategory, setActiveCategory] = useState('');
-  const [displayCategory, setDisplayCategory] = useState('Konser');
+  const [displayCategory, setDisplayCategory] = useState('All');
   const [isLoading, setIsLoading] = useState(true);
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -292,7 +285,7 @@ const PortfolioGallery = () => {
 
   useEffect(() => {
     const hash = location.hash.replace('#', '');
-    let category = 'Konser';
+    let category = 'All';
     if (hash) {
       const parsedCat = hash.charAt(0).toUpperCase() + hash.slice(1);
       if (categories.includes(parsedCat)) {
