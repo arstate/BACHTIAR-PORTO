@@ -68,7 +68,7 @@ const CustomCursor = () => {
     <div className="fixed inset-0 z-[999999] pointer-events-none overflow-hidden">
       {/* 1. The Main Pointer Icon (Filled & Solid) */}
       <motion.div
-        className="absolute top-0 left-0 mix-blend-difference"
+        className="absolute top-0 left-0 drop-shadow-[0_0_2px_rgba(0,0,0,0.8)]"
         style={{ x: mouseX, y: mouseY, translateX: -2, translateY: -2 }}
         animate={{
           scale: isClicking ? 0.8 : 1,
@@ -113,7 +113,7 @@ const CustomCursor = () => {
 
       {/* 2. Trailing Aura / Loop (Stroke Only) */}
       <motion.div
-        className="absolute top-0 left-0 rounded-full border border-white/20 mix-blend-difference flex items-center justify-center p-1"
+        className="absolute top-0 left-0 rounded-full border border-white/30 drop-shadow-[0_0_2px_rgba(0,0,0,0.5)] flex items-center justify-center p-1"
         style={{
           x: smoothX,
           y: smoothY,

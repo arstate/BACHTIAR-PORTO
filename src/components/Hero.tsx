@@ -120,14 +120,14 @@ const Hero = () => {
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-20 mix-blend-screen"
+          className="absolute inset-0 w-full h-full object-cover opacity-20"
         >
           <source src="https://cdn.pixabay.com/video/2023/10/15/185090-874636939_large.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/80 to-[#050505]" />
 
-        <motion.div animate={{ rotate: 360 }} transition={{ duration: 100, repeat: Infinity, ease: "linear" }} className="w-[120vw] h-[120vw] md:w-[800px] md:h-[800px] border-[1px] border-white/10 rounded-full absolute border-dashed" />
-        <motion.div animate={{ rotate: -360 }} transition={{ duration: 80, repeat: Infinity, ease: "linear" }} className="w-[100vw] h-[100vw] md:w-[600px] md:h-[600px] border-[1px] border-white/10 rounded-full absolute" />
+        <motion.div animate={{ rotate: 360 }} transition={{ duration: 100, repeat: Infinity, ease: "linear" }} className="w-[120vw] h-[120vw] md:w-[800px] md:h-[800px] border-[1px] border-white/10 rounded-full absolute border-dashed will-change-transform" />
+        <motion.div animate={{ rotate: -360 }} transition={{ duration: 80, repeat: Infinity, ease: "linear" }} className="w-[100vw] h-[100vw] md:w-[600px] md:h-[600px] border-[1px] border-white/10 rounded-full absolute will-change-transform" />
 
         {/* Replaced animated blur with a performant static radial gradient */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.15)_0%,transparent_60%)] pointer-events-none" />

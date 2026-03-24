@@ -40,16 +40,7 @@ const LazySection = ({ children, className = "", id = "", placeholderHeight = "5
       id={id}
       style={{ minHeight: height }}
     >
-      {/* 
-        We keep rendering if:
-        1. It is currently in view (active or neighbor)
-        2. OR it hasn't loaded yet (first render) - though we could skip this if we want strict lazy loading
-           but keeping it ensures initial layout is correct before hydration/measurement.
-        
-        Actually, for "rendering when active only", we should unmount when !isInView.
-        But we need to keep the height.
-      */}
-      {(hasLoaded || isInView) ? children : null}
+      {isInView ? children : null}
     </div>
   );
 };

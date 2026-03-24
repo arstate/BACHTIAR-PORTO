@@ -50,7 +50,7 @@ const ThreeDCamera = ({ children, className = "", index = 0 }: ThreeDCameraProps
   return (
     <div 
       ref={ref} 
-      className={`perspective-[800px] w-full h-full ${className}`} // Ensure full size
+      className={`perspective-[1200px] w-full h-full ${className}`} // Relaxed perspective for less distortion
       style={{ 
         perspectiveOrigin: '50% 50%',
         position: 'relative' // Explicitly set position to fix "non-static" warning
@@ -63,22 +63,15 @@ const ThreeDCamera = ({ children, className = "", index = 0 }: ThreeDCameraProps
           rotateZ,
           scale,
           opacity,
-          transformStyle: "preserve-3d",
-          backfaceVisibility: "hidden",
+          // Removed transformStyle: "preserve-3d" for massive performance boost.
+          // The parent is rotated in 3D, but children are flattened to a single texture.
         }}
         className="w-full h-full origin-center will-change-transform"
       >
-        {/* Removed ambient floating animation to prevent frame drops/stuttering */}
-        <div className="transform-style-3d">
+        <div className="w-full h-full"> 
           {children}
         </div>
       </motion.div>
-      <style>{`
-        .transform-style-3d {
-          transform-style: preserve-3d;
-          backface-visibility: hidden;
-        }
-      `}</style>
     </div>
   );
 };

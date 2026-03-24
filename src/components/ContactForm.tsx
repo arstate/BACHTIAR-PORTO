@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from 'motion/react';
 import { Send, User, MessageSquare } from 'lucide-react';
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 const ContactForm = () => {
   const sectionRef = useRef(null);
@@ -51,13 +51,13 @@ const ContactForm = () => {
       ref={sectionRef}
       className="relative py-24 px-6 overflow-hidden z-10 w-full md:w-[140%] md:-ml-[20%] bg-[#050505]"
     >
-      {/* Doodle Background Pattern (WhatsApp-style) */}
+      {/* Doodle Background Pattern (WhatsApp-style) - Restructured for Performance */}
       <div
-        className="absolute inset-0 opacity-[0.05] pointer-events-none"
+        className="absolute inset-0 opacity-[0.05] pointer-events-none mix-blend-screen"
         style={{
           backgroundImage: `url('https://static.vecteezy.com/system/resources/thumbnails/053/159/944/small/social-media-doodle-background-seamless-pattern-repeat-icon-cute-vector.jpg')`,
-          backgroundSize: '600px auto',
-          filter: 'invert(1) brightness(1.5)',
+          backgroundSize: '300px auto',
+          // REMOVED 'filter: invert(1)' as it forces massive CPU overhead on scrolling images
         }}
       />
 
@@ -67,8 +67,8 @@ const ContactForm = () => {
         className="absolute inset-0 bg-gradient-to-b from-purple-900/5 via-transparent to-blue-900/5 pointer-events-none"
       />
 
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-[-20%] left-[10%] w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.15)_0%,transparent_60%)] pointer-events-none" />
+      <div className="absolute bottom-[-20%] right-[10%] w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,rgba(168,85,247,0.15)_0%,transparent_60%)] pointer-events-none" />
 
       <div className="max-w-4xl mx-auto relative z-10">
         <motion.div
