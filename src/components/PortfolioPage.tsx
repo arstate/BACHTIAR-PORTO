@@ -131,8 +131,8 @@ const ManualRow: React.FC<{ cat: string; onSelectVideo: (data: any) => void }> =
     const ytMatch = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i);
     if (ytMatch) url = `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1`;
     
-    // Extract labels like (Teaser), (Full), (Akad), (Resepsi D1)
-    const match = rawTitle.match(/^(.*?)\s*\((Teaser|Full|Akad|Resepsi.*?)\)$/i);
+    // Extract labels like (Teaser), (Full), (Akad), (Resepsi D1), (Highlight)
+    const match = rawTitle.match(/^(.*?)\s*\((Teaser|Full|Akad|Resepsi.*?|Highlight)\)$/i);
     let baseTitle = rawTitle;
     let label = "Video";
     if (match) {

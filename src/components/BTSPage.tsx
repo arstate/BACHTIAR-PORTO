@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowLeft, Heart, MessageCircle, Share2, Music, ChevronUp, X, Play, VolumeX, Link as LinkIcon, Check } from 'lucide-react';
+import { ArrowLeft, Heart, MessageCircle, Share2, Music, ChevronUp, ChevronDown, X, Play, VolumeX, Volume2, Link as LinkIcon, Check, MoreVertical, Maximize, Settings, Sparkles, IterationCcw } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 interface TikTokVideo {
@@ -214,6 +214,16 @@ const initialVideos: TikTokVideo[] = [
     likes: "22.4K",
     comments: "614",
     shares: "4.2K"
+  },
+  {
+    id: 17,
+    url: "https://res.cloudinary.com/dqwnhqjsq/video/upload/v1774460888/FLASH_WARNING_videoangkatansekolah_farewellparty_farewell_video..._7516811035978796344_gz6y17.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "FLASH WARNING ⚡️ Farewell Party vibes! 🎓✨ Ambil momen seru ini buat video angkatan yang ga akan terlupakan. Vibe lulusan 2024 emang beda! #farewell #graduation #flashwarning #videoangkatan",
+    song: "Intense Remix - Graduation Base",
+    likes: "158.4K",
+    comments: "8.2K",
+    shares: "24.1K"
   }
 ];
 
@@ -248,8 +258,23 @@ const BTSPage = () => {
     return shuffleArray(initialVideos, videoId);
   });
   const [showScrollHint, setShowScrollHint] = useState(false);
+  const [isAmbienceOn, setIsAmbienceOn] = useState(true);
+  const [isAutoScrollOn, setIsAutoScrollOn] = useState(false);
+  const [isMusicOn, setIsMusicOn] = useState(true);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const scrollHintShownRef = useRef(false);
   const isFetchingRef = useRef(false);
+
+  const handleVideoEnd = (index: number) => {
+    if (isAutoScrollOn && scrollContainerRef.current) {
+      const nextIndex = index + 1;
+      const container = scrollContainerRef.current;
+      container.scrollTo({
+        top: nextIndex * window.innerHeight,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   const handleVideoLoop = (index: number) => {
     // Only show scroll helper when the very first video finishes its first loop
@@ -325,13 +350,12 @@ const BTSPage = () => {
         </motion.div>
       )}
       
-      {/* 1 Floating Centered Pill Header */}
       {/* 
-        On Desktop, the video wrapper is centered but accompanied by a 64px width right sidebar.
-        This shifts the true center of the video 32px to the left of the screen center.
-        We adjust X translation to md:-translate-x-[calc(50%+32px)] to perfectly align with the video.
+        Floating Centered Pill Header
+        Now that we have balanced sidebars (left and right), 
+        the player's center is the same as the screen's center.
       */}
-      <div className="absolute top-8 md:top-12 left-1/2 -translate-x-1/2 md:-translate-x-[calc(50%+32px)] z-[100] flex items-center p-1.5 pr-6 bg-black/40 backdrop-blur-2xl rounded-full border border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.5)] pointer-events-auto transition-all duration-300 hover:bg-black/60 group/nav">
+      <div className="absolute top-8 md:top-12 left-1/2 -translate-x-1/2 z-[100] flex items-center p-1.5 pr-6 bg-black/40 backdrop-blur-2xl rounded-full border border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.5)] pointer-events-auto transition-all duration-300 hover:bg-black/60 group/nav">
         
         {/* Back Button */}
         <button 
@@ -369,27 +393,76 @@ const BTSPage = () => {
         // TikTok Swipe Container
         // data-lenis-prevent allows native mouse wheel / trackpad scrolling without Lenis hijacking it!
         <div 
+          ref={scrollContainerRef}
           onScroll={handleScroll}
           data-lenis-prevent="true"
           className="h-[100dvh] w-full snap-y snap-mandatory overflow-y-scroll no-scrollbar"
         >
           {feedVideos.map((video, index) => (
-            <VideoItem key={video.id} video={video} onVideoLoop={() => handleVideoLoop(index)} />
+            <VideoItem 
+              key={video.id} 
+              video={video} 
+              onVideoEnd={() => handleVideoEnd(index)}
+              onScrollUp={() => {
+                if (scrollContainerRef.current) {
+                  scrollContainerRef.current.scrollBy({ top: -window.innerHeight, behavior: 'smooth' });
+                }
+              }}
+              onScrollDown={() => {
+                if (scrollContainerRef.current) {
+                  scrollContainerRef.current.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+                }
+              }}
+              isAmbienceOn={isAmbienceOn}
+              setIsAmbienceOn={setIsAmbienceOn}
+              isAutoScrollOn={isAutoScrollOn}
+              setIsAutoScrollOn={setIsAutoScrollOn}
+              isMusicOn={isMusicOn}
+              setIsMusicOn={setIsMusicOn}
+            />
           ))}
         </div>
       )}
+
+      {/* Desktop Scroll Navigation Container (Red Boxes position) */}
+      {/* Removed from global - moved inside VideoItem for perfect symmetry */}
     </div>
   );
 };
 
 // Individual Video Component
-const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({ video, onVideoLoop }) => {
+const VideoItem: React.FC<{ 
+  video: TikTokVideo; 
+  onVideoEnd?: () => void;
+  onScrollUp?: () => void;
+  onScrollDown?: () => void;
+  isAmbienceOn: boolean;
+  setIsAmbienceOn: (v: boolean) => void;
+  isAutoScrollOn: boolean;
+  setIsAutoScrollOn: (v: boolean) => void;
+  isMusicOn: boolean;
+  setIsMusicOn: (v: boolean) => void;
+}> = ({ 
+  video, 
+  onVideoEnd, 
+  onScrollUp,
+  onScrollDown,
+  isAmbienceOn, 
+  setIsAmbienceOn, 
+  isAutoScrollOn, 
+  setIsAutoScrollOn, 
+  isMusicOn, 
+  setIsMusicOn 
+}) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const ambientRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showFollowPopup, setShowFollowPopup] = useState(false);
   const [showSharePopup, setShowSharePopup] = useState(false);
+  const [showSettingsMenu, setShowSettingsMenu] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isFallbackMuted, setIsFallbackMuted] = useState(false);
 
@@ -403,24 +476,22 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
         const cleanId = video.id.toString().split('-')[0];
         window.history.replaceState(null, '', `#/bts/${cleanId}`);
 
-        // Attempt to play unmuted. Browsers may block this if user hasn't clicked on the overall SPA yet
-        videoRef.current?.play().then(() => {
-          // Allowed by browser natively!
-          if (videoRef.current) videoRef.current.muted = false;
-          setIsFallbackMuted(false);
-          setIsPlaying(true);
-        }).catch((err) => {
-           console.warn("Autoplay blocked. User must interact first.", err);
-           // Optional: Fallback to muted autoplay
-           if (videoRef.current) {
-             videoRef.current.muted = true;
-             videoRef.current.play().catch(() => {});
-             setIsFallbackMuted(true);
-             setIsPlaying(true);
-           }
-        });
+        if (videoRef.current) {
+          videoRef.current.play().then(() => {
+            videoRef.current!.muted = !isMusicOn;
+            setIsFallbackMuted(false);
+            setIsPlaying(true);
+            ambientRef.current?.play().catch(()=>{});
+          }).catch(() => {
+            videoRef.current!.muted = true;
+            videoRef.current!.play().catch(() => {});
+            setIsFallbackMuted(true);
+            setIsPlaying(true);
+          });
+        }
       } else {
         videoRef.current?.pause();
+        ambientRef.current?.pause();
         setIsPlaying(false);
       }
     }, options);
@@ -435,10 +506,17 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
   }, []);
 
   const togglePlay = () => {
+    if (showSettingsMenu) {
+      setShowSettingsMenu(false);
+      return;
+    }
+    
     if (isFallbackMuted) {
       if (videoRef.current) {
-        videoRef.current.muted = false;
+        // If system blocked play, and user clicked, we try to unmute IF music is on
+        videoRef.current.muted = !isMusicOn;
         videoRef.current.play().catch(()=>{});
+        if (isAmbienceOn) ambientRef.current?.play().catch(()=>{});
       }
       setIsFallbackMuted(false);
       setIsPlaying(true);
@@ -447,30 +525,65 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
 
     if (isPlaying) {
       videoRef.current?.pause();
+      ambientRef.current?.pause();
       setIsPlaying(false);
     } else {
-      videoRef.current?.play().catch(()=>{});
+      if (videoRef.current) {
+        videoRef.current.muted = !isMusicOn;
+        videoRef.current.play().catch(()=>{});
+      }
+      if (isAmbienceOn) ambientRef.current?.play().catch(()=>{});
       setIsPlaying(true);
     }
+  };
+
+  const toggleFullscreen = () => {
+    if (!containerRef.current) return;
+    if (!document.fullscreenElement) {
+      containerRef.current.requestFullscreen().catch(err => {
+        console.error(`Error attempting to enable full-screen mode: ${err.message}`);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+    setShowSettingsMenu(false);
   };
 
   const handleTimeUpdate = () => {
     if (videoRef.current) {
       const { currentTime, duration } = videoRef.current;
+      
+      // Update ambient video to stay in sync
+      if (isAmbienceOn && ambientRef.current && Math.abs(ambientRef.current.currentTime - currentTime) > 0.3) {
+        ambientRef.current.currentTime = currentTime;
+      }
+
       if (duration > 0) {
         setProgress((currentTime / duration) * 100);
         
-        // Trigger loop callback right before the video restarts
+        // Trigger end callback right before the video finishes
         if (duration - currentTime < 0.2) {
-          if (onVideoLoop) onVideoLoop();
+          if (onVideoEnd) onVideoEnd();
         }
       }
     }
   };
 
+  // Sync Global Music state
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = !isMusicOn;
+    }
+    if (ambientRef.current) {
+      ambientRef.current.muted = true; // ambient is always silent
+    }
+  }, [isMusicOn]);
+
   return (
     <div className="h-[100dvh] w-full snap-start relative bg-black flex justify-center items-center overflow-hidden">
       
+
+
       {/* Follow Popup Modal */}
       <AnimatePresence>
         {showFollowPopup && (
@@ -590,10 +703,43 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
       </AnimatePresence>
 
       {/* Desktop Layout Wrapper: Centers video and side panel */}
-      <div className="w-full h-full md:h-[calc(100dvh-40px)] md:w-auto md:max-w-[70vw] relative flex items-end md:items-end justify-center">
+      <div className="w-full h-full md:h-[calc(100dvh-40px)] md:w-auto md:max-w-[75vw] relative flex items-end md:items-end justify-center">
         
+        {/* Desktop-Only Navigation Sidebar (Left side, MIRRORED to right sidebar) */}
+        <div className="hidden md:flex flex-col items-center justify-end h-full pb-8 pr-4 gap-4 w-16 shrink-0 z-20">
+          <button 
+            title="Video Sebelumnya"
+            onClick={(e) => { e.stopPropagation(); onScrollUp?.(); }}
+            className="w-12 h-12 rounded-2xl bg-white/5 hover:bg-white/10 backdrop-blur-3xl border border-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all active:scale-90 group shadow-lg"
+          >
+            <ChevronUp size={24} className="group-hover:-translate-y-0.5 transition-transform" />
+          </button>
+          
+          <button 
+            title="Video Selanjutnya"
+            onClick={(e) => { e.stopPropagation(); onScrollDown?.(); }}
+            className="w-12 h-12 rounded-2xl bg-white/5 hover:bg-white/10 backdrop-blur-3xl border border-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all active:scale-90 group shadow-lg"
+          >
+            <ChevronDown size={24} className="group-hover:translate-y-0.5 transition-transform" />
+          </button>
+        </div>
+
+        {/* Expanded Portrait Ambient Glow - Desktop Only */}
+        {isAmbienceOn && (
+          <div className="hidden md:block absolute md:w-[calc((100vh-40px)*9/16)] md:h-[calc(100vh-40px)] left-0 top-0 z-0 pointer-events-none opacity-[0.40] select-none">
+            <video
+              ref={ambientRef}
+              src={video.url}
+              muted
+              playsInline
+              loop
+              className="w-full h-full object-cover scale-x-[1.4] scale-y-[1.1] blur-[120px] saturate-[1.5] brightness-[0.9] transition-opacity duration-1000"
+            />
+          </div>
+        )}
+
         {/* Main Video Container (Rounded on Desktop) */}
-        <div className="w-[100vw] h-[100dvh] md:w-[calc((100vh-40px)*9/16)] md:h-[calc(100vh-40px)] relative bg-[#111] md:rounded-xl overflow-hidden shadow-2xl shrink-0 group">
+        <div ref={containerRef} className="w-[100vw] h-[100dvh] md:w-[calc((100vh-40px)*9/16)] md:h-[calc(100vh-40px)] relative bg-[#111] md:rounded-xl overflow-hidden shadow-2xl shrink-0 group z-10">
           
           <video
             ref={videoRef}
@@ -604,6 +750,95 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
             loop
             playsInline
           />
+
+          {/* Video Settings Button (3 dots) - MOBILE ONLY (Inside Video) */}
+          <div className="md:hidden absolute top-4 right-4 z-[70]">
+            <button 
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowSettingsMenu(!showSettingsMenu);
+              }}
+              className="p-2 bg-black/20 hover:bg-black/40 backdrop-blur-md rounded-full text-white/80 hover:text-white transition-all active:scale-90"
+            >
+              <MoreVertical size={20} />
+            </button>
+
+            <AnimatePresence>
+              {showSettingsMenu && (
+                <>
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-[-1]"
+                    onClick={() => setShowSettingsMenu(false)}
+                  />
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.9, x: 10, y: -10 }}
+                    animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, x: 10, y: -10 }}
+                    className="absolute top-12 right-0 w-52 bg-black/80 backdrop-blur-2xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
+                  >
+                    <button 
+                      onClick={toggleFullscreen}
+                      className="w-full px-4 py-3 flex items-center gap-3 hover:bg-white/10 text-white/90 transition-colors border-b border-white/5"
+                    >
+                      <Maximize size={16} />
+                      <span className="text-sm font-medium">Fullscreen</span>
+                    </button>
+                    
+                    <button 
+                      onClick={() => { setIsAmbienceOn(!isAmbienceOn); setShowSettingsMenu(false); }}
+                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/10 text-white/90 transition-colors border-b border-white/5"
+                    >
+                      <div className="flex items-center gap-3">
+                        <Sparkles size={16} className={isAmbienceOn ? 'text-[#ff0050]' : 'text-white/60'} />
+                        <span className="text-sm font-medium">Ambience</span>
+                      </div>
+                      <div className={`w-8 h-4 rounded-full relative transition-colors ${isAmbienceOn ? 'bg-[#ff0050]' : 'bg-white/20'}`}>
+                        <div className={`absolute top-1 w-2 h-2 rounded-full bg-white transition-all ${isAmbienceOn ? 'right-1' : 'left-1'}`} />
+                      </div>
+                    </button>
+
+                    <button 
+                      onClick={() => { setIsAutoScrollOn(!isAutoScrollOn); setShowSettingsMenu(false); }}
+                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/10 text-white/90 transition-colors border-b border-white/5"
+                    >
+                      <div className="flex items-center gap-3">
+                        <IterationCcw size={16} className={isAutoScrollOn ? 'text-[#ff0050]' : 'text-white/60'} />
+                        <span className="text-sm font-medium">Auto Scroll</span>
+                      </div>
+                      <div className={`w-8 h-4 rounded-full relative transition-colors ${isAutoScrollOn ? 'bg-[#ff0050]' : 'bg-white/20'}`}>
+                        <div className={`absolute top-1 w-2 h-2 rounded-full bg-white transition-all ${isAutoScrollOn ? 'right-1' : 'left-1'}`} />
+                      </div>
+                    </button>
+
+                    <button 
+                      onClick={() => { setIsMusicOn(!isMusicOn); setShowSettingsMenu(false); }}
+                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/10 text-white/90 transition-colors border-b border-white/5"
+                    >
+                      <div className="flex items-center gap-3">
+                        {isMusicOn ? <Volume2 size={16} className="text-[#ff0050]" /> : <VolumeX size={16} className="text-white/60" />}
+                        <span className="text-sm font-medium">Music</span>
+                      </div>
+                      <div className={`w-8 h-4 rounded-full relative transition-colors ${isMusicOn ? 'bg-[#ff0050]' : 'bg-white/20'}`}>
+                        <div className={`absolute top-1 w-2 h-2 rounded-full bg-white transition-all ${isMusicOn ? 'right-1' : 'left-1'}`} />
+                      </div>
+                    </button>
+
+                    <div className="px-4 py-3 flex items-center gap-3 text-white/60 bg-white/5">
+                      <Settings size={16} />
+                      <div className="flex flex-col">
+                        <span className="text-[10px] uppercase tracking-tighter font-bold opacity-50">Kualitas Video</span>
+                        <span className="text-[10px] text-white font-bold">1080p (Auto)</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+          </div>
+
 
           {/* Pause / Play Icon Overlay */}
           <AnimatePresence>
@@ -693,49 +928,134 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
               <Share2 size={28} className="text-white fill-black/20 drop-shadow-md" />
               <span className="text-xs font-semibold drop-shadow-md text-white">{video.shares}</span>
             </button>
-            <motion.div animate={{ rotate: 360 }} transition={{ duration: 5, repeat: Infinity, ease: "linear" }} className="w-10 h-10 rounded-full border-[8px] border-[#222] bg-[#111] mt-4 flex items-center justify-center relative overflow-hidden">
-              <Music size={10} className="text-white/50 absolute" />
-            </motion.div>
+
           </div>
         </div>
 
         {/* Desktop-Only Action Sidebar (Right side, OUTSIDE video) */}
-        <div className="hidden md:flex flex-col items-center justify-end h-full pb-8 pl-4 gap-4 w-16 shrink-0 z-20">
+        <div className="hidden md:flex flex-col items-center justify-between h-full pt-4 pb-8 pl-4 gap-4 w-16 shrink-0 z-20">
           
-          <div onClick={() => setShowFollowPopup(true)} className="relative cursor-pointer mb-2 hover:scale-105 transition-transform group/prof">
-            <div className="w-12 h-12 rounded-full overflow-hidden bg-[#222]">
-              <img 
-                src="https://lh3.googleusercontent.com/pw/AP1GczOY6eh8jD-AhYTN36AAloPj19xxOD1ZU-GJcdT814YnnlKqTIXtX7GLjBfoMrpOTG-eFw9enBnBbRQbgBqTzLnoZbtoYyG0_mRFfnfBJLefqLl-n6I=w2400" 
-                alt="Profile" 
-                className="w-full h-full object-cover" 
-                referrerPolicy="no-referrer" 
-              />
-            </div>
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#ff0050] rounded-full p-0.5 border-2 border-black">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-white"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            </div>
+          {/* Desktop Settings Button (TOP) */}
+          <div className="relative">
+            <button 
+              onClick={() => setShowSettingsMenu(!showSettingsMenu)}
+              className="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full transition-all active:scale-90 text-white"
+            >
+              <MoreVertical size={24} />
+            </button>
+
+            <AnimatePresence>
+              {showSettingsMenu && (
+                <>
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-[-1]"
+                    onClick={() => setShowSettingsMenu(false)}
+                  />
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.9, x: -10, y: -10 }}
+                    animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9, x: -10, y: -10 }}
+                    className="absolute top-14 left-0 w-52 bg-black/80 backdrop-blur-2xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl z-[100]"
+                  >
+                    <button 
+                      onClick={toggleFullscreen}
+                      className="w-full px-4 py-3 flex items-center gap-3 hover:bg-white/10 text-white transition-colors border-b border-white/10"
+                    >
+                      <Maximize size={16} />
+                      <span className="text-sm font-medium">Fullscreen</span>
+                    </button>
+
+                    <button 
+                      onClick={() => { setIsAmbienceOn(!isAmbienceOn); setShowSettingsMenu(false); }}
+                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/10 text-white transition-colors border-b border-white/10"
+                    >
+                      <div className="flex items-center gap-3">
+                        <Sparkles size={16} className={isAmbienceOn ? 'text-[#ff0050]' : 'text-white/60'} />
+                        <span className="text-sm font-medium">Ambience</span>
+                      </div>
+                      <div className={`w-8 h-4 rounded-full relative transition-colors ${isAmbienceOn ? 'bg-[#ff0050]' : 'bg-white/20'}`}>
+                        <div className={`absolute top-1 w-2 h-2 rounded-full bg-white transition-all ${isAmbienceOn ? 'right-1' : 'left-1'}`} />
+                      </div>
+                    </button>
+
+                    <button 
+                      onClick={() => { setIsAutoScrollOn(!isAutoScrollOn); setShowSettingsMenu(false); }}
+                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/10 text-white transition-colors border-b border-white/10"
+                    >
+                      <div className="flex items-center gap-3">
+                        <IterationCcw size={16} className={isAutoScrollOn ? 'text-[#ff0050]' : 'text-white/60'} />
+                        <span className="text-sm font-medium">Auto Scroll</span>
+                      </div>
+                      <div className={`w-8 h-4 rounded-full relative transition-colors ${isAutoScrollOn ? 'bg-[#ff0050]' : 'bg-white/20'}`}>
+                        <div className={`absolute top-1 w-2 h-2 rounded-full bg-white transition-all ${isAutoScrollOn ? 'right-1' : 'left-1'}`} />
+                      </div>
+                    </button>
+
+                    <button 
+                      onClick={() => { setIsMusicOn(!isMusicOn); setShowSettingsMenu(false); }}
+                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/10 text-white transition-colors border-b border-white/10"
+                    >
+                      <div className="flex items-center gap-3">
+                        {isMusicOn ? <Volume2 size={16} className="text-[#ff0050]" /> : <VolumeX size={16} className="text-white/60" />}
+                        <span className="text-sm font-medium">Music</span>
+                      </div>
+                      <div className={`w-8 h-4 rounded-full relative transition-colors ${isMusicOn ? 'bg-[#ff0050]' : 'bg-white/20'}`}>
+                        <div className={`absolute top-1 w-2 h-2 rounded-full bg-white transition-all ${isMusicOn ? 'right-1' : 'left-1'}`} />
+                      </div>
+                    </button>
+
+                    <div className="px-4 py-3 flex items-center gap-3 text-white/50 bg-white/5">
+                      <Settings size={16} />
+                      <div className="flex flex-col">
+                        <span className="text-[10px] uppercase tracking-tighter font-bold opacity-50">Kualitas Video</span>
+                        <span className="text-[10px] text-white font-bold">1080p (Auto)</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
           </div>
 
-          <button onClick={() => setIsLiked(!isLiked)} className="flex flex-col items-center gap-1 hover:scale-105 transition-transform mt-2">
-            <div className="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full transition-colors">
-              <Heart size={24} className={`${isLiked ? 'fill-[#ff0050] text-[#ff0050]' : 'text-white fill-black/20'}`} />
+          <div className="flex flex-col items-center gap-4">
+            <div onClick={() => setShowFollowPopup(true)} className="relative cursor-pointer mb-2 hover:scale-105 transition-transform group/prof">
+              <div className="w-12 h-12 rounded-full overflow-hidden bg-[#222]">
+                <img 
+                  src="https://lh3.googleusercontent.com/pw/AP1GczOY6eh8jD-AhYTN36AAloPj19xxOD1ZU-GJcdT814YnnlKqTIXtX7GLjBfoMrpOTG-eFw9enBnBbRQbgBqTzLnoZbtoYyG0_mRFfnfBJLefqLl-n6I=w2400" 
+                  alt="Profile" 
+                  className="w-full h-full object-cover" 
+                  referrerPolicy="no-referrer" 
+                />
+              </div>
+              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-[#ff0050] rounded-full p-0.5 border-2 border-black">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-white"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              </div>
             </div>
-            <span className="text-xs font-bold text-white/80">{isLiked ? '12.5K' : video.likes}</span>
-          </button>
 
-          <button className="flex flex-col items-center gap-1 hover:scale-105 transition-transform">
-            <div className="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full transition-colors">
-              <MessageCircle size={24} className="text-white fill-black/20" />
-            </div>
-            <span className="text-xs font-bold text-white/80">{video.comments}</span>
-          </button>
+            <button onClick={() => setIsLiked(!isLiked)} className="flex flex-col items-center gap-1 hover:scale-105 transition-transform mt-2">
+              <div className="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full transition-colors">
+                <Heart size={24} className={`${isLiked ? 'fill-[#ff0050] text-[#ff0050]' : 'text-white fill-black/20'}`} />
+              </div>
+              <span className="text-xs font-bold text-white/80">{isLiked ? '12.5K' : video.likes}</span>
+            </button>
 
-          <button onClick={() => setShowSharePopup(true)} className="flex flex-col items-center gap-1 hover:scale-105 transition-transform">
-            <div className="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full transition-colors">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" className="text-white"><path d="M18.8 13.9l-5.6-5.6a1.5 1.5 0 00-2.6 1v4H10C6.5 13.3 4 16.5 4 20.3c0 .5.5.8.9.5 2.1-1.8 4.7-2.6 7.4-2.6h3.3v4a1.5 1.5 0 002.6 1l5.6-5.6a1.5 1.5 0 000-2.1z"/></svg>
-            </div>
-            <span className="text-xs font-bold text-white/80">{video.shares}</span>
-          </button>
+            <button className="flex flex-col items-center gap-1 hover:scale-105 transition-transform">
+              <div className="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full transition-colors">
+                <MessageCircle size={24} className="text-white fill-black/20" />
+              </div>
+              <span className="text-xs font-bold text-white/80">{video.comments}</span>
+            </button>
+
+            <button onClick={() => setShowSharePopup(true)} className="flex flex-col items-center gap-1 hover:scale-105 transition-transform">
+              <div className="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full transition-colors">
+                <Share2 size={24} className="text-white fill-black/20" />
+              </div>
+              <span className="text-xs font-bold text-white/80">{video.shares}</span>
+            </button>
+          </div>
 
         </div>
 
