@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, Heart, MessageCircle, Share2, Music, ChevronUp, X, Play, VolumeX, Link as LinkIcon, Check } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface TikTokVideo {
   id: string | number;
@@ -242,11 +242,10 @@ const shuffleArray = <T,>(array: T[], fixedFirstId?: string | number): T[] => {
 
 const BTSPage = () => {
   const navigate = useNavigate();
+  const { videoId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [feedVideos, setFeedVideos] = useState<TikTokVideo[]>(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const videoId = urlParams.get('v');
-    return shuffleArray(initialVideos, videoId || undefined);
+    return shuffleArray(initialVideos, videoId);
   });
   const [showScrollHint, setShowScrollHint] = useState(false);
   const scrollHintShownRef = useRef(false);
@@ -402,7 +401,7 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
       if (entry.isIntersecting) {
         // Update URL to current video ID without reloading
         const cleanId = video.id.toString().split('-')[0];
-        window.history.replaceState(null, '', `?v=${cleanId}`);
+        window.history.replaceState(null, '', `#/bts/${cleanId}`);
 
         // Attempt to play unmuted. Browsers may block this if user hasn't clicked on the overall SPA yet
         videoRef.current?.play().then(() => {
@@ -553,8 +552,9 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
                 <button 
                   onClick={() => {
                     const cleanId = video.id.toString().split('-')[0];
-                    const shareUrl = `${window.location.origin}/bts?v=${cleanId}`;
-                    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent('Wajib coba videografer yang satu ini hasilnya dijamin ga bosenin! Cek portofolionya: ' + shareUrl)}`);
+                    const shareUrl = `${window.location.origin}/#/?bts=${cleanId}`; // fallback syntax wait, User wants /#/bts/vid
+                    const actualShareUrl = `${window.location.origin}/#/bts/${cleanId}`;
+                    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent('Wajib coba videografer yang satu ini hasilnya dijamin ga bosenin! Cek portofolionya: ' + actualShareUrl)}`);
                     setShowSharePopup(false);
                   }}
                   className="flex-1 flex flex-col items-center gap-3 group"
@@ -571,8 +571,8 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
                 <button 
                   onClick={() => {
                     const cleanId = video.id.toString().split('-')[0];
-                    const shareUrl = `${window.location.origin}/bts?v=${cleanId}`;
-                    navigator.clipboard.writeText(shareUrl);
+                    const actualShareUrl = `${window.location.origin}/#/bts/${cleanId}`;
+                    navigator.clipboard.writeText(actualShareUrl);
                     setCopied(true);
                     setTimeout(() => setCopied(false), 2000);
                   }}

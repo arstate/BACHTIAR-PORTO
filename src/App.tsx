@@ -100,6 +100,7 @@ export default function App() {
           <Route path="/videography" element={<PortfolioPage />} />
           <Route path="/motion" element={<MotionPage />} />
           <Route path="/bts" element={<BTSPage />} />
+          <Route path="/bts/:videoId" element={<BTSPage />} />
           <Route path="/design" element={<DesignPage />} />
         </Routes>
       </div>
