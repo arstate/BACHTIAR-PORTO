@@ -50,22 +50,20 @@ const YouTubeBackground: React.FC<YouTubeBackgroundProps> = ({ videoId, overlayO
 
       {/* YouTube Iframe Container */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        {hasStarted && (
-            <motion.iframe
-              ref={iframeRef}
-              initial={{ opacity: 0, scale: 1.1 }}
-              animate={{ 
-                opacity: isReady ? 1 : 0, 
-                scale: isReady ? 1 : 1.1 
-              }}
-              transition={{ duration: 2, ease: "easeOut" }}
-              title="Background Video"
-              onLoad={handleIframeLoad}
-              className="absolute top-1/2 left-1/2 min-w-[100vw] min-h-[100vh] w-[115vw] h-[64.68vw] min-w-[177.77vh] -translate-x-1/2 -translate-y-1/2 pointer-events-none border-none scale-105"
-              src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1&enablejsapi=1&origin=${window.location.origin}`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            />
-        )}
+        <motion.iframe
+          ref={iframeRef}
+          initial={{ opacity: 0.01, scale: 1.1 }}
+          animate={{ 
+            opacity: isReady ? 1 : 0.01, 
+            scale: isReady ? 1 : 1.1 
+          }}
+          transition={{ duration: 2, ease: "easeOut" }}
+          title="Background Video"
+          onLoad={handleIframeLoad}
+          className="absolute top-1/2 left-1/2 min-w-[100vw] min-h-[100vh] w-[115vw] h-[64.68vw] min-w-[177.77vh] -translate-x-1/2 -translate-y-1/2 pointer-events-none border-none scale-105"
+          src={`https://www.youtube.com/embed/${videoId}?mute=1&autoplay=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1`}
+          allow="autoplay; encrypted-media; fullscreen"
+        />
       </div>
     </div>
   );

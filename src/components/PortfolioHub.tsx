@@ -15,9 +15,9 @@ const PortfolioHub = () => {
     const categories = [
         { title: "Videography", path: "/videography", icon: Film, color: "blue" },
         { title: "Photography", path: "/gallery", icon: ImageIcon, color: "purple" },
-        { title: "Motion Graphics", path: "/motion", icon: MonitorPlay, color: "cyan" },
+        { title: "Motion Graphics", path: "/motion", icon: MonitorPlay, color: "cyan", disabled: true },
         { title: "Behind The Scenes", path: "/bts", icon: Clapperboard, color: "amber" },
-        { title: "Design", path: "/design", icon: PenTool, color: "emerald" },
+        { title: "Design", path: "/design", icon: PenTool, color: "emerald", disabled: true },
     ];
 
     const containerVariants = {
@@ -77,9 +77,9 @@ const PortfolioHub = () => {
         emerald: "bg-emerald-500/10"
     };
 
-    const handleCategoryClick = (e: React.MouseEvent, path: string, index: number) => {
+    const handleCategoryClick = (e: React.MouseEvent, path: string, index: number, disabled?: boolean) => {
         e.preventDefault();
-        if (path === "#" || isNavigating) return;
+        if (path === "#" || isNavigating || disabled) return;
 
         setClickedIndex(index);
         setIsNavigating(true);
@@ -124,32 +124,43 @@ const PortfolioHub = () => {
                     <MotionLink
                         key={cat.title}
                         variants={itemVariants}
-                        to={cat.path}
-                        onClick={(e) => handleCategoryClick(e, cat.path, idx)}
+                        to={cat.disabled ? "#" : cat.path}
+                        onClick={(e) => handleCategoryClick(e, cat.path, idx, cat.disabled)}
                         animate={isNavigating ? (clickedIndex === idx ? "clicked" : "fadeOut") : undefined}
-                        className="group relative overflow-hidden rounded-[2.5rem] bg-white/5 border border-white/10 hover:border-white/30 backdrop-blur-xl transition-all duration-500 aspect-[16/10] sm:aspect-square lg:aspect-[4/5] flex flex-col items-center justify-center gap-4 lg:gap-8 p-6"
+                        className={`group relative overflow-hidden rounded-[2.5rem] border border-white/10 transition-all duration-500 aspect-[16/10] sm:aspect-square lg:aspect-[4/5] flex flex-col items-center justify-center gap-4 lg:gap-8 p-6 ${
+                            cat.disabled 
+                            ? "bg-black/60 grayscale contrast-[0.8] blur-[2px] cursor-not-allowed opacity-60" 
+                            : "bg-white/5 hover:border-white/30 backdrop-blur-xl"
+                        }`}
                     >
                         {/* Glow Background */}
-                        <div className={`absolute inset-0 ${colors[cat.color]} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-3xl rounded-full`} />
+                        {!cat.disabled && (
+                            <div className={`absolute inset-0 ${colors[cat.color]} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-3xl rounded-full`} />
+                        )}
 
                         {/* Shimmer Effect - Starts after entrance */}
-                        <motion.div
-                            className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 pointer-events-none"
-                            initial={{ x: '-150%' }}
-                            animate={{ x: '150%' }}
-                            transition={{
-                                duration: 2,
-                                repeat: Infinity,
-                                repeatDelay: 6,
-                                ease: "easeInOut",
-                                delay: 1.2 + (idx * 0.2) // Stagger shimmer after entry
-                            }}
-                        />
+                        {!cat.disabled && (
+                            <motion.div
+                                className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 pointer-events-none"
+                                initial={{ x: '-150%' }}
+                                animate={{ x: '150%' }}
+                                transition={{
+                                    duration: 2,
+                                    repeat: Infinity,
+                                    repeatDelay: 6,
+                                    ease: "easeInOut",
+                                    delay: 1.2 + (idx * 0.2)
+                                }}
+                            />
+                        )}
 
-                        <motion.div whileHover={{ scale: 1.1 }} transition={{ type: "spring", stiffness: 400 }}>
-                            <cat.icon size={60} className="md:w-[80px] md:h-[80px] text-white/80 group-hover:text-white transition-colors relative z-10" />
+                        <motion.div 
+                            whileHover={!cat.disabled ? { scale: 1.1 } : {}} 
+                            transition={{ type: "spring", stiffness: 400 }}
+                        >
+                            <cat.icon size={60} className={`md:w-[80px] md:h-[80px] transition-colors relative z-10 ${cat.disabled ? 'text-white/20' : 'text-white/80 group-hover:text-white'}`} />
                         </motion.div>
-                        <h2 className="text-base md:text-lg lg:text-xl font-bold tracking-[0.2em] uppercase text-center px-4 leading-tight relative z-10">
+                        <h2 className={`text-base md:text-lg lg:text-xl font-bold tracking-[0.2em] uppercase text-center px-4 leading-tight relative z-10 ${cat.disabled ? 'text-white/20' : 'text-white'}`}>
                             {cat.title.split(' ').map((word, i) => (
                                 <React.Fragment key={i}>
                                     {word}{i === 1 && cat.title.includes('Scenes') ? <br /> : ' '}
