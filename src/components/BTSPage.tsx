@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowLeft, Heart, MessageCircle, Share2, Music, ChevronUp, X, Play, VolumeX } from 'lucide-react';
+import { ArrowLeft, Heart, MessageCircle, Share2, Music, ChevronUp, X, Play, VolumeX, Link as LinkIcon, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface TikTokVideo {
@@ -217,20 +217,37 @@ const initialVideos: TikTokVideo[] = [
   }
 ];
 
-// Shuffle utility right outside component to randomize feed
-const shuffleArray = <T,>(array: T[]): T[] => {
-  const newArray = [...array];
-  for (let i = newArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+const shuffleArray = <T,>(array: T[], fixedFirstId?: string | number): T[] => {
+  let toShuffle = [...array];
+  let fixedItem: T | null = null;
+
+  if (fixedFirstId) {
+    const fixedIndex = toShuffle.findIndex((v: any) => String(v.id) === String(fixedFirstId));
+    if (fixedIndex > -1) {
+      fixedItem = toShuffle.splice(fixedIndex, 1)[0];
+    }
   }
-  return newArray;
+
+  for (let i = toShuffle.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [toShuffle[i], toShuffle[j]] = [toShuffle[j], toShuffle[i]];
+  }
+
+  if (fixedItem) {
+    toShuffle.unshift(fixedItem);
+  }
+
+  return toShuffle;
 };
 
 const BTSPage = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-  const [feedVideos, setFeedVideos] = useState<TikTokVideo[]>(() => shuffleArray(initialVideos));
+  const [feedVideos, setFeedVideos] = useState<TikTokVideo[]>(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const videoId = urlParams.get('v');
+    return shuffleArray(initialVideos, videoId || undefined);
+  });
   const [showScrollHint, setShowScrollHint] = useState(false);
   const scrollHintShownRef = useRef(false);
   const isFetchingRef = useRef(false);
@@ -373,6 +390,8 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
   const [isLiked, setIsLiked] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showFollowPopup, setShowFollowPopup] = useState(false);
+  const [showSharePopup, setShowSharePopup] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [isFallbackMuted, setIsFallbackMuted] = useState(false);
 
   // Auto-Play/Pause when scrolled into view
@@ -381,6 +400,10 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
     
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
+        // Update URL to current video ID without reloading
+        const cleanId = video.id.toString().split('-')[0];
+        window.history.replaceState(null, '', `?v=${cleanId}`);
+
         // Attempt to play unmuted. Browsers may block this if user hasn't clicked on the overall SPA yet
         videoRef.current?.play().then(() => {
           // Allowed by browser natively!
@@ -503,6 +526,65 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
             </motion.div>
           </motion.div>
         )}
+
+        {/* Share Popup Modal */}
+        {showSharePopup && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 z-[200] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm pointer-events-auto"
+            onClick={() => setShowSharePopup(false)}
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 30 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 30 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-[320px] bg-[#1a1a1a] border border-white/10 p-6 rounded-3xl flex flex-col gap-6 shadow-2xl relative"
+            >
+              <h3 className="text-white font-bold text-center text-lg md:text-xl font-[family-name:var(--font-sans)] uppercase tracking-wider">Share Video</h3>
+              <button onClick={() => setShowSharePopup(false)} className="absolute top-4 right-4 p-2 bg-white/5 hover:bg-white/10 rounded-full text-white/70 hover:text-white transition-colors">
+                <X size={16} />
+              </button>
+              
+              <div className="flex gap-4 w-full">
+                {/* Whatsapp Share */}
+                <button 
+                  onClick={() => {
+                    const cleanId = video.id.toString().split('-')[0];
+                    const shareUrl = `${window.location.origin}/bts?v=${cleanId}`;
+                    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent('Wajib coba videografer yang satu ini hasilnya dijamin ga bosenin! Cek portofolionya: ' + shareUrl)}`);
+                    setShowSharePopup(false);
+                  }}
+                  className="flex-1 flex flex-col items-center gap-3 group"
+                >
+                  <div className="w-14 h-14 bg-[#25D366] rounded-full flex justify-center items-center group-hover:-translate-y-1 transition-transform shadow-lg">
+                    <MessageCircle size={28} className="text-white fill-white" />
+                  </div>
+                  <span className="text-white/90 text-xs font-semibold tracking-wide">WhatsApp</span>
+                </button>
+
+                {/* Copy Link */}
+                <button 
+                  onClick={() => {
+                    const cleanId = video.id.toString().split('-')[0];
+                    const shareUrl = `${window.location.origin}/bts?v=${cleanId}`;
+                    navigator.clipboard.writeText(shareUrl);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                  }}
+                  className="flex-1 flex flex-col items-center gap-3 group"
+                >
+                  <div className={`w-14 h-14 rounded-full flex justify-center items-center transition-all shadow-lg ${copied ? 'bg-[#ff0050]' : 'bg-white/10 group-hover:-translate-y-1'}`}>
+                     {copied ? <Check size={26} className="text-white" /> : <LinkIcon size={26} className="text-white" />}
+                  </div>
+                  <span className="text-white/90 text-xs font-semibold tracking-wide">{copied ? 'Copied URL!' : 'Copy Link'}</span>
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
       </AnimatePresence>
 
       {/* Desktop Layout Wrapper: Centers video and side panel */}
@@ -605,7 +687,7 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
               <MessageCircle size={30} className="text-white fill-black/20 drop-shadow-md" />
               <span className="text-xs font-semibold drop-shadow-md text-white">{video.comments}</span>
             </button>
-            <button className="flex flex-col items-center gap-0.5 group/btn">
+            <button onClick={() => setShowSharePopup(true)} className="flex flex-col items-center gap-0.5 group/btn">
               <Share2 size={28} className="text-white fill-black/20 drop-shadow-md" />
               <span className="text-xs font-semibold drop-shadow-md text-white">{video.shares}</span>
             </button>
@@ -646,7 +728,7 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
             <span className="text-xs font-bold text-white/80">{video.comments}</span>
           </button>
 
-          <button className="flex flex-col items-center gap-1 hover:scale-105 transition-transform">
+          <button onClick={() => setShowSharePopup(true)} className="flex flex-col items-center gap-1 hover:scale-105 transition-transform">
             <div className="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full transition-colors">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none" className="text-white"><path d="M18.8 13.9l-5.6-5.6a1.5 1.5 0 00-2.6 1v4H10C6.5 13.3 4 16.5 4 20.3c0 .5.5.8.9.5 2.1-1.8 4.7-2.6 7.4-2.6h3.3v4a1.5 1.5 0 002.6 1l5.6-5.6a1.5 1.5 0 000-2.1z"/></svg>
             </div>
