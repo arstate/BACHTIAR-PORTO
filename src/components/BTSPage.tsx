@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'motion/react';
-import { ArrowLeft, Heart, MessageCircle, Share2, Music, ChevronUp } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ArrowLeft, Heart, MessageCircle, Share2, Music, ChevronUp, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface TikTokVideo {
@@ -372,6 +372,7 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [showFollowPopup, setShowFollowPopup] = useState(false);
 
   // Auto-Play/Pause when scrolled into view
   useEffect(() => {
@@ -431,6 +432,62 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
   return (
     <div className="h-[100dvh] w-full snap-start relative bg-black flex justify-center items-center overflow-hidden">
       
+      {/* Follow Popup Modal */}
+      <AnimatePresence>
+        {showFollowPopup && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm pointer-events-auto"
+            onClick={() => setShowFollowPopup(false)}
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-[320px] bg-white/10 backdrop-blur-2xl border border-white/20 p-6 rounded-[2rem] flex flex-col items-center gap-4 shadow-2xl relative"
+            >
+              <button 
+                onClick={() => setShowFollowPopup(false)}
+                className="absolute top-4 right-4 p-1.5 bg-white/10 hover:bg-white/20 rounded-full text-white/70 hover:text-white transition-colors"
+              >
+                 <X size={16} />
+              </button>
+
+              <div className="w-24 h-24 rounded-full overflow-hidden border border-white/30 shadow-xl pointer-events-none mt-2 shrink-0">
+                <img 
+                  src="https://lh3.googleusercontent.com/pw/AP1GczOY6eh8jD-AhYTN36AAloPj19xxOD1ZU-GJcdT814YnnlKqTIXtX7GLjBfoMrpOTG-eFw9enBnBbRQbgBqTzLnoZbtoYyG0_mRFfnfBJLefqLl-n6I=w2400" 
+                  alt="Profile" 
+                  className="w-full h-full object-cover" 
+                  referrerPolicy="no-referrer" 
+                />
+              </div>
+              
+              <div className="text-center flex flex-col gap-1.5">
+                <h3 className="font-[family-name:var(--font-display)] italic text-2xl md:text-3xl text-white font-light leading-none">
+                  @tiar.arstate.cinema
+                </h3>
+                <p className="text-white/60 text-[10px] md:text-ws tracking-[0.2em] font-bold">
+                  CREATOR & VIDEOGRAPHER
+                </p>
+              </div>
+
+              <a 
+                href="https://www.tiktok.com/@tiar.arstate.cinema" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                onClick={() => setShowFollowPopup(false)}
+                className="w-full py-3.5 bg-[#ff0050] hover:bg-[#ff0050]/90 text-white font-bold tracking-widest text-sm rounded-full transition-all mt-2 active:scale-95 flex justify-center items-center shadow-[0_0_20px_rgba(255,0,80,0.4)]"
+              >
+                FOLLOW ON TIKTOK
+              </a>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Desktop Layout Wrapper: Centers video and side panel */}
       <div className="w-full h-full md:h-[calc(100dvh-40px)] md:w-auto md:max-w-[70vw] relative flex items-end md:items-end justify-center">
         
@@ -479,7 +536,7 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
 
           {/* Mobile-Only Action Sidebar (Hidden on MD screens) */}
           <div className="md:hidden absolute right-2 bottom-20 z-30 flex flex-col items-center gap-5 pb-4">
-            <div className="relative cursor-pointer mb-2 hover:scale-105 transition-transform">
+            <div onClick={() => setShowFollowPopup(true)} className="relative cursor-pointer mb-2 hover:scale-105 transition-transform group/prof">
               <div className="w-11 h-11 rounded-full overflow-hidden border border-white bg-[#222]">
                 <img 
                   src="https://lh3.googleusercontent.com/pw/AP1GczOY6eh8jD-AhYTN36AAloPj19xxOD1ZU-GJcdT814YnnlKqTIXtX7GLjBfoMrpOTG-eFw9enBnBbRQbgBqTzLnoZbtoYyG0_mRFfnfBJLefqLl-n6I=w2400" 
@@ -514,7 +571,7 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
         {/* Desktop-Only Action Sidebar (Right side, OUTSIDE video) */}
         <div className="hidden md:flex flex-col items-center justify-end h-full pb-8 pl-4 gap-4 w-16 shrink-0 z-20">
           
-          <div className="relative cursor-pointer mb-2 hover:scale-105 transition-transform">
+          <div onClick={() => setShowFollowPopup(true)} className="relative cursor-pointer mb-2 hover:scale-105 transition-transform group/prof">
             <div className="w-12 h-12 rounded-full overflow-hidden bg-[#222]">
               <img 
                 src="https://lh3.googleusercontent.com/pw/AP1GczOY6eh8jD-AhYTN36AAloPj19xxOD1ZU-GJcdT814YnnlKqTIXtX7GLjBfoMrpOTG-eFw9enBnBbRQbgBqTzLnoZbtoYyG0_mRFfnfBJLefqLl-n6I=w2400" 
