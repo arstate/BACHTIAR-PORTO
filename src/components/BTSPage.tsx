@@ -254,6 +254,7 @@ const BTSPage = () => {
   const navigate = useNavigate();
   const { videoId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
+  const [showGlobalSettings, setShowGlobalSettings] = useState(false);
   const [feedVideos, setFeedVideos] = useState<TikTokVideo[]>(() => {
     return shuffleArray(initialVideos, videoId);
   });
@@ -355,7 +356,7 @@ const BTSPage = () => {
         Now that we have balanced sidebars (left and right), 
         the player's center is the same as the screen's center.
       */}
-      <div className="absolute top-8 md:top-12 left-1/2 -translate-x-1/2 z-[100] flex items-center p-1.5 pr-6 bg-black/40 backdrop-blur-2xl rounded-full border border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.5)] pointer-events-auto transition-all duration-300 hover:bg-black/60 group/nav">
+      <div className="absolute top-8 md:top-12 left-1/2 -translate-x-1/2 z-[100] flex items-center p-1.5 bg-black/40 backdrop-blur-2xl rounded-full border border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.5)] pointer-events-auto transition-all duration-300 hover:bg-black/60 group/nav">
         
         {/* Back Button */}
         <button 
@@ -377,6 +378,80 @@ const BTSPage = () => {
             Shorts Video
           </span>
         </div>
+
+        {/* Divider - Right Side (Mobile Only) */}
+        <div className="md:hidden w-[1px] h-3 bg-white/20 mx-3 shrink-0" />
+
+        {/* Settings Dots - Mobile Only (Integrated in Pill) */}
+        <button 
+          onClick={() => setShowGlobalSettings(!showGlobalSettings)}
+          className="md:hidden w-8 h-8 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors shrink-0 active:scale-90"
+        >
+          <MoreVertical size={16} />
+        </button>
+
+        {/* Global Settings Menu - Mobile Only */}
+        <AnimatePresence>
+          {showGlobalSettings && (
+            <>
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9, y: -20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: -20 }}
+                className="md:hidden absolute top-16 right-0 w-52 bg-black/80 backdrop-blur-3xl border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl z-[150]"
+              >
+                <div className="p-2 flex flex-col gap-1">
+                  <button 
+                    onClick={() => { setIsAmbienceOn(!isAmbienceOn); setShowGlobalSettings(false); }}
+                    className="w-full px-5 py-4 flex items-center justify-between hover:bg-white/10 text-white/90 transition-colors rounded-2xl"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Sparkles size={18} className={isAmbienceOn ? 'text-[#ff0050]' : 'text-white/40'} />
+                      <span className="text-sm font-medium">Ambience</span>
+                    </div>
+                    <div className={`w-8 h-4 rounded-full relative transition-colors ${isAmbienceOn ? 'bg-[#ff0050]' : 'bg-white/20'}`}>
+                      <div className={`absolute top-1 w-2 h-2 rounded-full bg-white transition-all ${isAmbienceOn ? 'right-1' : 'left-1'}`} />
+                    </div>
+                  </button>
+
+                  <button 
+                    onClick={() => { setIsAutoScrollOn(!isAutoScrollOn); setShowGlobalSettings(false); }}
+                    className="w-full px-5 py-4 flex items-center justify-between hover:bg-white/10 text-white/90 transition-colors rounded-2xl"
+                  >
+                    <div className="flex items-center gap-3">
+                      <IterationCcw size={18} className={isAutoScrollOn ? 'text-[#ff0050]' : 'text-white/40'} />
+                      <span className="text-sm font-medium">Auto Scroll</span>
+                    </div>
+                    <div className={`w-8 h-4 rounded-full relative transition-colors ${isAutoScrollOn ? 'bg-[#ff0050]' : 'bg-white/20'}`}>
+                      <div className={`absolute top-1 w-2 h-2 rounded-full bg-white transition-all ${isAutoScrollOn ? 'right-1' : 'left-1'}`} />
+                    </div>
+                  </button>
+
+                  <button 
+                    onClick={() => { setIsMusicOn(!isMusicOn); setShowGlobalSettings(false); }}
+                    className="w-full px-5 py-4 flex items-center justify-between hover:bg-white/10 text-white/90 transition-colors rounded-2xl"
+                  >
+                    <div className="flex items-center gap-3">
+                      {isMusicOn ? <Volume2 size={18} className="text-[#ff0050]" /> : <VolumeX size={18} className="text-white/40" />}
+                      <span className="text-sm font-medium">Music</span>
+                    </div>
+                    <div className={`w-8 h-4 rounded-full relative transition-colors ${isMusicOn ? 'bg-[#ff0050]' : 'bg-white/20'}`}>
+                      <div className={`absolute top-1 w-2 h-2 rounded-full bg-white transition-all ${isMusicOn ? 'right-1' : 'left-1'}`} />
+                    </div>
+                  </button>
+
+                  <div className="px-5 py-4 mt-1 flex items-center gap-3 text-white/40 bg-white/5 rounded-2xl">
+                    <Settings size={18} />
+                    <div className="flex flex-col">
+                      <span className="text-[10px] uppercase tracking-tighter font-bold opacity-50">Kualitas Video</span>
+                      <span className="text-[10px] text-white font-bold">1080p (Auto)</span>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
         
       </div>
 
@@ -403,6 +478,8 @@ const BTSPage = () => {
               key={video.id} 
               video={video} 
               onVideoEnd={() => handleVideoEnd(index)}
+              showGlobalSettings={showGlobalSettings}
+              setShowGlobalSettings={setShowGlobalSettings}
               onScrollUp={() => {
                 if (scrollContainerRef.current) {
                   scrollContainerRef.current.scrollBy({ top: -window.innerHeight, behavior: 'smooth' });
@@ -433,9 +510,10 @@ const BTSPage = () => {
 // Individual Video Component
 const VideoItem: React.FC<{ 
   video: TikTokVideo; 
-  onVideoEnd?: () => void;
   onScrollUp?: () => void;
   onScrollDown?: () => void;
+  showGlobalSettings: boolean;
+  setShowGlobalSettings: (v: boolean) => void;
   isAmbienceOn: boolean;
   setIsAmbienceOn: (v: boolean) => void;
   isAutoScrollOn: boolean;
@@ -452,7 +530,9 @@ const VideoItem: React.FC<{
   isAutoScrollOn, 
   setIsAutoScrollOn, 
   isMusicOn, 
-  setIsMusicOn 
+  setIsMusicOn,
+  showGlobalSettings,
+  setShowGlobalSettings
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const ambientRef = useRef<HTMLVideoElement>(null);
@@ -460,10 +540,9 @@ const VideoItem: React.FC<{
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [copied, setCopied] = useState(false);
   const [showFollowPopup, setShowFollowPopup] = useState(false);
   const [showSharePopup, setShowSharePopup] = useState(false);
-  const [showSettingsMenu, setShowSettingsMenu] = useState(false);
-  const [copied, setCopied] = useState(false);
   const [isFallbackMuted, setIsFallbackMuted] = useState(false);
 
   // Auto-Play/Pause when scrolled into view
@@ -506,8 +585,8 @@ const VideoItem: React.FC<{
   }, []);
 
   const togglePlay = () => {
-    if (showSettingsMenu) {
-      setShowSettingsMenu(false);
+    if (showGlobalSettings) {
+      setShowGlobalSettings(false);
       return;
     }
     
@@ -546,7 +625,7 @@ const VideoItem: React.FC<{
     } else {
       document.exitFullscreen();
     }
-    setShowSettingsMenu(false);
+    setShowGlobalSettings(false);
   };
 
   const handleTimeUpdate = () => {
@@ -751,93 +830,7 @@ const VideoItem: React.FC<{
             playsInline
           />
 
-          {/* Video Settings Button (3 dots) - MOBILE ONLY (Inside Video) */}
-          <div className="md:hidden absolute top-4 right-4 z-[70]">
-            <button 
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowSettingsMenu(!showSettingsMenu);
-              }}
-              className="p-2 bg-black/20 hover:bg-black/40 backdrop-blur-md rounded-full text-white/80 hover:text-white transition-all active:scale-90"
-            >
-              <MoreVertical size={20} />
-            </button>
-
-            <AnimatePresence>
-              {showSettingsMenu && (
-                <>
-                  <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-[-1]"
-                    onClick={() => setShowSettingsMenu(false)}
-                  />
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.9, x: 10, y: -10 }}
-                    animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.9, x: 10, y: -10 }}
-                    className="absolute top-12 right-0 w-52 bg-black/80 backdrop-blur-2xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
-                  >
-                    <button 
-                      onClick={toggleFullscreen}
-                      className="w-full px-4 py-3 flex items-center gap-3 hover:bg-white/10 text-white/90 transition-colors border-b border-white/5"
-                    >
-                      <Maximize size={16} />
-                      <span className="text-sm font-medium">Fullscreen</span>
-                    </button>
-                    
-                    <button 
-                      onClick={() => { setIsAmbienceOn(!isAmbienceOn); setShowSettingsMenu(false); }}
-                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/10 text-white/90 transition-colors border-b border-white/5"
-                    >
-                      <div className="flex items-center gap-3">
-                        <Sparkles size={16} className={isAmbienceOn ? 'text-[#ff0050]' : 'text-white/60'} />
-                        <span className="text-sm font-medium">Ambience</span>
-                      </div>
-                      <div className={`w-8 h-4 rounded-full relative transition-colors ${isAmbienceOn ? 'bg-[#ff0050]' : 'bg-white/20'}`}>
-                        <div className={`absolute top-1 w-2 h-2 rounded-full bg-white transition-all ${isAmbienceOn ? 'right-1' : 'left-1'}`} />
-                      </div>
-                    </button>
-
-                    <button 
-                      onClick={() => { setIsAutoScrollOn(!isAutoScrollOn); setShowSettingsMenu(false); }}
-                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/10 text-white/90 transition-colors border-b border-white/5"
-                    >
-                      <div className="flex items-center gap-3">
-                        <IterationCcw size={16} className={isAutoScrollOn ? 'text-[#ff0050]' : 'text-white/60'} />
-                        <span className="text-sm font-medium">Auto Scroll</span>
-                      </div>
-                      <div className={`w-8 h-4 rounded-full relative transition-colors ${isAutoScrollOn ? 'bg-[#ff0050]' : 'bg-white/20'}`}>
-                        <div className={`absolute top-1 w-2 h-2 rounded-full bg-white transition-all ${isAutoScrollOn ? 'right-1' : 'left-1'}`} />
-                      </div>
-                    </button>
-
-                    <button 
-                      onClick={() => { setIsMusicOn(!isMusicOn); setShowSettingsMenu(false); }}
-                      className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/10 text-white/90 transition-colors border-b border-white/5"
-                    >
-                      <div className="flex items-center gap-3">
-                        {isMusicOn ? <Volume2 size={16} className="text-[#ff0050]" /> : <VolumeX size={16} className="text-white/60" />}
-                        <span className="text-sm font-medium">Music</span>
-                      </div>
-                      <div className={`w-8 h-4 rounded-full relative transition-colors ${isMusicOn ? 'bg-[#ff0050]' : 'bg-white/20'}`}>
-                        <div className={`absolute top-1 w-2 h-2 rounded-full bg-white transition-all ${isMusicOn ? 'right-1' : 'left-1'}`} />
-                      </div>
-                    </button>
-
-                    <div className="px-4 py-3 flex items-center gap-3 text-white/60 bg-white/5">
-                      <Settings size={16} />
-                      <div className="flex flex-col">
-                        <span className="text-[10px] uppercase tracking-tighter font-bold opacity-50">Kualitas Video</span>
-                        <span className="text-[10px] text-white font-bold">1080p (Auto)</span>
-                      </div>
-                    </div>
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>
-          </div>
+          {/* Video Settings Menu logic moved to Global Header for Mobile */}
 
 
           {/* Pause / Play Icon Overlay */}
@@ -938,21 +931,21 @@ const VideoItem: React.FC<{
           {/* Desktop Settings Button (TOP) */}
           <div className="relative">
             <button 
-              onClick={() => setShowSettingsMenu(!showSettingsMenu)}
+              onClick={() => setShowGlobalSettings(!showGlobalSettings)}
               className="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full transition-all active:scale-90 text-white"
             >
               <MoreVertical size={24} />
             </button>
 
             <AnimatePresence>
-              {showSettingsMenu && (
+              {showGlobalSettings && (
                 <>
                   <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     className="fixed inset-0 z-[-1]"
-                    onClick={() => setShowSettingsMenu(false)}
+                    onClick={() => setShowGlobalSettings(false)}
                   />
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.9, x: -10, y: -10 }}
@@ -969,7 +962,7 @@ const VideoItem: React.FC<{
                     </button>
 
                     <button 
-                      onClick={() => { setIsAmbienceOn(!isAmbienceOn); setShowSettingsMenu(false); }}
+                      onClick={() => { setIsAmbienceOn(!isAmbienceOn); setShowGlobalSettings(false); }}
                       className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/10 text-white transition-colors border-b border-white/10"
                     >
                       <div className="flex items-center gap-3">
@@ -982,7 +975,7 @@ const VideoItem: React.FC<{
                     </button>
 
                     <button 
-                      onClick={() => { setIsAutoScrollOn(!isAutoScrollOn); setShowSettingsMenu(false); }}
+                      onClick={() => { setIsAutoScrollOn(!isAutoScrollOn); setShowGlobalSettings(false); }}
                       className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/10 text-white transition-colors border-b border-white/10"
                     >
                       <div className="flex items-center gap-3">
@@ -995,7 +988,7 @@ const VideoItem: React.FC<{
                     </button>
 
                     <button 
-                      onClick={() => { setIsMusicOn(!isMusicOn); setShowSettingsMenu(false); }}
+                      onClick={() => { setIsMusicOn(!isMusicOn); setShowGlobalSettings(false); }}
                       className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/10 text-white transition-colors border-b border-white/10"
                     >
                       <div className="flex items-center gap-3">
