@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowLeft, Heart, MessageCircle, Share2, Music, ChevronUp, X, Play } from 'lucide-react';
+import { ArrowLeft, Heart, MessageCircle, Share2, Music, ChevronUp, X, Play, VolumeX } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface TikTokVideo {
@@ -373,6 +373,7 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
   const [isLiked, setIsLiked] = useState(false);
   const [progress, setProgress] = useState(0);
   const [showFollowPopup, setShowFollowPopup] = useState(false);
+  const [isFallbackMuted, setIsFallbackMuted] = useState(false);
 
   // Auto-Play/Pause when scrolled into view
   useEffect(() => {
@@ -381,15 +382,21 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
         // Attempt to play unmuted. Browsers may block this if user hasn't clicked on the overall SPA yet
-        videoRef.current?.play().catch((err) => {
+        videoRef.current?.play().then(() => {
+          // Allowed by browser natively!
+          if (videoRef.current) videoRef.current.muted = false;
+          setIsFallbackMuted(false);
+          setIsPlaying(true);
+        }).catch((err) => {
            console.warn("Autoplay blocked. User must interact first.", err);
            // Optional: Fallback to muted autoplay
            if (videoRef.current) {
              videoRef.current.muted = true;
              videoRef.current.play().catch(() => {});
+             setIsFallbackMuted(true);
+             setIsPlaying(true);
            }
         });
-        setIsPlaying(true);
       } else {
         videoRef.current?.pause();
         setIsPlaying(false);
@@ -406,11 +413,21 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
   }, []);
 
   const togglePlay = () => {
+    if (isFallbackMuted) {
+      if (videoRef.current) {
+        videoRef.current.muted = false;
+        videoRef.current.play().catch(()=>{});
+      }
+      setIsFallbackMuted(false);
+      setIsPlaying(true);
+      return;
+    }
+
     if (isPlaying) {
       videoRef.current?.pause();
       setIsPlaying(false);
     } else {
-      videoRef.current?.play();
+      videoRef.current?.play().catch(()=>{});
       setIsPlaying(true);
     }
   };
@@ -506,7 +523,7 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
 
           {/* Pause / Play Icon Overlay */}
           <AnimatePresence>
-            {!isPlaying && (
+            {!isPlaying && !isFallbackMuted && (
               <motion.div 
                 initial={{ opacity: 0, scale: 1.5 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -517,6 +534,19 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
                 <div className="ml-1.5">
                    <Play size={40} className="text-white/90 drop-shadow-2xl fill-white/90" />
                 </div>
+              </motion.div>
+            )}
+            
+            {/* Muted Fallback Indicator */}
+            {isFallbackMuted && (
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-5 py-2.5 bg-black/60 backdrop-blur-md rounded-full flex gap-2 items-center pointer-events-none z-[60] shadow-xl border border-white/10"
+              >
+                <VolumeX size={18} className="text-white drop-shadow-md" />
+                <span className="text-white font-bold tracking-widest uppercase text-[10px] md:text-xs drop-shadow-md">Tap To Unmute</span>
               </motion.div>
             )}
           </AnimatePresence>
