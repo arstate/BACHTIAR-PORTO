@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
-import { ArrowLeft, Heart, MessageCircle, Share2, Music } from 'lucide-react';
+import { ArrowLeft, Heart, MessageCircle, Share2, Music, ChevronUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface TikTokVideo {
@@ -109,8 +109,8 @@ const initialVideos: TikTokVideo[] = [
     id: 6,
     url: "https://res.cloudinary.com/dqwnhqjsq/video/upload/bosen_movement_gitu_aja_videography_graduation_wisuda_cinematic..._pebgxu.mp4",
     author: "@tiar.arstate.cinema",
-    description: "Bosen movement kamera gitu-gitu aja pas wisuda? Cobain trik transisi mulus ini 🎓🎥 #wisuda #videography #cinematic",
-    song: "Hype Graduation - Vlog Music",
+    description: "Bosen movement kamera gitu-gitu aja pas liputan wedding? Cobain trik transisi mulus ini biar makin cinematic 💍🎥 #wedding #videography #cinematic",
+    song: "Epic Wedding Transitions - Cinematic",
     likes: "8.1K",
     comments: "156",
     shares: "432"
@@ -134,13 +134,114 @@ const initialVideos: TikTokVideo[] = [
     likes: "15.2K",
     comments: "411",
     shares: "2.1K"
+  },
+  {
+    id: 9,
+    url: "https://res.cloudinary.com/dqwnhqjsq/video/upload/lanjut_fullnya_gak_nichh_fyp_yearbook_videoangkatan_videoangkatan..._7406674786107116806_lxi9oh.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Lanjut fullnya nggak nihhh? 👀🔥 Behind the scenes video angkatan yang pecah abis! #yearbook #videoangkatan #fyp",
+    song: "School Memories - Lofi",
+    likes: "45.8K",
+    comments: "2.5K",
+    shares: "11.2K"
+  },
+  {
+    id: 10,
+    url: "https://res.cloudinary.com/dqwnhqjsq/video/upload/jokowi_4upage_fyp_fyp_fyp%E3%82%B7%E3%82%9Aviral_7431610638465518864_rffwg3.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Momen langka bisa dapet angle ini pas liputan Pak Jokowi 🇮🇩🎥 Merinding sih dapet momen beginian. #jokowi #fypシ #viral",
+    song: "National Pride - Epic Cinematic",
+    likes: "210.5K",
+    comments: "15.2K",
+    shares: "34.8K"
+  },
+  {
+    id: 11,
+    url: "https://res.cloudinary.com/dqwnhqjsq/video/upload/wisuda_fotografer_graduation_fotowisuda_ffh1ul.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Nemenin momen wisuda kalian sampai dapet candid paling magical 🎓✨ Congraduation! #wisuda #fotografer #graduation",
+    song: "Happy Graduation Day - Arstate",
+    likes: "18.3K",
+    comments: "542",
+    shares: "3.1K"
+  },
+  {
+    id: 12,
+    url: "https://res.cloudinary.com/dqwnhqjsq/video/upload/Teaser_Wedding_of_Rudi_Rida_jasavideoediting_editing_weddingsura..._7431003795087314182_qlzdez.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Teaser Wedding: Rudi & Rida 💍 Intip dikit proses editing buat klien wedding Surabaya kita. #wedding #jasavideoediting #surabaya",
+    song: "Wedding Teaser Vibes - Bachtiar",
+    likes: "11.5K",
+    comments: "389",
+    shares: "1.5K"
+  },
+  {
+    id: 13,
+    url: "https://res.cloudinary.com/dqwnhqjsq/video/upload/spill_fullnya_ga_nih_upacara_cinematic_fyp_q9tchq.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Spill fullnya ga nih? Upacara bendera tapi dibikin se-cinematic ini 🇮🇩🔥 Cek part 2 buat hasil akhirnya! #upacara #cinematic #fyp",
+    song: "Cinematic March - Creator Base",
+    likes: "67.2K",
+    comments: "3.4K",
+    shares: "12.1K"
+  },
+  {
+    id: 14,
+    url: "https://res.cloudinary.com/dqwnhqjsq/video/upload/fyp_followdong_lywsza.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Udah effort shoot and edit berjam-jam, masih sepi aja nih? Follow dong guys biar makin semangat nyiptain karya! 🙌🔥 #fyp #videography",
+    song: "Support Local Creator - Lofi",
+    likes: "9.2K",
+    comments: "812",
+    shares: "1.1K"
+  },
+  {
+    id: 15,
+    url: "https://res.cloudinary.com/dqwnhqjsq/video/upload/spill_fullnya_gak_nih_yearbook_videoangkatan_videoangakatansekolah..._7373654131283709190_dsheq9.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Spill fullnya nggak nih? Konsep video angkatan sekolah kali ini vibes-nya nostalgia banget 🏫✨ #yearbook #videoangkatan",
+    song: "Masa SMA Termanis - Indie",
+    likes: "85.6K",
+    comments: "4.1K",
+    shares: "18.3K"
+  },
+  {
+    id: 16,
+    url: "https://res.cloudinary.com/dqwnhqjsq/video/upload/TikTok_video_7368627645531147526_jhevae.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Random aesthetic dump dari hardisk. Sayang kalau footage-nya nganggur terus, post aja lah 🎬✨ #aesthetic #cinematic #videography",
+    song: "Aesthetic Dump - Chill Sound",
+    likes: "22.4K",
+    comments: "614",
+    shares: "4.2K"
   }
 ];
+
+// Shuffle utility right outside component to randomize feed
+const shuffleArray = <T,>(array: T[]): T[] => {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+};
 
 const BTSPage = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-  const [feedVideos, setFeedVideos] = useState<TikTokVideo[]>(initialVideos);
+  const [feedVideos, setFeedVideos] = useState<TikTokVideo[]>(() => shuffleArray(initialVideos));
+  const [showScrollHint, setShowScrollHint] = useState(false);
+  const scrollHintShownRef = useRef(false);
+  const isFetchingRef = useRef(false);
+
+  const handleVideoLoop = (index: number) => {
+    // Only show scroll helper when the very first video finishes its first loop
+    if (index === 0 && !scrollHintShownRef.current) {
+      setShowScrollHint(true);
+      scrollHintShownRef.current = true;
+    }
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -149,20 +250,64 @@ const BTSPage = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Infinite Scroll Handler (Loops the videos infinitely)
+  // Infinite Scroll Handler
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    if (showScrollHint) setShowScrollHint(false);
+    
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-    // When within 1.5 screen lengths of the bottom, duplicate the array to loop
-    if (scrollHeight - scrollTop <= clientHeight * 1.5) {
-      setFeedVideos(prev => [
-        ...prev, 
-        ...initialVideos.map(v => ({ ...v, id: `${v.id}-${Math.random()}` }))
-      ]);
+    
+    // When within 2 screen lengths of the bottom, fetch next batch
+    if (scrollHeight - scrollTop <= clientHeight * 2 && !isFetchingRef.current) {
+      isFetchingRef.current = true; // Lock to prevent explosion of duplicates
+      
+      setFeedVideos(prev => {
+        const lastVideo = prev[prev.length - 1];
+        const newBatch = shuffleArray(initialVideos);
+        
+        // Prevent back-to-back duplicate if the new batch starts with the exact same video
+        // We compare URLs since the ID gets a random string appended
+        if (newBatch[0].url === lastVideo.url) {
+          const temp = newBatch[0];
+          newBatch[0] = newBatch[newBatch.length - 1];
+          newBatch[newBatch.length - 1] = temp;
+        }
+
+        return [
+          ...prev, 
+          ...newBatch.map(v => ({ ...v, id: `${v.id}-${Math.random()}` }))
+        ];
+      });
+
+      // Release lock safely after DOM has time to paint the new scrollHeight
+      setTimeout(() => {
+        isFetchingRef.current = false;
+      }, 500);
     }
   };
 
   return (
     <div className="bg-black/95 text-white h-[100dvh] w-full relative overflow-hidden">
+      
+      {/* Scroll Up Hint Overlay */}
+      {showScrollHint && (
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 md:-translate-x-[calc(50%+32px)] z-[150] flex flex-col items-center pointer-events-none drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]"
+        >
+          <motion.div
+            animate={{ y: [0, -15, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            className="flex flex-col items-center"
+          >
+            <ChevronUp size={48} className="text-white drop-shadow-xl" />
+            <ChevronUp size={48} className="text-white/60 -mt-8 drop-shadow-xl" />
+          </motion.div>
+          <span className="text-white font-bold tracking-widest uppercase text-xs md:text-sm mt-3 drop-shadow-xl bg-black/50 px-4 py-1.5 rounded-full backdrop-blur-md border border-white/20">
+            Scroll For Next
+          </span>
+        </motion.div>
+      )}
       
       {/* 1 Floating Centered Pill Header */}
       {/* 
@@ -212,8 +357,8 @@ const BTSPage = () => {
           data-lenis-prevent="true"
           className="h-[100dvh] w-full snap-y snap-mandatory overflow-y-scroll no-scrollbar"
         >
-          {feedVideos.map((video) => (
-            <VideoItem key={video.id} video={video} />
+          {feedVideos.map((video, index) => (
+            <VideoItem key={video.id} video={video} onVideoLoop={() => handleVideoLoop(index)} />
           ))}
         </div>
       )}
@@ -222,7 +367,7 @@ const BTSPage = () => {
 };
 
 // Individual Video Component
-const VideoItem: React.FC<{ video: TikTokVideo }> = ({ video }) => {
+const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({ video, onVideoLoop }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
@@ -274,6 +419,11 @@ const VideoItem: React.FC<{ video: TikTokVideo }> = ({ video }) => {
       const { currentTime, duration } = videoRef.current;
       if (duration > 0) {
         setProgress((currentTime / duration) * 100);
+        
+        // Trigger loop callback right before the video restarts
+        if (duration - currentTime < 0.2) {
+          if (onVideoLoop) onVideoLoop();
+        }
       }
     }
   };
