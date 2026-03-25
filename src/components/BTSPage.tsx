@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowLeft, Heart, MessageCircle, Share2, Music, ChevronUp, X } from 'lucide-react';
+import { ArrowLeft, Heart, MessageCircle, Share2, Music, ChevronUp, X, Play } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface TikTokVideo {
@@ -499,10 +499,27 @@ const VideoItem: React.FC<{ video: TikTokVideo; onVideoLoop?: () => void }> = ({
             src={video.url}
             onClick={togglePlay}
             onTimeUpdate={handleTimeUpdate}
-            className="absolute inset-0 w-full h-full object-cover cursor-pointer"
+            className="absolute inset-0 w-full h-full object-contain bg-black cursor-pointer"
             loop
             playsInline
           />
+
+          {/* Pause / Play Icon Overlay */}
+          <AnimatePresence>
+            {!isPlaying && (
+              <motion.div 
+                initial={{ opacity: 0, scale: 1.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.2, type: 'spring' }}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-black/40 backdrop-blur-md rounded-full flex justify-center items-center pointer-events-none z-[60] shadow-2xl"
+              >
+                <div className="ml-1.5">
+                   <Play size={40} className="text-white/90 drop-shadow-2xl fill-white/90" />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Shadow Overlay for bottom Text Readability */}
           <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-20 pointer-events-none" />
