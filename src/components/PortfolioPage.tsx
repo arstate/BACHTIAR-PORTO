@@ -289,7 +289,7 @@ const PortfolioPage = () => {
       } else {
         category = hash.charAt(0).toUpperCase() + hash.slice(1);
       }
-      
+
       if (categories.includes(category)) {
         setActiveCategory(category);
       } else {

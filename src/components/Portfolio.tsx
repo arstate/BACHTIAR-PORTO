@@ -69,7 +69,8 @@ const Portfolio = () => {
       ],
       span: "md:col-span-2 md:row-span-1",
       brief: "Professional videography documentation capturing the energy and atmosphere of live events. High-quality visuals synced with the rhythm of the moment.",
-      tools: ["Sony A7II", "Sony A7SII", "DJI Ronin", "Premiere Pro"]
+      tools: ["Sony A7II", "Sony A7SII", "DJI Ronin", "Premiere Pro"],
+      videoLink: "https://www.youtube.com/embed/-YjYYBbSAIw"
     },
     { 
       title: "Event Photography", 
@@ -280,18 +281,24 @@ const Portfolio = () => {
               >
                 {/* Media Section */}
                 <div className="relative flex-1 bg-[#050505] flex items-center justify-center min-h-[40vh] md:min-h-0">
-                  <img 
-                    src={selectedProject.images ? selectedProject.images[slideshowIndex % selectedProject.images.length] : selectedProject.img} 
-                    alt={selectedProject.title} 
-                    className="max-w-full max-h-[50vh] md:max-h-[90vh] w-auto h-auto object-contain block"
-                    referrerPolicy="no-referrer"
-                  />
-                  {/* Placeholder for video play button if it were a video */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="w-16 h-16 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center border border-white/20">
-                      <Video size={24} className="text-white/80" />
-                    </div>
-                  </div>
+                  {selectedProject.videoLink ? (
+                    <iframe
+                      src={selectedProject.videoLink}
+                      title={selectedProject.title}
+                      className="w-full h-full max-h-[50vh] md:max-h-[90vh] aspect-video"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <img
+                      src={selectedProject.images ? selectedProject.images[slideshowIndex % selectedProject.images.length] : selectedProject.img}
+                      alt={selectedProject.title}
+                      className="max-w-full max-h-[50vh] md:max-h-[90vh] w-auto h-auto object-contain block"
+                      referrerPolicy="no-referrer"
+                    />
+                  )}
                 </div>
 
                 {/* Content Section */}
@@ -350,6 +357,20 @@ const Portfolio = () => {
                       ))}
                     </div>
                   </div>
+
+                  {selectedProject.videoLink && (
+                    <div className="mt-6 pt-6 border-t border-white/10">
+                      <a
+                        href={selectedProject.videoLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-medium transition-colors"
+                      >
+                        <Video size={18} />
+                        Watch on YouTube
+                      </a>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             </motion.div>
