@@ -214,8 +214,7 @@ const Clients = () => {
           {[...clients, ...clients].map((logo, i) => (
             <div key={i} className="flex-shrink-0 group">
               <div
-                className="w-28 h-28 md:w-40 md:h-40 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center p-2 md:p-4 group-hover:scale-105 group-hover:bg-white group-hover:border-transparent transition-all duration-500"
-                style={{ boxShadow: '0 0 0 1px rgba(99,102,241,0.5), 0 0 30px 8px rgba(59,130,246,0.45), 0 8px 24px rgba(0,0,0,0.6)' }}
+                className="w-28 h-28 md:w-40 md:h-40 rounded-2xl bg-[#151515]/90 md:bg-white/10 md:backdrop-blur-md border border-white/10 flex items-center justify-center p-2 md:p-4 group-hover:scale-105 group-hover:bg-white group-hover:border-transparent shadow-xl group-hover:shadow-[0_0_0_1px_rgba(99,102,241,0.5),0_0_30px_8px_rgba(59,130,246,0.45),0_8px_24px_rgba(0,0,0,0.6)] transition-all duration-500"
               >
                 <img
                   src={logo}
