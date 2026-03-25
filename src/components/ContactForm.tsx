@@ -56,15 +56,15 @@ const ContactForm = () => {
         className="absolute inset-0 opacity-[0.05] pointer-events-none mix-blend-screen"
         style={{
           backgroundImage: `url('https://static.vecteezy.com/system/resources/thumbnails/053/159/944/small/social-media-doodle-background-seamless-pattern-repeat-icon-cute-vector.jpg')`,
-          backgroundSize: '300px auto',
-          // REMOVED 'filter: invert(1)' as it forces massive CPU overhead on scrolling images
+          backgroundSize: '600px auto',
+          filter: 'invert(1)',
         }}
       />
 
       {/* Animated Background Elements */}
       <motion.div
         style={{ y, opacity }}
-        className="absolute inset-0 bg-gradient-to-b from-purple-900/5 via-transparent to-blue-900/5 pointer-events-none"
+        className="absolute inset-0 pointer-events-none"
       />
 
       <div className="absolute top-[-20%] left-[10%] w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.15)_0%,transparent_60%)] pointer-events-none" />
