@@ -1,7 +1,7 @@
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'motion/react';
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Home, ArrowLeft, ChevronDown } from 'lucide-react';
+import { ArrowLeft, ChevronDown, Menu } from 'lucide-react';
 import { Link as RouterLink } from 'react-router-dom';
 
 const FloatingNavbar = () => {
@@ -12,6 +12,8 @@ const FloatingNavbar = () => {
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   const isGalleryPage = location.pathname === '/gallery';
   const isVideographyPage = location.pathname === '/videography';
@@ -59,6 +61,9 @@ const FloatingNavbar = () => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
+      }
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -257,16 +262,56 @@ const FloatingNavbar = () => {
           </AnimatePresence>
         </div>
       ) : (
-        homeNavLinks.map((link) => (
-          <a
-            key={link.name}
-            href={link.href}
-            onClick={(e) => handleScroll(e, link.href)}
-            className="text-[10px] md:text-sm font-medium text-white/70 hover:text-white transition-colors tracking-wide uppercase"
-          >
-            {link.name}
-          </a>
-        ))
+        <>
+          {/* Desktop Nav Links */}
+          <div className="hidden md:flex items-center gap-8">
+            {homeNavLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={(e) => handleScroll(e, link.href)}
+                className="text-[10px] md:text-sm font-medium text-white/70 hover:text-white transition-colors tracking-wide uppercase"
+              >
+                {link.name}
+              </a>
+            ))}
+          </div>
+
+          {/* Mobile Hamburger Menu */}
+          <div className="md:hidden relative flex items-center" ref={mobileMenuRef}>
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-white/70 hover:text-white transition-colors p-1"
+              aria-label="Toggle Menu"
+            >
+              <Menu size={20} />
+            </button>
+            <AnimatePresence>
+              {isMobileMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  className="absolute top-full left-0 mt-4 w-48 bg-[#0a0a0a]/90 backdrop-blur-2xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl p-2"
+                >
+                  {homeNavLinks.map((link) => (
+                    <a
+                      key={link.name}
+                      href={link.href}
+                      onClick={(e) => {
+                        handleScroll(e, link.href);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="block px-4 py-2.5 rounded-xl text-xs font-medium text-white/60 hover:text-white hover:bg-white/5 transition-all uppercase tracking-wider"
+                    >
+                      {link.name}
+                    </a>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </>
       )}
 
       {!isDropdownPage && (

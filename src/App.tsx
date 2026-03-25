@@ -13,7 +13,6 @@ import Clients from './components/Clients';
 import ContactForm from './components/ContactForm';
 import Footer from './components/Footer';
 import LazySection from './components/LazySection';
-import ThreeDCamera from './components/ThreeDCamera';
 import PortfolioGallery from './components/PortfolioGallery';
 import PortfolioHub from './components/PortfolioHub';
 import PortfolioPage from './components/PortfolioPage';
@@ -29,45 +28,31 @@ function Home() {
       <Hero />
 
       <LazySection id="about-section" placeholderHeight="100vh" className="relative z-20 overflow-hidden">
-        <ThreeDCamera index={0}>
-          <About />
-        </ThreeDCamera>
+        <About />
       </LazySection>
 
       <LazySection id="experience-section" placeholderHeight="100vh" className="relative z-20 overflow-hidden">
-        <ThreeDCamera index={1}>
-          <Experience />
-        </ThreeDCamera>
+        <Experience />
       </LazySection>
 
       <LazySection id="skills-section" placeholderHeight="100vh" className="relative z-20 overflow-hidden">
-        <ThreeDCamera index={2}>
-          <Skills />
-        </ThreeDCamera>
+        <Skills />
       </LazySection>
 
       <LazySection id="portfolio-section" placeholderHeight="100vh" className="relative z-20 overflow-hidden">
-        <ThreeDCamera index={3}>
-          <Portfolio />
-        </ThreeDCamera>
+        <Portfolio />
       </LazySection>
 
       <LazySection id="clients-section" placeholderHeight="50vh" className="relative z-20 overflow-hidden">
-        <ThreeDCamera index={4}>
-          <Clients />
-        </ThreeDCamera>
+        <Clients />
       </LazySection>
 
       <LazySection id="contact-form-section" placeholderHeight="50vh" className="relative z-20 overflow-hidden">
-        <ThreeDCamera index={5}>
-          <ContactForm />
-        </ThreeDCamera>
+        <ContactForm />
       </LazySection>
 
       <LazySection id="footer-section" placeholderHeight="50vh" className="relative z-20 overflow-hidden">
-        <ThreeDCamera index={6}>
-          <Footer />
-        </ThreeDCamera>
+        <Footer />
       </LazySection>
     </>
   );

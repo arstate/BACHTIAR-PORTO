@@ -46,13 +46,13 @@ body {
 }
 
 .glass-card {
-  @apply bg-white/[0.05] backdrop-blur-md border border-white/[0.08] rounded-[2rem] shadow-2xl;
+  @apply bg-[#151515]/90 md:bg-white/[0.05] md:backdrop-blur-md border border-white/[0.08] rounded-[2rem] shadow-xl md:shadow-2xl;
   transform: translateZ(0);
   will-change: transform;
 }
 
 .glass-button {
-  @apply bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 transition-all duration-300 rounded-full;
+  @apply bg-[#2a2a2a]/90 md:bg-white/10 hover:bg-[#3a3a3a]/90 md:hover:bg-white/20 md:backdrop-blur-md border border-white/20 transition-all duration-300 rounded-full;
   transform: translateZ(0);
   will-change: transform;
 }
