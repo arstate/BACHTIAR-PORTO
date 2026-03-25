@@ -170,7 +170,7 @@ const FloatingNavbar = () => {
     window.scrollTo(0, 0);
   };
 
-  if (isHubPage) return null;
+  if (isHubPage || isBTSPage) return null;
 
   return (
     <motion.nav
