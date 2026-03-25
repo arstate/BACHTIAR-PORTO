@@ -118,16 +118,21 @@ const Portfolio = () => {
 
   return (
     <section id="portfolio" ref={ref} className="py-32 px-6 relative overflow-hidden z-10 w-full md:w-[140%] md:-ml-[20%]">
-      {/* Scroll-linked morphing gradient */}
+      {/* Scroll-linked morphing gradient - Optimized for iOS Safari! */}
+      {/* Replaced blur-[100px] with native radial gradient to avoid WebKit compositor crash on mobile */}
       <motion.div 
-        style={{ scale, rotate }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] md:w-[60vw] md:h-[60vw] bg-gradient-to-tr from-purple-900/10 to-blue-900/10 blur-[100px] rounded-full pointer-events-none z-0"
+        style={{ 
+          scale, 
+          rotate,
+          background: "radial-gradient(circle, rgba(59,130,246,0.1) 0%, rgba(168,85,247,0.1) 30%, transparent 60%)"
+        }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] h-[150vw] md:w-[80vw] md:h-[80vw] rounded-full pointer-events-none z-0"
       />
       
-      {/* Sweeping gradient background */}
+      {/* Sweeping gradient background - Optimized to avoid Main-Thread Repaint */}
       <motion.div 
-        animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+        animate={{ opacity: [0.3, 0.6, 0.3] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.02)_50%,transparent_75%)] bg-[length:200%_200%] pointer-events-none z-0"
       />
       <div className="max-w-7xl mx-auto relative z-10">
