@@ -269,7 +269,7 @@ const initialVideos: TikTokVideo[] = [
     id: 22,
     url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534100/90f6193a5cd44258989fbb611f74c714_whronm.mp4",
     author: "@tiar.arstate.cinema",
-    description: "Klasik tapi asik 🚗💨 VW Beetle emang juaranya wedding film. #VWClassic #WeddingFilm #JustMarried",
+    description: "Klasik tapi asik rek 🚗💨 VW Beetle emang juaranya buat wedding film. Hasilnya jadul tapi berkelas! #VWClassic #WeddingFilm #JustMarried",
     song: "Vintage Soul - Jazz Original",
     likes: "54.2K",
     comments: "1.1K",
@@ -349,7 +349,7 @@ const initialVideos: TikTokVideo[] = [
     id: 30,
     url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534091/4c0c23f6f6d94180a4440c03a2b42cf8_qhkxmc.mp4",
     author: "@tiar.arstate.cinema",
-    description: "Wisudaan rek! 🎓🎉 Bakal kangen suasana sekolah ini. #Graduation #SchoolMemories #ClassOf202X",
+    description: "Momen video angkatan Class of 2024! 🎓📸 Bakal kangen pol sama masa-masa ini rek. #ClassOf2024 #VideoAngkatan #SchoolMemories #BachtiarCinema",
     song: "Micro World - Minimalist Base",
     likes: "7.2K",
     comments: "214",
@@ -379,7 +379,7 @@ const initialVideos: TikTokVideo[] = [
     id: 33,
     url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534086/79494cf45ff24f1586e8399fe24609bf_nqtc94.mp4",
     author: "@tiar.arstate.cinema",
-    description: "Dekorasi pelaminannya gemes pol 🌸✨ Vibes-nya romantis parah! #WeddingDecor #RomanticVibes #Pelaminan",
+    description: "Setup kamera buat shoot dekorasi pinky-pinky ginii 🎥🌸 Vibes-nya dapet banget kan rek? #BTSWedding #Cinematography #DekorasiSurabaya",
     song: "Rainy Day Rhythm - Ambient",
     likes: "42.1K",
     comments: "1.5K",
@@ -459,7 +459,7 @@ const initialVideos: TikTokVideo[] = [
     id: 41,
     url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534077/dc80cd14f17b4cfe84ce445925542f75_snfna6.mp4",
     author: "@tiar.arstate.cinema",
-    description: "Anggun pol! 👰✨ Prosesi wedding yang bener-bener estetik rek. #WeddingDay #Kebaya #BridalFashion",
+    description: "Muter-muter di pameran wedding rek! 👰✨ Banyak booth keren, makin gak sabar berkarya di sini. #WeddingExpo #Surabaya #Inspirasi",
     song: "Elegant Walk - Piano Base",
     likes: "112.4K",
     comments: "5.4K",
@@ -469,8 +469,8 @@ const initialVideos: TikTokVideo[] = [
     id: 42,
     url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534075/63d32173736a4d6eb6b2be08f0366094_xwyu5y.mp4",
     author: "@tiar.arstate.cinema",
-    description: "Monitor standby! 📺🏛️ Event pembukaan 2025 hari ini di Grahadi. #Documentation #Grahadi #Surabaya",
-    song: "Event Flow - Professional",
+    description: "Momen sakral wedding rek! 👰✨ Suasananya dapet banget, elegan pol. #WeddingCinema #WeddingDay #Surabaya",
+    song: "Wedding Bliss - Strings Instrumental",
     likes: "25.6K",
     comments: "812",
     shares: "3.4K"
@@ -569,7 +569,7 @@ const initialVideos: TikTokVideo[] = [
     id: 52,
     url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534055/19ae66daa5004841a9ac80f0e74c0036_hxiypg.mov",
     author: "@tiar.arstate.cinema",
-    description: "Focus on the goal 🎥✨ Proyek rahasia rek, stay tuned! #BehindTheScenes #CinemaProject",
+    description: "Lagi ngulik tone warna wedding rek! 🎨💍 Momen editing yang bener-bener kudu teliti maszeh. #AdobePremiere #WeddingEdit #BachtiarPorto",
     song: "Shadow Play - Mysterious",
     likes: "11.5K",
     comments: "432",
@@ -639,7 +639,7 @@ const initialVideos: TikTokVideo[] = [
     id: 59,
     url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534039/eaae9b92e74d4e16b351df0d34634c86_mbe6w6.mp4",
     author: "@tiar.arstate.cinema",
-    description: "Rame pol rek! 🏛️✨ Acara kumpul-kumpul hari ini sukses besar. #MassiveEvent #Gathering #People",
+    description: "Sumpah rame banget rek! 🙏✨ Acara kumpul-kumpul hari ini khidmat pol, barakallah. #MassiveGathering #ReligiousEvent #Surabaya",
     song: "Together - Uplifting",
     likes: "12.4K",
     comments: "321",
@@ -735,6 +735,20 @@ const BTSPage = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const scrollHintShownRef = useRef(false);
   const isFetchingRef = useRef(false);
+  const globalAudioRef = useRef<HTMLAudioElement>(null);
+
+  // Handle Global Music Playback
+  useEffect(() => {
+    if (globalAudioRef.current) {
+      if (isMusicOn) {
+        globalAudioRef.current.play().catch(() => {
+          // Playback might be blocked by browser until user interaction
+        });
+      } else {
+        globalAudioRef.current.pause();
+      }
+    }
+  }, [isMusicOn]);
 
   const handleVideoEnd = (index: number) => {
     if (isAutoScrollOn && scrollContainerRef.current) {
@@ -970,6 +984,13 @@ const BTSPage = () => {
           ))}
         </div>
       )}
+
+      {/* Global Background Music Element */}
+      <audio 
+        ref={globalAudioRef} 
+        src="https://cdn.pixabay.com/audio/2025/09/23/audio_1b6f4de1c4.mp3" 
+        loop
+      />
 
       {/* Desktop Scroll Navigation Container (Red Boxes position) */}
       {/* Removed from global - moved inside VideoItem for perfect symmetry */}
