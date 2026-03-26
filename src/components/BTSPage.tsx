@@ -694,6 +694,126 @@ const initialVideos: TikTokVideo[] = [
     likes: "33.8K",
     comments: "912",
     shares: "4.5K"
+  },
+  {
+    id: 65,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534032/3267fe1443a24745bf876baf97e529e4_cko1ae.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Lagi di tengah keramaian acara wedding rek! 👰✨ Seru pol suasananya. #WeddingDay #BTS #Surabaya",
+    song: "Wedding Crowd - Celebration",
+    likes: "45.2K",
+    comments: "1.2K",
+    shares: "3.4K"
+  },
+  {
+    id: 66,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534031/a131e36227c547bbab1d59a3c93c3ad5_wpfbfz.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Tim handheld beraksi rek! 🎥📸 Nge-shoot momen sakral biar estetik maksimal. #WeddingCinema #BTS #TimHandheld",
+    song: "Handheld Motion - Arstate",
+    likes: "28.5K",
+    comments: "642",
+    shares: "1.8K"
+  },
+  {
+    id: 67,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534029/f25be45af1024fd08ecf2b870ff27048_hl3tuo.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Detail makeup itu penting banget rek! 💄👰 Lagi proses editing biar makin flawless. #WeddingEditor #BTS #PremierePro",
+    song: "Beauty Focus - Soft Lofi",
+    likes: "19.3K",
+    comments: "432",
+    shares: "2.1K"
+  },
+  {
+    id: 68,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534030/081ed9fc75b64bb09d4f40430864c1e3_ujqf36.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Momen manis jangan sampai lewat rek! 💍✨ Ngedit bts engagement biar makin baper. #EngagementVideo #BTS #Surabaya",
+    song: "Sweet Moments - Love Base",
+    likes: "56.4K",
+    comments: "2.1K",
+    shares: "8.2K"
+  },
+  {
+    id: 69,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534029/df1a55fa2d494cd984140103ceb690c4_lhpfem.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Detail wedding ring emang gak pernah gagal rek! 💍✨ Cakep pol maszeh. #WeddingDetails #MacroShot #BTS",
+    song: "Diamond Shine - Cinematic",
+    likes: "12.8K",
+    comments: "311",
+    shares: "1.1K"
+  },
+  {
+    id: 70,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534028/bfd26cea395b4b40a7f0f55b842dd608_xbknaf.mov",
+    author: "@tiar.arstate.cinema",
+    description: "Setup dulu biar paten rek! 🎥☕ Venue-nya udah siap, tinggal gaskeun shot. #VenueSetup #ProductionLife #Surabaya",
+    song: "Morning Coffee - Production Mix",
+    likes: "8.5K",
+    comments: "214",
+    shares: "432"
+  },
+  {
+    id: 71,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534027/e8cce3d0d5004bbe827a2bb08ab0fb7e_pnizgy.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Alhamdulillah sah! 💍✨ Wedding day Yuli & Hafid 22 Juni 2024. Momen paling ditunggu rek. #WeddingStory #Sah #BachtiarCinema",
+    song: "The Vow - Pure Piano",
+    likes: "124.2K",
+    comments: "8.5K",
+    shares: "32.1K"
+  },
+  {
+    id: 72,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534027/58d41ca6ea4b41da90bdafa391d6f93c_g6ouot.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Vibe test dulu rek! 🌊🎥 Gimbal emang andalan buat shoot cinematic begini. #VibeTest #Cinematic #Surabaya",
+    song: "Ocean Breeze - Vibe Base",
+    likes: "45.1K",
+    comments: "1.5K",
+    shares: "5.4K"
+  },
+  {
+    id: 73,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534026/55d8b88959a74896a76765cca9d61def_jg4jcu.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Day 1 gaskeun rek! 🎥📸 Persiapan kudu mateng biar hasil maksimal. #Day1 #ShootLife #FilmProduction",
+    song: "Day 1 - Action Ready",
+    likes: "33.2K",
+    comments: "812",
+    shares: "2.1K"
+  },
+  {
+    id: 74,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534025/15feb29f94d6464db95f3ab2c2f9d3c4_mbs5do.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Lagi ngekor pengantin rek! 👰🤵‍♂️ Shoot cinematic di kampung juga oke pol hasilnya. #WeddingShoot #BTS #BachtiarCinema",
+    song: "Rural Charm - Acoustic",
+    likes: "44.1K",
+    comments: "1.2K",
+    shares: "6.3K"
+  },
+  {
+    id: 75,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534019/c05819e5ea85420ca1247a63cbc6d41f_fvdsja.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Kudu pinter cari angle rek! 🎥✨ Biar momen sakralnya dapet banget vibesnya. #WeddingCinema #BTS #Surabaya",
+    song: "Perfect Angle - Cinematic Flow",
+    likes: "19.5K",
+    comments: "432",
+    shares: "1.2K"
+  },
+  {
+    id: 76,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534014/ee26ee9a73e6494b9c2dff171b03c036_ylleei.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Kerja tim itu kunci rek! 🎥📸 Dua kamera biar dapet banyak angle estetik. #WeddingDay #BTS #BachtiarCinema",
+    song: "Team Sync - Professional",
+    likes: "37.4K",
+    comments: "912",
+    shares: "4.1K"
   }
 ];
 
@@ -735,20 +855,6 @@ const BTSPage = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const scrollHintShownRef = useRef(false);
   const isFetchingRef = useRef(false);
-  const globalAudioRef = useRef<HTMLAudioElement>(null);
-
-  // Handle Global Music Playback
-  useEffect(() => {
-    if (globalAudioRef.current) {
-      if (isMusicOn) {
-        globalAudioRef.current.play().catch(() => {
-          // Playback might be blocked by browser until user interaction
-        });
-      } else {
-        globalAudioRef.current.pause();
-      }
-    }
-  }, [isMusicOn]);
 
   const handleVideoEnd = (index: number) => {
     if (isAutoScrollOn && scrollContainerRef.current) {
@@ -984,13 +1090,6 @@ const BTSPage = () => {
           ))}
         </div>
       )}
-
-      {/* Global Background Music Element */}
-      <audio 
-        ref={globalAudioRef} 
-        src="https://cdn.pixabay.com/audio/2025/09/23/audio_1b6f4de1c4.mp3" 
-        loop
-      />
 
       {/* Desktop Scroll Navigation Container (Red Boxes position) */}
       {/* Removed from global - moved inside VideoItem for perfect symmetry */}
