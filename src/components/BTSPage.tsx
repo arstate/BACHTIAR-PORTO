@@ -224,6 +224,476 @@ const initialVideos: TikTokVideo[] = [
     likes: "158.4K",
     comments: "8.2K",
     shares: "24.1K"
+  },
+  {
+    id: 18,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534104/a329b48666dd474d8c6813c4424ea290_nn2nmd.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Syahdu pol! 💚 Wedding adat emang gak ada obat. #WeddingCinema #BTS #PernikahanAdat",
+    song: "Love Story Cinematic - Arstate",
+    likes: "45.2K",
+    comments: "1.2K",
+    shares: "3.4K"
+  },
+  {
+    id: 19,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534101/51ec075208704a148cd0e8d1300eb17c_lqfzjq.mov",
+    author: "@tiar.arstate.cinema",
+    description: "Sat set maszeh! 🎬 Estetik itu perlu effort rek. #BehindTheScenes #Filmmaker",
+    song: "Cinematic Beats - Arstate",
+    likes: "12.8K",
+    comments: "432",
+    shares: "1.1K"
+  },
+  {
+    id: 20,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534100/f981f1d8a40c49ef8338e70ab4e84d22_diglis.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Vibes kelas lagi asik-asiknya 🎓🎥 Dokumentasi tipis-tipis. #SchoolProject #DokumenterSekolah",
+    song: "School Memories - Nostalgia Base",
+    likes: "76.4K",
+    comments: "3.2K",
+    shares: "12.1K"
+  },
+  {
+    id: 21,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534100/c055345017604561b3fdcf9a7c5b465c_honagh.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Grahadi pecah! 🏛️🇮🇩 Gak nyangka ramenya gini rek. #Grahadi #Surabaya #EventDocumentation",
+    song: "Grand Opening - Majestic",
+    likes: "31.5K",
+    comments: "892",
+    shares: "5.6K"
+  },
+  {
+    id: 22,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534100/90f6193a5cd44258989fbb611f74c714_whronm.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Klasik tapi asik 🚗💨 VW Beetle emang juaranya wedding film. #VWClassic #WeddingFilm #JustMarried",
+    song: "Vintage Soul - Jazz Original",
+    likes: "54.2K",
+    comments: "1.1K",
+    shares: "8.4K"
+  },
+  {
+    id: 23,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534099/124115be7de644d195aa9564ab15e8f3_fnynff.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Masa SMA gak bakal balik rek! ✨ Squad goals pol. #MasaSekolah #FotoGrup #Yearbook",
+    song: "Focus - Productivity Beats",
+    likes: "18.9K",
+    comments: "541",
+    shares: "2.1K"
+  },
+  {
+    id: 24,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534098/87ea38b2e0bb4c65b1ec00d34837bec7_l7orxd.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Khidmat pol 🏛️💼 Liputan resmi tetep harus sinematik. #ProtokolJatim #EventVideography",
+    song: "Storyteller - Ambient Flow",
+    likes: "22.5K",
+    comments: "612",
+    shares: "3.4K"
+  },
+  {
+    id: 25,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534098/0a142aed8eda4e58bb06d1f710763a62_jre3dm.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Slow motion-nya ngeri! 📹✨ Sony emang gak pernah gagal rek. #SonyAlpha #SlowMotion #Filmmaking",
+    song: "The Angle - Modern Base",
+    likes: "14.3K",
+    comments: "321",
+    shares: "1.2K"
+  },
+  {
+    id: 26,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534097/d2f177b91e354b8187a3d6cf7f71e6ac_pimj9e.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Lagi serius diskusi rek 👩‍🏫💻 Candid tipis-tipis biar natural. #KegiatanSekolah #Candid #LearningProcess",
+    song: "Golden Hour Vibes - Arstate",
+    likes: "95.6K",
+    comments: "4.5K",
+    shares: "21.3K"
+  },
+  {
+    id: 27,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534097/805d0c1a6c1441eda8333edcf8c5f5c7_gsjzli.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Spill tipis wedding cinematic hari ini 💍✨ Cantik pol! #WeddingPreparation #KebayaModern #BTS",
+    song: "Tech Flow - Electronic Beats",
+    likes: "8.4K",
+    comments: "542",
+    shares: "912"
+  },
+  {
+    id: 28,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534094/e91a25392bd74bcf8a3315aa7a9cd4ac_szryxi.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Panas-panas tetep gas pol 🔥📸 Demi hasil yang estetik rek! #OutdoorPhotography #FlashSetup",
+    song: "Magic Touch - Dreamy Sound",
+    likes: "44.2K",
+    comments: "1.8K",
+    shares: "6.3K"
+  },
+  {
+    id: 29,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534094/11eeeb89eeed463ba239e6f987e0ece4_ud9zjr.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Creative mode: ON! 🎥🔥 Nongkrong produktif bareng tim. #GenZCreator #CreativeProject #TeamWork",
+    song: "Team Spirit - Upbeat Mix",
+    likes: "12.5K",
+    comments: "341",
+    shares: "1.5K"
+  },
+  {
+    id: 30,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534091/4c0c23f6f6d94180a4440c03a2b42cf8_qhkxmc.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Wisudaan rek! 🎓🎉 Bakal kangen suasana sekolah ini. #Graduation #SchoolMemories #ClassOf202X",
+    song: "Micro World - Minimalist Base",
+    likes: "7.2K",
+    comments: "214",
+    shares: "542"
+  },
+  {
+    id: 31,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534088/61f56dff202b408b97a879b6e981703b_a7t98d.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Tim solid, karya apik! 👋🎬 Sapa dulu mas-mas videonya. #ProductionTeam #WorkMode #FilmmakerLife",
+    song: "The Journey - Epic Cinematic",
+    likes: "112.4K",
+    comments: "6.3K",
+    shares: "32.1K"
+  },
+  {
+    id: 32,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534088/2d4187d9a442477b887264a9d9c48aae_bc32ay.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "REC on! 💍📹 Momen krusial jangan sampe lolos rek. #SonyA7II #WeddingVideography #RealTime",
+    song: "Colors of Life - Vibrant Sound",
+    likes: "19.5K",
+    comments: "432",
+    shares: "1.8K"
+  },
+  {
+    id: 33,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534086/79494cf45ff24f1586e8399fe24609bf_nqtc94.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Dekorasi pelaminannya gemes pol 🌸✨ Vibes-nya romantis parah! #WeddingDecor #RomanticVibes #Pelaminan",
+    song: "Rainy Day Rhythm - Ambient",
+    likes: "42.1K",
+    comments: "1.5K",
+    shares: "8.2K"
+  },
+  {
+    id: 34,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534086/1df1908b9d8f492f8c247eb22725f7ec_k0kdu6.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Liputan seminar medis hari ini 🩺🥤 Serius tapi tetep sinematik rek. #MedicalSeminar #PocariSweat #EventSurabaya",
+    song: "Moody Interview - Deep Sound",
+    likes: "15.7K",
+    comments: "541",
+    shares: "2.3K"
+  },
+  {
+    id: 35,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534084/297336e7c76d46b48e45c196bd842b30_lsa5fa.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Editing gas pol! 💻🚀 AMD Ryzen AI emang kenceng rek. #AdobePremiere #EditingVideo #AMDRyzen",
+    song: "Celebration - Pop Vibes",
+    likes: "33.8K",
+    comments: "912",
+    shares: "4.5K"
+  },
+  {
+    id: 36,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534082/f594cbb1a7584140aefd747cb2b4a7ca_luhwut.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Lagi ngulik desain maszeh! 🎨💻 Sat set biar cepet kelar. #UIUX #Design #BachtiarPorto",
+    song: "Creative Bits - Lofi Hip Hop",
+    likes: "12.4K",
+    comments: "214",
+    shares: "342"
+  },
+  {
+    id: 37,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534081/193aa09d0dc04cc0ba719719319d3d81_lstrrj.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Persiapan live stream religi 🙏✨ Team solid, lancar jaya rek! #LiveStreaming #Surabaya #ReligiousEvent",
+    song: "Spiritual Peace - Ambient",
+    likes: "45.8K",
+    comments: "1.5K",
+    shares: "3.2K"
+  },
+  {
+    id: 38,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534080/b9ccc12db65949a28be803a282616d4f_ed9lsp.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Cantik pol dari balik lensa! 📸💍 Wedding vibes-nya dapet banget hari ini. #WeddingCinema #Viewfinder",
+    song: "Wedding Dream - Arstate",
+    likes: "67.2K",
+    comments: "2.1K",
+    shares: "5.4K"
+  },
+  {
+    id: 39,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534080/123cbdc9783549a195531901cd0c15bb_mmnent.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Cek tone warna baru rek 🌳✨ Syahdu gak sih buat video cinematic? #ColorGrading #Cinematic #Nature",
+    song: "Nature Walk - Chill Sound",
+    likes: "18.3K",
+    comments: "542",
+    shares: "1.1K"
+  },
+  {
+    id: 40,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534079/8b79a40d12924f93b6447f196ab32e8a_hooq2x.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Mode serius operet vMix! 💻🔥 Jangan sampe salah pencet rek pas live. #vMix #LiveEvent #Technical",
+    song: "Control Room - Electronic",
+    likes: "9.5K",
+    comments: "231",
+    shares: "542"
+  },
+  {
+    id: 41,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534077/dc80cd14f17b4cfe84ce445925542f75_snfna6.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Anggun pol! 👰✨ Prosesi wedding yang bener-bener estetik rek. #WeddingDay #Kebaya #BridalFashion",
+    song: "Elegant Walk - Piano Base",
+    likes: "112.4K",
+    comments: "5.4K",
+    shares: "22.1K"
+  },
+  {
+    id: 42,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534075/63d32173736a4d6eb6b2be08f0366094_xwyu5y.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Monitor standby! 📺🏛️ Event pembukaan 2025 hari ini di Grahadi. #Documentation #Grahadi #Surabaya",
+    song: "Event Flow - Professional",
+    likes: "25.6K",
+    comments: "812",
+    shares: "3.4K"
+  },
+  {
+    id: 43,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534074/d855fde3a96e4f48b97e18f4a109611a_f64kys.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Detail eye makeup-nya ngeri! 👁️✨ Kualitas 4K Sony emang gak ada lawan. #MacroPhotography #DetailCheck",
+    song: "Macro Vision - Minimalist",
+    likes: "8.9K",
+    comments: "142",
+    shares: "211"
+  },
+  {
+    id: 44,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534072/4947ee8a79bd40eab7656072b7a1ea52_nts1zj.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Tes photobooth dulu rek 📸🖤 Vibes hitam putih emang gak bosenin blas. #Photobooth #Classic #BandW",
+    song: "Classic Snap - Vintage Mix",
+    likes: "15.2K",
+    comments: "321",
+    shares: "812"
+  },
+  {
+    id: 45,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534068/e434a7f96e964b03944919b2e5ea3624_w5wzui.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Vibes konser paling asik dari tengah crowd rek! 🎸🔥 Hype pol! #ConcertPhotography #LiveMusic",
+    song: "Rock Crowd - High Energy",
+    likes: "158.3K",
+    comments: "10.4K",
+    shares: "45.1K"
+  },
+  {
+    id: 46,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534058/38ea3d1b36654c03ae751518fd3f08e4_orizmf.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Gimbal workout hari ini! 🎥🔥 Stage outdoor-nya cakep pol rek. #GimbalLife #EventBTS #Workout",
+    song: "Steady Hands - Drum & Bass",
+    likes: "22.5K",
+    comments: "614",
+    shares: "3.2K"
+  },
+  {
+    id: 47,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534066/b7e34913ca5f4c16ad0dfca13d22d4ea_fnlzbc.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Playback hasil manggung barusan 🎸✨ Energinya dapet pol rek! #RockStar #LiveMusic #Madiun",
+    song: "Stage Fever - Rock Mix",
+    likes: "44.2K",
+    comments: "1.2K",
+    shares: "5.3K"
+  },
+  {
+    id: 48,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534065/e50fe5cadf4743a59e8460cc11ea3ecd_dpcq6m.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "SID di Madiun pecah parah! 🎸🔥🔥 Stadion Wilis banjir Outsiders. #SupermanIsDead #Madiun #Concert",
+    song: "SID Madiun - Hype Energy",
+    likes: "210.5K",
+    comments: "15.2K",
+    shares: "58.4K"
+  },
+  {
+    id: 49,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534061/e75331909aa04f3aaa158dcc6b09cd01_rxjtw4.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Moshpit energy! 🤘🔥 Rockamination emang gak ada obatnya rek. #Moshpit #RocknRoll #ConcertLife",
+    song: "Moshpit Anthem - Intense",
+    likes: "85.4K",
+    comments: "4.3K",
+    shares: "22.1K"
+  },
+  {
+    id: 50,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534061/9f6ba64627554eccbd0b1f63f6b4901f_qnxxsd.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Rig siap tempur di bawah terik matahari ☀️🎥 Semangat maszeh! #Videography #RigBuild #Outdoor",
+    song: "Sun Chaser - Upbeat",
+    likes: "12.8K",
+    comments: "341",
+    shares: "512"
+  },
+  {
+    id: 51,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534057/efc222c672a6447bbcded51406431470_mgyjbu.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Betotan bass-nya ngeri! 🎸🔴 Vibes panggungnya gila banget rek. #Bassist #StageLife #Concert",
+    song: "Bass Line - Deep Bass",
+    likes: "33.2K",
+    comments: "812",
+    shares: "4.1K"
+  },
+  {
+    id: 52,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534055/19ae66daa5004841a9ac80f0e74c0036_hxiypg.mov",
+    author: "@tiar.arstate.cinema",
+    description: "Focus on the goal 🎥✨ Proyek rahasia rek, stay tuned! #BehindTheScenes #CinemaProject",
+    song: "Shadow Play - Mysterious",
+    likes: "11.5K",
+    comments: "432",
+    shares: "812"
+  },
+  {
+    id: 53,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534055/5a50e9c80e234d32a3971f307e95f01d_yfdxij.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Khidmat pol di Masjid Al-Akbar 🙏✨ Momen Dzikir & Doa bersama. #MasjidAlAkbar #Surabaya #Spiritual",
+    song: "Holy Night - Peaceful",
+    likes: "258.4K",
+    comments: "22.1K",
+    shares: "85.3K"
+  },
+  {
+    id: 54,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534055/dd0c39a7283246c3b9155df9f7a92a3b_wh4lq7.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Moshpit malem-malem emang beda energinya! 🤘🔥 Gas pol rek! #NightConcert #HighEnergy",
+    song: "Night Rave - Hardstyle",
+    likes: "124.6K",
+    comments: "8.2K",
+    shares: "34.1K"
+  },
+  {
+    id: 55,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534053/0a198d96e0b44c49bbebe5160d86ed12_zr7ueu.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Vlogging tipis-tipis di jalanan kota 🏙️🎥 Estetik gak harus mahal rek. #StreetVlog #CityLife",
+    song: "City Lights - LoFi",
+    likes: "19.2K",
+    comments: "612",
+    shares: "2.4K"
+  },
+  {
+    id: 56,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534050/e243a3ea4e00453ea77a96f20d4dda6f_zyczau.mov",
+    author: "@tiar.arstate.cinema",
+    description: "Coming soon rek! 🎬✨ Frame demi frame kita jaga kualitasnya. #BTSCinema #Filmmaker",
+    song: "Frames - Dramatic",
+    likes: "14.8K",
+    comments: "321",
+    shares: "912"
+  },
+  {
+    id: 57,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534045/3a05fa1393cd4bf591e2ccf17485334e_gre4bx.mov",
+    author: "@tiar.arstate.cinema",
+    description: "Proses gak pernah bohong maszeh 🎬💸 Sat set hasil maksimal! #WorkHard #CinemaProduction",
+    song: "Grind - Phonk Base",
+    likes: "17.4K",
+    comments: "542",
+    shares: "1.2K"
+  },
+  {
+    id: 58,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534043/738ec32d27aa4b878da832f1cd7b84db_ms5uwp.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Mudik bareng seru banget rek! 🚌🚌 Macet dikit tetep happy maszeh. #MudikBareng #Mudik2024 #PulangKampung",
+    song: "Journey Home - Folk",
+    likes: "82.5K",
+    comments: "4.1K",
+    shares: "15.4K"
+  },
+  {
+    id: 59,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534039/eaae9b92e74d4e16b351df0d34634c86_mbe6w6.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Rame pol rek! 🏛️✨ Acara kumpul-kumpul hari ini sukses besar. #MassiveEvent #Gathering #People",
+    song: "Together - Uplifting",
+    likes: "12.4K",
+    comments: "321",
+    shares: "1.1K"
+  },
+  {
+    id: 60,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534037/1728d0f2973d44d98237cef8d99c6e12_mgwnky.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Cek sound dulu biar nanti malam pecah rek! 🎸☀️ Semangat maszeh! #Soundcheck #OutdoorStage",
+    song: "Soundcheck - Blues Rock",
+    likes: "15.8K",
+    comments: "432",
+    shares: "912"
+  },
+  {
+    id: 61,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534037/8d2df624cf014777b4ac3d1932333666_l8ax6q.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Lembur tipis-tipis bareng Premiere Pro 💻🎞️ Sat set editnya! #EditorLife #Adobe #Work",
+    song: "Render Time - Lofi",
+    likes: "20.4K",
+    comments: "612",
+    shares: "2.5K"
+  },
+  {
+    id: 62,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534033/795beb063fd0460faaf8a5e0ba94d03c_n0diui.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Liputan forum resmi hari ini 🏛️💼 Serius tapi tetep sinematik rek. #EventVideography #Formal",
+    song: "Official - Orchestral",
+    likes: "11.2K",
+    comments: "214",
+    shares: "542"
+  },
+  {
+    id: 63,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534033/650c2a85894246509872e87f2d109840_s2fia4.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Sinematik pol di Ibis Hotel 🏨✨ Cahayanya dapet banget rek! #CinematicVideo #IbisHotel #Surabaya",
+    song: "Hotel Vibes - Chill Noir",
+    likes: "45.1K",
+    comments: "1.5K",
+    shares: "6.2K"
+  },
+  {
+    id: 64,
+    url: "https://res.cloudinary.com/dxghgdt9t/video/upload/v1774534026/78660716da9a42a1aa00d6ea4e91dd24_w8hzo1.mp4",
+    author: "@tiar.arstate.cinema",
+    description: "Cek alat dulu bareng tim angkatan sekolah 🎒🎥 Siap berkarya rek! #SchoolProject #GearCheck",
+    song: "Ready Set Go - Upbeat",
+    likes: "33.8K",
+    comments: "912",
+    shares: "4.5K"
   }
 ];
 
