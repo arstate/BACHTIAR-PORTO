@@ -69,7 +69,7 @@ const initialVideos: TikTokVideo[] = [
     id: 2,
     url: "https://res.cloudinary.com/dqwnhqjsq/video/upload/wedding_cinematic_prewedding_fotografer_keretaapi_dtvekj.mp4",
     author: "@tiar.arstate.cinema",
-    description: "Prewed tema stasiun kereta api emang nggak pernah gagal bikin kesan cinematic classic 🚂🎬 #prewedding #fotografer #cinematic",
+    description: "Prewed nang stasiun emang gak tau gagal rek! 🚂🎬 Vibes cinematic classic-nya dapet pol. #Prewedding #Stasiun #CinematicClassic #BachtiarCinema",
     song: "Classic Love - Cinematic",
     likes: "89.3K",
     comments: "4.5K",
