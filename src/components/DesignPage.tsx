@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Palette, ZoomIn, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { Palette, ZoomIn, ChevronLeft, ChevronRight, X, ChevronUp, ChevronDown } from 'lucide-react';
 import FloatingNavbar from './FloatingNavbar';
 // @ts-ignore
 import HTMLFlipBook from 'react-pageflip';
@@ -270,6 +270,8 @@ const DesignPage = () => {
   const [selectedProject, setSelectedProject] = useState<DesignProject | null>(null);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [isPanelMinimized, setIsPanelMinimized] = useState(false);
+  const [isFlipping, setIsFlipping] = useState(false);
   const bookRef = useRef<any>(null); // Ref for HTMLFlipBook
 
   const isYearbook = selectedProject?.category === "Yearbook Design";
@@ -381,6 +383,7 @@ const DesignPage = () => {
               onClick={() => {
                 setSelectedProject(design);
                 setCurrentSlideIndex(0);
+                setIsPanelMinimized(design.category === "Yearbook Design");
               }}
             >
               <div className="w-full relative overflow-hidden rounded-2xl bg-white/5 border border-white/10 group-hover:border-emerald-500/30 transition-colors duration-500">
@@ -439,6 +442,7 @@ const DesignPage = () => {
               <button 
                 onClick={(e) => {
                   e.stopPropagation();
+                  if (isFlipping) return;
                   setDirection(-1);
                   if (isYearbook && bookRef.current) {
                     bookRef.current.pageFlip().flipPrev('bottom');
@@ -456,7 +460,14 @@ const DesignPage = () => {
             <div className="relative w-full h-full p-4 md:p-16 flex items-center justify-center overflow-hidden" onClick={() => setSelectedProject(null)} style={{ perspective: 1500 }}>
               <div className="w-full h-full relative flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
                 {isYearbook ? (
-                  <div className="w-full max-w-[1400px] flex justify-center items-center drop-shadow-2xl">
+                  <motion.div 
+                    animate={{
+                      x: currentSlideIndex === 0 ? '-25%' : currentSlideIndex >= pages.length - 2 ? '25%' : '0%',
+                      scale: currentSlideIndex === 0 || currentSlideIndex >= pages.length - 2 ? 1.25 : 1.1
+                    }}
+                    transition={{ duration: 1.2, ease: "easeInOut" }}
+                    className="w-full max-w-[1400px] flex justify-center items-center drop-shadow-2xl"
+                  >
                     <HTMLFlipBook 
                       width={650} 
                       height={450} 
@@ -469,14 +480,15 @@ const DesignPage = () => {
                       drawShadow={true}
                       showCover={true}
                       mobileScrollSupport={true}
-                      flippingTime={1200}
+                      flippingTime={950}
                       usePortrait={false} // Force desktop landscape simulation
                       className="demo-book mx-auto"
                       ref={bookRef}
                       onFlip={(e: any) => setCurrentSlideIndex(e.data)}
+                      onChangeState={(e: any) => setIsFlipping(e.data !== 'read')}
                     >
                       {pages.map((page, i) => (
-                        <Page key={i} density={i === 0 || i === pages.length - 1 ? "hard" : "soft"}>
+                        <Page key={i} density="hard">
                           {page.type === 'blank' ? (
                             <div className="w-full h-full bg-[#f2f0eb]" />
                           ) : page.type === 'backcover' ? (
@@ -484,7 +496,7 @@ const DesignPage = () => {
                               <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-60 mix-blend-overlay"></div>
                               <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-orange-600/20 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[100px]"></div>
                               <div className="absolute inset-0 flex items-center justify-center text-white/30 font-serif italic text-2xl tracking-widest mix-blend-screen">
-                                Alumni 2025.
+                                Alumni 2024.
                               </div>
                             </div>
                           ) : (
@@ -493,7 +505,7 @@ const DesignPage = () => {
                         </Page>
                       ))}
                     </HTMLFlipBook>
-                  </div>
+                  </motion.div>
                 ) : (
                   <AnimatePresence mode="wait" custom={direction}>
                     <motion.img 
@@ -511,47 +523,72 @@ const DesignPage = () => {
 
               {/* Project Details Overlay / Floating Panel */}
               <div 
-                className="absolute bottom-4 left-4 right-4 md:bottom-12 md:left-24 md:right-auto z-[60] max-w-lg bg-black/70 backdrop-blur-3xl border border-white/10 p-5 md:p-6 rounded-3xl shadow-2xl pointer-events-auto" 
+                className="absolute bottom-4 left-4 right-4 md:bottom-12 md:left-24 md:right-auto z-[60] w-full max-w-sm md:max-w-lg bg-black/70 backdrop-blur-3xl border border-white/10 p-5 md:p-6 rounded-3xl shadow-2xl pointer-events-auto transition-all duration-500" 
                 onClick={(e) => e.stopPropagation()}
               >
-                <h2 className="text-xl md:text-3xl font-bold text-white mb-2 leading-tight">{selectedProject.title}</h2>
-                <p className="text-emerald-400 font-mono tracking-widest text-[10px] md:text-xs uppercase mb-3 md:mb-4">{selectedProject.category}</p>
-                
-                {isYearbook ? (
-                  <motion.div 
-                    key={`desc-${currentSlideIndex}`}
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="text-white/70 text-[11px] md:text-sm leading-relaxed mb-4 md:mb-6"
-                  >
-                    {currentSlideIndex > 0 ? (
-                      <p className="mb-2"><span className="text-white/40 uppercase text-[9px] mr-2">Page {currentSlideIndex}</span> {pages[currentSlideIndex]?.data?.description || ''}</p>
-                    ) : (
-                      <p className="mb-2"><span className="text-white/40 uppercase text-[9px] mr-2">Cover</span> {pages[0]?.data?.description || ''}</p>
-                    )}
-                  </motion.div>
-                ) : selectedProject.images[currentSlideIndex].description && (
-                  <motion.p 
-                    key={currentSlideIndex}
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="text-white/70 text-sm leading-relaxed mb-4 md:mb-6"
-                  >
-                    {selectedProject.images[currentSlideIndex].description}
-                  </motion.p>
-                )}
-                
-                {selectedProject.tools && (
-                  <div className="flex flex-wrap gap-2">
-                    {selectedProject.tools.map((tool, i) => (
-                      <span key={i} className="px-3 py-1 bg-white/10 rounded-full text-[10px] md:text-xs font-semibold tracking-wide text-white/90 border border-white/20">
-                        {tool}
-                      </span>
-                    ))}
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h2 className="text-xl md:text-3xl font-bold text-white leading-tight">{selectedProject.title}</h2>
+                    <p className="text-emerald-400 font-mono tracking-widest text-[10px] md:text-xs uppercase mt-1 md:mt-2">{selectedProject.category}</p>
                   </div>
-                )}
+                  <button 
+                    onClick={() => setIsPanelMinimized(!isPanelMinimized)}
+                    className="p-2 ml-4 rounded-full bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors border border-white/10 shrink-0"
+                    title={isPanelMinimized ? "Expand info" : "Minimize info"}
+                  >
+                    {isPanelMinimized ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                  </button>
+                </div>
+                
+                <AnimatePresence initial={false}>
+                  {!isPanelMinimized && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <div className="pt-4 md:pt-6">
+                        {isYearbook ? (
+                          <motion.div 
+                            key={`desc-${currentSlideIndex}`}
+                            initial={{ opacity: 0, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="text-white/70 text-[11px] md:text-sm leading-relaxed mb-4 md:mb-6"
+                          >
+                            {currentSlideIndex > 0 ? (
+                              <p className="mb-2"><span className="text-white/40 uppercase text-[9px] mr-2">Page {currentSlideIndex}</span> {pages[currentSlideIndex]?.data?.description || ''}</p>
+                            ) : (
+                              <p className="mb-2"><span className="text-white/40 uppercase text-[9px] mr-2">Cover</span> {pages[0]?.data?.description || ''}</p>
+                            )}
+                          </motion.div>
+                        ) : selectedProject.images[currentSlideIndex].description && (
+                          <motion.p 
+                            key={currentSlideIndex}
+                            initial={{ opacity: 0, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="text-white/70 text-sm leading-relaxed mb-4 md:mb-6"
+                          >
+                            {selectedProject.images[currentSlideIndex].description}
+                          </motion.p>
+                        )}
+                        
+                        {selectedProject.tools && (
+                          <div className="flex flex-wrap gap-2">
+                            {selectedProject.tools.map((tool, i) => (
+                              <span key={i} className="px-3 py-1 bg-white/10 rounded-full text-[10px] md:text-xs font-semibold tracking-wide text-white/90 border border-white/20">
+                                {tool}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
               
               {/* Pagination Dots */}
@@ -560,7 +597,9 @@ const DesignPage = () => {
                   {Array.from({ length: totalSlides }).map((_, idx) => (
                     <button
                       key={idx}
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (isFlipping) return;
                         setDirection(idx > currentSlideIndex ? 1 : -1);
                         setCurrentSlideIndex(idx);
                       }}
@@ -576,6 +615,7 @@ const DesignPage = () => {
               <button 
                 onClick={(e) => {
                   e.stopPropagation();
+                  if (isFlipping) return;
                   setDirection(1);
                   if (isYearbook && bookRef.current) {
                     bookRef.current.pageFlip().flipNext('bottom');
