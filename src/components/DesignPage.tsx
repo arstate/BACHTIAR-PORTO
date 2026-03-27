@@ -172,6 +172,55 @@ const placeholderDesigns: DesignProject[] = [
     title: "Launching PAUD TK",
     category: "Education Promotion",
     tools: ["Adobe Photoshop", "Adobe Illustrator"]
+  },
+  {
+    id: 12,
+    thumbnail: "https://github.com/user-attachments/assets/2f04ecd4-ef9a-4dcb-b845-c7f006102fe3",
+    images: [
+      {
+        url: "https://github.com/user-attachments/assets/2f04ecd4-ef9a-4dcb-b845-c7f006102fe3",
+        description: "Cover Depan Album Yearbook bernada retro dengan ilustrasi sekolah vintage, paduan warna hangat yang nostalgia dan elegan."
+      },
+      {
+        url: "https://github.com/user-attachments/assets/968f7a99-b46e-4482-96ac-7715fc93b1bd",
+        description: "Halaman pembuka album. Terhampar kanvas putih dominan dengan komposisi foto polaroid bertekstur pada sisi kanan."
+      },
+      {
+        url: "https://github.com/user-attachments/assets/7647ec21-c030-4d64-8de8-6fd7790cad29",
+        description: "Spread profil foto siswa (format memanjang vertikal). Tipografi serif ditata rapi menyatu dengan warna bumi."
+      },
+      {
+        url: "https://github.com/user-attachments/assets/6ccc85ae-f87a-4af8-9af5-b93084b0523f",
+        description: "Halaman memori interaktif berisi grid mosaik berbagai angle foto grup yang candid dan organik."
+      },
+      {
+        url: "https://github.com/user-attachments/assets/cd648e88-a067-4dec-9373-ff7448df68c0",
+        description: "Menampilkan estetika buku jurnal dengan coretan-coretan ilustrasi daun estetik mengiringi pas foto out-door."
+      },
+      {
+        url: "https://github.com/user-attachments/assets/9e341527-0d78-4fc2-843d-e1ee95248591",
+        description: "Pemaparan profil individu. Setiap frame foto dibalut gradasi halus dan detail biodata alumni yang minimalis."
+      },
+      {
+        url: "https://github.com/user-attachments/assets/4be4d483-2cff-4eaf-937b-f48f61bc6393",
+        description: "Highlight dokumentasi kegiatan seru di lingkungan sekolah. Penggunaan font brush menambah kesan kebebasan."
+      },
+      {
+        url: "https://github.com/user-attachments/assets/342b2bae-68a0-4541-859f-d95e59da6bf4",
+        description: "Halaman galeri tambahan. Sentuhan layout selang-seling mengurangi kebosanan dan memberikan ruang nafas di halaman."
+      },
+      {
+        url: "https://github.com/user-attachments/assets/20425a46-0e8f-4a60-b5fe-8fb852e5ede9",
+        description: "Halaman panel staf pengajar. Penghormatan terakhir guru disusun dalam style polaroid rapi bernada kehangatan."
+      },
+      {
+        url: "cover-belakang",
+        description: "Cover belakang buku album. Menutup cerita dengan lembaran akhir penuh efek noise bertekstur, blur, dan pendaran light-leaks."
+      }
+    ],
+    title: "Vintage Album Yearbook",
+    category: "Yearbook Design",
+    tools: ["Adobe Illustrator", "Adobe Photoshop"]
   }
 ];
 
@@ -183,11 +232,102 @@ const optimizeImage = (url: string) => {
   return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=400&q=60&output=webp`;
 };
 
+const leftPageVariants = {
+  enter: (direction: number) => ({
+    rotateY: direction > 0 ? 90 : 0,
+    zIndex: direction > 0 ? 10 : 1,
+    filter: direction > 0 ? "brightness(50%)" : "brightness(100%)",
+  }),
+  center: (direction: number) => ({
+    rotateY: 0,
+    zIndex: direction > 0 ? 10 : 1,
+    filter: "brightness(100%)",
+    transition: {
+      duration: direction > 0 ? 0.35 : 0,
+      delay: direction > 0 ? 0.35 : 0,
+      ease: "easeOut"
+    }
+  }),
+  exit: (direction: number) => ({
+    rotateY: direction > 0 ? 0 : 90,
+    zIndex: direction > 0 ? 1 : 10,
+    filter: direction > 0 ? "brightness(100%)" : "brightness(50%)",
+    transition: { 
+      duration: direction > 0 ? 0.7 : 0.35, 
+      ease: "easeIn" 
+    }
+  })
+};
+
+const rightPageVariants = {
+  enter: (direction: number) => ({
+    rotateY: direction < 0 ? -90 : 0,
+    zIndex: direction < 0 ? 10 : 1,
+    filter: direction < 0 ? "brightness(50%)" : "brightness(100%)",
+  }),
+  center: (direction: number) => ({
+    rotateY: 0,
+    zIndex: direction < 0 ? 10 : 1,
+    filter: "brightness(100%)",
+    transition: {
+      duration: direction < 0 ? 0.35 : 0,
+      delay: direction < 0 ? 0.35 : 0,
+      ease: "easeOut"
+    }
+  }),
+  exit: (direction: number) => ({
+    rotateY: direction < 0 ? 0 : -90,
+    zIndex: direction < 0 ? 1 : 10,
+    filter: direction < 0 ? "brightness(100%)" : "brightness(50%)",
+    transition: { 
+      duration: direction < 0 ? 0.7 : 0.35, 
+      ease: "easeIn" 
+    }
+  })
+};
+
+const slideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 50 : -50,
+    opacity: 0,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    transition: { type: "spring", stiffness: 300, damping: 25 },
+  },
+  exit: (direction: number) => ({
+    x: direction < 0 ? 50 : -50,
+    opacity: 0,
+    transition: { type: "spring", stiffness: 300, damping: 25 },
+  })
+};
+
 const DesignPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [designs, setDesigns] = useState<DesignProject[]>([]);
   const [selectedProject, setSelectedProject] = useState<DesignProject | null>(null);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+
+  const isYearbook = selectedProject?.category === "Yearbook Design";
+
+  const getSpreads = () => {
+    if (!isYearbook || !selectedProject) return [];
+    const imgs = selectedProject.images;
+    return [
+      { left: null, right: imgs[0] }, // Front Cover
+      { left: { url: 'blank', description: '' }, right: imgs[1] },
+      { left: imgs[2], right: imgs[3] },
+      { left: imgs[4], right: imgs[5] },
+      { left: imgs[6], right: imgs[7] },
+      { left: imgs[8], right: { url: 'blank', description: '' } },
+      { left: imgs[9], right: null } // Back Cover
+    ];
+  };
+
+  const spreads = getSpreads();
+  const totalSlides = isYearbook ? spreads.length : selectedProject?.images.length || 0;
 
   useEffect(() => {
     // Simulate loading delay for smooth transition
@@ -328,11 +468,12 @@ const DesignPage = () => {
             </button>
 
             {/* Previous Button */}
-            {selectedProject.images.length > 1 && (
+            {totalSlides > 1 && (
               <button 
                 onClick={(e) => {
                   e.stopPropagation();
-                  setCurrentSlideIndex(prev => prev === 0 ? selectedProject.images.length - 1 : prev - 1);
+                  setDirection(-1);
+                  setCurrentSlideIndex(prev => prev === 0 ? totalSlides - 1 : prev - 1);
                 }}
                 className="absolute left-4 md:left-10 z-50 w-12 h-12 bg-black/50 hover:bg-black/80 border border-white/20 rounded-full flex items-center justify-center text-white backdrop-blur-md transition-colors"
               >
@@ -340,19 +481,75 @@ const DesignPage = () => {
               </button>
             )}
 
-            {/* Sliding Image */}
-            <div className="relative w-full h-full p-4 md:p-16 flex items-center justify-center overflow-hidden" onClick={() => setSelectedProject(null)}>
+            {/* Sliding Image Container */}
+            <div className="relative w-full h-full p-4 md:p-16 flex items-center justify-center overflow-hidden" onClick={() => setSelectedProject(null)} style={{ perspective: 2500 }}>
               <div className="w-full h-full relative flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
-                <motion.img 
-                  key={currentSlideIndex}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                  src={selectedProject.images[currentSlideIndex].url} 
-                  alt={`${selectedProject.title} detail ${currentSlideIndex + 1}`} 
-                  className="max-w-full max-h-full object-contain md:max-h-[70vh] rounded-lg shadow-2xl"
-                />
+                {isYearbook ? (
+                  <div className="w-full max-w-[1000px] md:max-w-[1300px] aspect-[2.5/1] flex relative mx-auto">
+                    {/* Spine Shadow Static */}
+                    {currentSlideIndex !== 0 && currentSlideIndex !== totalSlides - 1 && (
+                      <div className="absolute top-0 bottom-0 left-1/2 w-12 -ml-6 bg-gradient-to-r from-black/0 via-black/40 to-black/0 z-20 pointer-events-none mix-blend-multiply" />
+                    )}
+
+                    {/* LEFT PAGE ANIMATION SLOT */}
+                    <div className="w-1/2 h-full relative perspective-[2500px] z-10">
+                      <AnimatePresence custom={direction}>
+                        <motion.div
+                          key={currentSlideIndex}
+                          custom={direction}
+                          variants={leftPageVariants}
+                          initial="enter" animate="center" exit="exit"
+                          className={`absolute inset-0 origin-right overflow-hidden rounded-l-md ${!spreads[currentSlideIndex].left ? 'opacity-0' : 'bg-[#e6e4df] shadow-[rgba(0,0,0,0.5)_0px_10px_30px_-5px]'}`}
+                        >
+                          {spreads[currentSlideIndex].left?.url === 'blank' ? (
+                            <div className="w-full h-full bg-[#f2f0eb]" />
+                          ) : spreads[currentSlideIndex].left?.url === 'cover-belakang' ? (
+                            <div className="w-full h-full bg-gradient-to-br from-[#2a221d] to-[#120e0b] relative">
+                              <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-60 mix-blend-overlay"></div>
+                              <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-orange-600/20 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[100px]"></div>
+                              <div className="absolute inset-0 flex items-center justify-center text-white/30 font-serif italic text-2xl tracking-widest mix-blend-screen">
+                                Alumni 2025.
+                              </div>
+                            </div>
+                          ) : spreads[currentSlideIndex].left ? (
+                            <img src={spreads[currentSlideIndex].left.url} className="w-full h-full object-cover border-r border-black/10" />
+                          ) : null}
+                        </motion.div>
+                      </AnimatePresence>
+                    </div>
+
+                    {/* RIGHT PAGE ANIMATION SLOT */}
+                    <div className="w-1/2 h-full relative perspective-[2500px] z-10">
+                      <AnimatePresence custom={direction}>
+                        <motion.div
+                          key={currentSlideIndex}
+                          custom={direction}
+                          variants={rightPageVariants}
+                          initial="enter" animate="center" exit="exit"
+                          className={`absolute inset-0 origin-left overflow-hidden rounded-r-md ${!spreads[currentSlideIndex].right ? 'opacity-0' : 'bg-[#e6e4df] shadow-[rgba(0,0,0,0.5)_0px_10px_30px_-5px]'}`}
+                        >
+                          {spreads[currentSlideIndex].right?.url === 'blank' ? (
+                            <div className="w-full h-full bg-[#f2f0eb]" />
+                          ) : spreads[currentSlideIndex].right ? (
+                            <img src={spreads[currentSlideIndex].right.url} className="w-full h-full object-cover border-l border-white/20" />
+                          ) : null}
+                        </motion.div>
+                      </AnimatePresence>
+                    </div>
+                  </div>
+                ) : (
+                  <AnimatePresence mode="wait" custom={direction}>
+                    <motion.img 
+                      key={currentSlideIndex}
+                      custom={direction}
+                      variants={slideVariants}
+                      initial="enter" animate="center" exit="exit"
+                      src={selectedProject.images[currentSlideIndex].url} 
+                      alt={`${selectedProject.title} detail ${currentSlideIndex + 1}`} 
+                      className="max-w-full max-h-full object-contain md:max-h-[75vh] rounded-lg shadow-2xl absolute"
+                    />
+                  </AnimatePresence>
+                )}
               </div>
 
               {/* Project Details Overlay / Floating Panel */}
@@ -363,7 +560,22 @@ const DesignPage = () => {
                 <h2 className="text-xl md:text-3xl font-bold text-white mb-2 leading-tight">{selectedProject.title}</h2>
                 <p className="text-emerald-400 font-mono tracking-widest text-[10px] md:text-xs uppercase mb-3 md:mb-4">{selectedProject.category}</p>
                 
-                {selectedProject.images[currentSlideIndex].description && (
+                {isYearbook ? (
+                  <motion.div 
+                    key={`desc-${currentSlideIndex}`}
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="text-white/70 text-[11px] md:text-sm leading-relaxed mb-4 md:mb-6"
+                  >
+                    {spreads[currentSlideIndex].left?.description && (
+                      <p className="mb-2"><span className="text-white/40 uppercase text-[9px] mr-2">Left Page</span> {spreads[currentSlideIndex].left.description}</p>
+                    )}
+                    {spreads[currentSlideIndex].right?.description && (
+                      <p><span className="text-white/40 uppercase text-[9px] mr-2">Right Page</span> {spreads[currentSlideIndex].right.description}</p>
+                    )}
+                  </motion.div>
+                ) : selectedProject.images[currentSlideIndex].description && (
                   <motion.p 
                     key={currentSlideIndex}
                     initial={{ opacity: 0, y: 5 }}
@@ -387,12 +599,15 @@ const DesignPage = () => {
               </div>
               
               {/* Pagination Dots */}
-              {selectedProject.images.length > 1 && (
+              {totalSlides > 1 && (
                 <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 bg-black/50 backdrop-blur-md rounded-full border border-white/10" onClick={(e) => e.stopPropagation()}>
-                  {selectedProject.images.map((_, idx) => (
+                  {Array.from({ length: totalSlides }).map((_, idx) => (
                     <button
                       key={idx}
-                      onClick={() => setCurrentSlideIndex(idx)}
+                      onClick={() => {
+                        setDirection(idx > currentSlideIndex ? 1 : -1);
+                        setCurrentSlideIndex(idx);
+                      }}
                       className={`transition-all duration-300 rounded-full ${idx === currentSlideIndex ? 'w-6 h-2 bg-emerald-500' : 'w-2 h-2 bg-white/30 hover:bg-white/50'}`}
                     />
                   ))}
@@ -401,11 +616,12 @@ const DesignPage = () => {
             </div>
 
             {/* Next Button */}
-            {selectedProject.images.length > 1 && (
+            {totalSlides > 1 && (
               <button 
                 onClick={(e) => {
                   e.stopPropagation();
-                  setCurrentSlideIndex(prev => prev === selectedProject.images.length - 1 ? 0 : prev + 1);
+                  setDirection(1);
+                  setCurrentSlideIndex(prev => prev === totalSlides - 1 ? 0 : prev + 1);
                 }}
                 className="absolute right-4 md:right-10 z-50 w-12 h-12 bg-black/50 hover:bg-black/80 border border-white/20 rounded-full flex items-center justify-center text-white backdrop-blur-md transition-colors"
               >
