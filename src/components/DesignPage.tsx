@@ -1,7 +1,22 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Palette, ZoomIn, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import FloatingNavbar from './FloatingNavbar';
+// @ts-ignore
+import HTMLFlipBook from 'react-pageflip';
+
+const Page = React.forwardRef((props: any, ref: any) => {
+  return (
+    <div 
+      className="page overflow-hidden bg-[#e6e4df] shadow-[inset_2px_0_15px_rgba(0,0,0,0.1),inset_-2px_0_5px_rgba(0,0,0,0.05)] border-l border-white/30 relative" 
+      ref={ref} 
+      data-density={props.density || "soft"}
+    >
+      {props.children}
+    </div>
+  );
+});
+Page.displayName = "Page";
 
 interface DesignImage {
   url: string;
@@ -232,60 +247,6 @@ const optimizeImage = (url: string) => {
   return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=400&q=60&output=webp`;
 };
 
-const leftPageVariants = {
-  enter: (direction: number) => ({
-    rotateY: direction > 0 ? 90 : 0,
-    zIndex: direction > 0 ? 10 : 1,
-    filter: direction > 0 ? "brightness(50%)" : "brightness(100%)",
-  }),
-  center: (direction: number) => ({
-    rotateY: 0,
-    zIndex: direction > 0 ? 10 : 1,
-    filter: "brightness(100%)",
-    transition: {
-      duration: direction > 0 ? 0.35 : 0,
-      delay: direction > 0 ? 0.35 : 0,
-      ease: "easeOut"
-    }
-  }),
-  exit: (direction: number) => ({
-    rotateY: direction > 0 ? 0 : 90,
-    zIndex: direction > 0 ? 1 : 10,
-    filter: direction > 0 ? "brightness(100%)" : "brightness(50%)",
-    transition: { 
-      duration: direction > 0 ? 0.7 : 0.35, 
-      ease: "easeIn" 
-    }
-  })
-};
-
-const rightPageVariants = {
-  enter: (direction: number) => ({
-    rotateY: direction < 0 ? -90 : 0,
-    zIndex: direction < 0 ? 10 : 1,
-    filter: direction < 0 ? "brightness(50%)" : "brightness(100%)",
-  }),
-  center: (direction: number) => ({
-    rotateY: 0,
-    zIndex: direction < 0 ? 10 : 1,
-    filter: "brightness(100%)",
-    transition: {
-      duration: direction < 0 ? 0.35 : 0,
-      delay: direction < 0 ? 0.35 : 0,
-      ease: "easeOut"
-    }
-  }),
-  exit: (direction: number) => ({
-    rotateY: direction < 0 ? 0 : -90,
-    zIndex: direction < 0 ? 1 : 10,
-    filter: direction < 0 ? "brightness(100%)" : "brightness(50%)",
-    transition: { 
-      duration: direction < 0 ? 0.7 : 0.35, 
-      ease: "easeIn" 
-    }
-  })
-};
-
 const slideVariants = {
   enter: (direction: number) => ({
     x: direction > 0 ? 50 : -50,
@@ -309,25 +270,31 @@ const DesignPage = () => {
   const [selectedProject, setSelectedProject] = useState<DesignProject | null>(null);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const bookRef = useRef<any>(null); // Ref for HTMLFlipBook
 
   const isYearbook = selectedProject?.category === "Yearbook Design";
 
-  const getSpreads = () => {
+  const getFlipBookPages = () => {
     if (!isYearbook || !selectedProject) return [];
     const imgs = selectedProject.images;
     return [
-      { left: null, right: imgs[0] }, // Front Cover
-      { left: { url: 'blank', description: '' }, right: imgs[1] },
-      { left: imgs[2], right: imgs[3] },
-      { left: imgs[4], right: imgs[5] },
-      { left: imgs[6], right: imgs[7] },
-      { left: imgs[8], right: { url: 'blank', description: '' } },
-      { left: imgs[9], right: null } // Back Cover
+      { type: 'image', data: imgs[0] }, // Cover
+      { type: 'blank', data: null }, // Inside Front Cover
+      { type: 'image', data: imgs[1] },
+      { type: 'image', data: imgs[2] },
+      { type: 'image', data: imgs[3] },
+      { type: 'image', data: imgs[4] },
+      { type: 'image', data: imgs[5] },
+      { type: 'image', data: imgs[6] },
+      { type: 'image', data: imgs[7] },
+      { type: 'image', data: imgs[8] },
+      { type: 'blank', data: null }, // Inside Back Cover
+      { type: 'backcover', data: null } // Back Cover
     ];
   };
 
-  const spreads = getSpreads();
-  const totalSlides = isYearbook ? spreads.length : selectedProject?.images.length || 0;
+  const pages = getFlipBookPages();
+  const totalSlides = isYearbook ? pages.length : selectedProject?.images.length || 0;
 
   useEffect(() => {
     // Simulate loading delay for smooth transition
@@ -473,37 +440,46 @@ const DesignPage = () => {
                 onClick={(e) => {
                   e.stopPropagation();
                   setDirection(-1);
-                  setCurrentSlideIndex(prev => prev === 0 ? totalSlides - 1 : prev - 1);
+                  if (isYearbook && bookRef.current) {
+                    bookRef.current.pageFlip().flipPrev('bottom');
+                  } else {
+                    setCurrentSlideIndex(prev => prev === 0 ? totalSlides - 1 : prev - 1);
+                  }
                 }}
-                className="absolute left-4 md:left-10 z-50 w-12 h-12 bg-black/50 hover:bg-black/80 border border-white/20 rounded-full flex items-center justify-center text-white backdrop-blur-md transition-colors"
+                className="absolute left-4 md:left-10 z-[300] w-12 h-12 bg-black/50 hover:bg-black/80 border border-white/20 rounded-full flex items-center justify-center text-white backdrop-blur-md transition-colors"
               >
                 <ChevronLeft size={28} className="mr-1" />
               </button>
             )}
 
             {/* Sliding Image Container */}
-            <div className="relative w-full h-full p-4 md:p-16 flex items-center justify-center overflow-hidden" onClick={() => setSelectedProject(null)} style={{ perspective: 2500 }}>
+            <div className="relative w-full h-full p-4 md:p-16 flex items-center justify-center overflow-hidden" onClick={() => setSelectedProject(null)} style={{ perspective: 1500 }}>
               <div className="w-full h-full relative flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
                 {isYearbook ? (
-                  <div className="w-full max-w-[1000px] md:max-w-[1300px] aspect-[2.5/1] flex relative mx-auto">
-                    {/* Spine Shadow Static */}
-                    {currentSlideIndex !== 0 && currentSlideIndex !== totalSlides - 1 && (
-                      <div className="absolute top-0 bottom-0 left-1/2 w-12 -ml-6 bg-gradient-to-r from-black/0 via-black/40 to-black/0 z-20 pointer-events-none mix-blend-multiply" />
-                    )}
-
-                    {/* LEFT PAGE ANIMATION SLOT */}
-                    <div className="w-1/2 h-full relative perspective-[2500px] z-10">
-                      <AnimatePresence custom={direction}>
-                        <motion.div
-                          key={currentSlideIndex}
-                          custom={direction}
-                          variants={leftPageVariants}
-                          initial="enter" animate="center" exit="exit"
-                          className={`absolute inset-0 origin-right overflow-hidden rounded-l-md ${!spreads[currentSlideIndex].left ? 'opacity-0' : 'bg-[#e6e4df] shadow-[rgba(0,0,0,0.5)_0px_10px_30px_-5px]'}`}
-                        >
-                          {spreads[currentSlideIndex].left?.url === 'blank' ? (
+                  <div className="w-full max-w-[1400px] flex justify-center items-center drop-shadow-2xl">
+                    <HTMLFlipBook 
+                      width={650} 
+                      height={450} 
+                      size="stretch"
+                      minWidth={300}
+                      maxWidth={700}
+                      minHeight={250}
+                      maxHeight={550}
+                      maxShadowOpacity={0.4}
+                      drawShadow={true}
+                      showCover={true}
+                      mobileScrollSupport={true}
+                      flippingTime={1200}
+                      usePortrait={false} // Force desktop landscape simulation
+                      className="demo-book mx-auto"
+                      ref={bookRef}
+                      onFlip={(e: any) => setCurrentSlideIndex(e.data)}
+                    >
+                      {pages.map((page, i) => (
+                        <Page key={i} density={i === 0 || i === pages.length - 1 ? "hard" : "soft"}>
+                          {page.type === 'blank' ? (
                             <div className="w-full h-full bg-[#f2f0eb]" />
-                          ) : spreads[currentSlideIndex].left?.url === 'cover-belakang' ? (
+                          ) : page.type === 'backcover' ? (
                             <div className="w-full h-full bg-gradient-to-br from-[#2a221d] to-[#120e0b] relative">
                               <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-60 mix-blend-overlay"></div>
                               <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-orange-600/20 -translate-x-1/2 -translate-y-1/2 rounded-full blur-[100px]"></div>
@@ -511,31 +487,12 @@ const DesignPage = () => {
                                 Alumni 2025.
                               </div>
                             </div>
-                          ) : spreads[currentSlideIndex].left ? (
-                            <img src={spreads[currentSlideIndex].left.url} className="w-full h-full object-cover border-r border-black/10" />
-                          ) : null}
-                        </motion.div>
-                      </AnimatePresence>
-                    </div>
-
-                    {/* RIGHT PAGE ANIMATION SLOT */}
-                    <div className="w-1/2 h-full relative perspective-[2500px] z-10">
-                      <AnimatePresence custom={direction}>
-                        <motion.div
-                          key={currentSlideIndex}
-                          custom={direction}
-                          variants={rightPageVariants}
-                          initial="enter" animate="center" exit="exit"
-                          className={`absolute inset-0 origin-left overflow-hidden rounded-r-md ${!spreads[currentSlideIndex].right ? 'opacity-0' : 'bg-[#e6e4df] shadow-[rgba(0,0,0,0.5)_0px_10px_30px_-5px]'}`}
-                        >
-                          {spreads[currentSlideIndex].right?.url === 'blank' ? (
-                            <div className="w-full h-full bg-[#f2f0eb]" />
-                          ) : spreads[currentSlideIndex].right ? (
-                            <img src={spreads[currentSlideIndex].right.url} className="w-full h-full object-cover border-l border-white/20" />
-                          ) : null}
-                        </motion.div>
-                      </AnimatePresence>
-                    </div>
+                          ) : (
+                            <img src={page.data.url} className={`w-full h-full object-cover ${i === 0 ? 'border-l border-white/20' : i % 2 === 0 ? 'border-l border-white/20' : 'border-r border-black/10'}`} />
+                          )}
+                        </Page>
+                      ))}
+                    </HTMLFlipBook>
                   </div>
                 ) : (
                   <AnimatePresence mode="wait" custom={direction}>
@@ -568,11 +525,10 @@ const DesignPage = () => {
                     transition={{ duration: 0.3 }}
                     className="text-white/70 text-[11px] md:text-sm leading-relaxed mb-4 md:mb-6"
                   >
-                    {spreads[currentSlideIndex].left?.description && (
-                      <p className="mb-2"><span className="text-white/40 uppercase text-[9px] mr-2">Left Page</span> {spreads[currentSlideIndex].left.description}</p>
-                    )}
-                    {spreads[currentSlideIndex].right?.description && (
-                      <p><span className="text-white/40 uppercase text-[9px] mr-2">Right Page</span> {spreads[currentSlideIndex].right.description}</p>
+                    {currentSlideIndex > 0 ? (
+                      <p className="mb-2"><span className="text-white/40 uppercase text-[9px] mr-2">Page {currentSlideIndex}</span> {pages[currentSlideIndex]?.data?.description || ''}</p>
+                    ) : (
+                      <p className="mb-2"><span className="text-white/40 uppercase text-[9px] mr-2">Cover</span> {pages[0]?.data?.description || ''}</p>
                     )}
                   </motion.div>
                 ) : selectedProject.images[currentSlideIndex].description && (
@@ -599,7 +555,7 @@ const DesignPage = () => {
               </div>
               
               {/* Pagination Dots */}
-              {totalSlides > 1 && (
+              {totalSlides > 1 && !isYearbook && (
                 <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 bg-black/50 backdrop-blur-md rounded-full border border-white/10" onClick={(e) => e.stopPropagation()}>
                   {Array.from({ length: totalSlides }).map((_, idx) => (
                     <button
@@ -621,9 +577,13 @@ const DesignPage = () => {
                 onClick={(e) => {
                   e.stopPropagation();
                   setDirection(1);
-                  setCurrentSlideIndex(prev => prev === totalSlides - 1 ? 0 : prev + 1);
+                  if (isYearbook && bookRef.current) {
+                    bookRef.current.pageFlip().flipNext('bottom');
+                  } else {
+                    setCurrentSlideIndex(prev => prev === totalSlides - 1 ? 0 : prev + 1);
+                  }
                 }}
-                className="absolute right-4 md:right-10 z-50 w-12 h-12 bg-black/50 hover:bg-black/80 border border-white/20 rounded-full flex items-center justify-center text-white backdrop-blur-md transition-colors"
+                className="absolute right-4 md:right-10 z-[300] w-12 h-12 bg-black/50 hover:bg-black/80 border border-white/20 rounded-full flex items-center justify-center text-white backdrop-blur-md transition-colors"
               >
                 <ChevronRight size={28} className="ml-1" />
               </button>
