@@ -465,7 +465,7 @@ const DesignPage = () => {
                       x: currentSlideIndex === 0 ? '-25%' : currentSlideIndex >= pages.length - 2 ? '25%' : '0%',
                       scale: currentSlideIndex === 0 || currentSlideIndex >= pages.length - 2 ? 1.25 : 1.1
                     }}
-                    transition={{ duration: 1.2, ease: "easeInOut" }}
+                    transition={{ type: "spring", stiffness: 200, damping: 25 }}
                     className="w-full max-w-[1400px] flex justify-center items-center drop-shadow-2xl"
                   >
                     <HTMLFlipBook 
@@ -480,7 +480,7 @@ const DesignPage = () => {
                       drawShadow={true}
                       showCover={true}
                       mobileScrollSupport={true}
-                      flippingTime={950}
+                      flippingTime={1200}
                       usePortrait={false} // Force desktop landscape simulation
                       className="demo-book mx-auto"
                       ref={bookRef}
