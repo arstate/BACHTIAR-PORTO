@@ -49,12 +49,12 @@ const placeholderDesigns: DesignProject[] = [
     images: [
       {
         url: "https://github.com/user-attachments/assets/a90987a3-b93b-4012-91cc-d7e747439b05",
-        description: "Desain visual untuk materi promosi digital. Komposisi elemen disusun dengan hirarki visual yang jelas untuk menarik perhatian audiens secara instan."
+        description: "Desain poster ucapan Happy Chinese New Year 2026 dengan ilustrasi barongsai emas dan ornamen naga tradisional yang meriah."
       }
     ],
-    title: "Creative Flyer Promotion",
-    category: "Social Media Banner",
-    tools: ["Adobe Illustrator", "Figma"]
+    title: "Chinese New Year 2026",
+    category: "Greeting Poster",
+    tools: ["Adobe Illustrator", "Adobe Photoshop"]
   },
   {
     id: 3,
@@ -62,12 +62,12 @@ const placeholderDesigns: DesignProject[] = [
     images: [
       {
         url: "https://github.com/user-attachments/assets/3de0543b-bc5b-4117-8b6f-f5c2feab539c",
-        description: "Digital Illustration beresolusi tinggi (2481x3508). Dirancang khusus untuk keperluan cetak seperti poster atau sampul majalah dengan teknik vector art."
+        description: "Ilustrasi vektor karakter burung hantu (OWLTHH) bergaya retro dengan latar belakang sun rays vintage dan pemilihan warna earth tone khas."
       }
     ],
-    title: "Editorial Print Cover",
-    category: "Print Design",
-    tools: ["Adobe Photoshop", "CorelDRAW"]
+    title: "OWLTHH Retro Vector",
+    category: "Vector Illustration",
+    tools: ["Adobe Illustrator"]
   },
   {
     id: 4,
@@ -75,12 +75,12 @@ const placeholderDesigns: DesignProject[] = [
     images: [
       {
         url: "https://github.com/user-attachments/assets/9f366e30-aab0-4092-8ef6-feae623bfd42",
-        description: "Landscape visual asset yang sangat cocok untuk web hero image, banner youtube, atau latar presentasi. Menggunakan teknik compositing dan color grading."
+        description: "Ilustrasi digital 2D momen keluarga di kebun binatang, menampilkan adegan lucu anak yang menangis berinteraksi dengan jerapah dan monyet."
       }
     ],
-    title: "Web Banner Landscape",
-    category: "Digital Assets",
-    tools: ["Adobe Photoshop", "Lightroom"]
+    title: "Zoo Family Drawing",
+    category: "Digital Drawing",
+    tools: ["Adobe Photoshop", "Adobe Firefly"]
   },
   {
     id: 5,
@@ -88,12 +88,12 @@ const placeholderDesigns: DesignProject[] = [
     images: [
       {
         url: "https://github.com/user-attachments/assets/8ed9f4de-5825-4d14-93ce-bf4b75a8ecd8",
-        description: "Mockup layout portrait vertikal yang dioptimalkan untuk engagement. Perpaduan tipografi tegas dan palet warna kontras."
+        description: "Desain layout menu restoran U-Steak bernuansa gelap yang elegan. Menampilkan list harga dan foto menggiurkan untuk crispy chicken, ribs, burger, dan pizza."
       }
     ],
-    title: "Social Media Campaign",
-    category: "IG Story Layout",
-    tools: ["Adobe Express", "Photoshop", "Illustrator"]
+    title: "U-Steak Food Menu",
+    category: "Restaurant Menu",
+    tools: ["Adobe Photoshop", "Adobe Illustrator"]
   },
   {
     id: 6,
@@ -101,12 +101,12 @@ const placeholderDesigns: DesignProject[] = [
     images: [
       {
         url: "https://github.com/user-attachments/assets/7ac9a4b6-6963-4e37-a69f-c7a0b9d343e8",
-        description: "Eksplorasi vektor dan tata letak yang menampilkan kombinasi gaya desain brutalist dengan pendekatan korporat modern."
+        description: "Poster kampanye sosial 'Be a Buddy, Not a Bully'. Menyampaikan pesan kuat Stop Bullying dengan highlight penindasan verbal, fisik, serta cyber bullying."
       }
     ],
-    title: "Modern Vector Exploration",
-    category: "Creative Illustration",
-    tools: ["Adobe Illustrator"]
+    title: "Stop Bullying Campaign",
+    category: "Social Campaign",
+    tools: ["Figma"]
   },
   {
     id: 7,
@@ -114,12 +114,12 @@ const placeholderDesigns: DesignProject[] = [
     images: [
       {
         url: "https://github.com/user-attachments/assets/ded8c80e-c00c-4710-881a-04c20af305a0",
-        description: "Poster portrait berdesain dinamis. Tipografi berukuran besar menjadi daya pikat utama dengan sentuhan grafis minimalis di latar belakang."
+        description: "Merupakan poster pengumuman jadwal rangkaian lomba perayaan HUT ke-80 RI 'The Glorious of Nusantara' oleh Karang Taruna RT 31 lengkap dengan list acara."
       }
     ],
-    title: "Dynamic Typography Poster",
-    category: "Typography Design",
-    tools: ["Adobe InDesign", "Illustrator"]
+    title: "Papan Pengumuman Lomba",
+    category: "Event Announcement",
+    tools: ["Adobe Photoshop", "Adobe Illustrator"]
   },
   {
     id: 8,
@@ -127,12 +127,12 @@ const placeholderDesigns: DesignProject[] = [
     images: [
       {
         url: "https://github.com/user-attachments/assets/d86b6421-9171-43e0-901c-4bc10647f3ad",
-        description: "Digital artwork dengan estetika warna gradient memukau. Memberikan representasi visual abstrak untuk branding."
+        description: "Artwork tajam yang merupakan ilustrasi vektor detail wajah kucing (cat portrait). Karya seni 'Art by Aryansyah' ini mengandalkan arsiran warna solid tajam berlapis."
       }
     ],
-    title: "Abstract Branding Art",
-    category: "Visual Identity",
-    tools: ["Adobe Photoshop"]
+    title: "Vector Art: Majestic Cat",
+    category: "Vector Asset",
+    tools: ["Adobe Illustrator"]
   },
   {
     id: 9,
@@ -140,12 +140,12 @@ const placeholderDesigns: DesignProject[] = [
     images: [
       {
         url: "https://github.com/user-attachments/assets/61981376-6b9f-4433-9b7b-7202ae0ff692",
-        description: "Layout visual portrait dengan struktur grid yang terorganisir. Memberi informasi dengan padat namun elegan."
+        description: "Karya desain grafis bergaya e-sports yang menyala. Poster turnamen kompetisi Mobile Legends Bahama E-Sports dengan total prize pool menjanjikan."
       }
     ],
-    title: "Structured Grid Layout",
-    category: "Poster & Flyer",
-    tools: ["Adobe InDesign"]
+    title: "MLBB Tournament Poster",
+    category: "E-Sports Promo",
+    tools: ["Adobe Photoshop", "Figma"]
   },
   {
     id: 10,
@@ -153,12 +153,12 @@ const placeholderDesigns: DesignProject[] = [
     images: [
       {
         url: "https://github.com/user-attachments/assets/f1b92c6b-8304-455a-9121-cbcb5ba9f2be",
-        description: "Tampilan desain memanjang horizontal (Landscape). Pengeditan foto kompleks menciptakan atmosfer epik yang cinematic."
+        description: "Banner dramatis sinematik bertuliskan 'Karang Taruna Bahama' dengan backrgound kerumunan siluet solidaritas serta kilauan bendera merah putih."
       }
     ],
-    title: "Cinematic Web Graphic",
-    category: "Photo Manipulation",
-    tools: ["Adobe Photoshop", "Lightroom"]
+    title: "Karang Taruna Banner",
+    category: "Banner Design",
+    tools: ["Adobe Photoshop"]
   },
   {
     id: 11,
@@ -166,12 +166,12 @@ const placeholderDesigns: DesignProject[] = [
     images: [
       {
         url: "https://github.com/user-attachments/assets/45d0334f-c947-4bf2-9fb3-cbbfdac95dbc",
-        description: "Final touch dari rangkaian koleksi visual. Mewakili karakter dan kualitas desain arstate yang eksperimental namun fungsional."
+        description: "Desain poster promo bernuansa anak 3D hurufceria (playful) dengan warna terang memikat untuk acara Launching Pendidikan Anak Usia Dini PAUD (PG-TK) Arunika Raya."
       }
     ],
-    title: "Experimental Art Layout",
-    category: "Graphic Art",
-    tools: ["Adobe Illustrator", "Photoshop", "Figma"]
+    title: "Launching PAUD TK",
+    category: "Education Promotion",
+    tools: ["Adobe Photoshop", "Adobe Illustrator"]
   }
 ];
 
@@ -285,17 +285,21 @@ const DesignPage = () => {
                   decoding="async"
                 />
                 
-                {/* Glassmorphism Hover Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-6">
-                  <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    <span className="text-emerald-400 text-xs font-mono tracking-wider uppercase mb-2 block">
+                {/* Always-visible Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-6 pointer-events-none transition-opacity duration-500">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-emerald-400 text-xs font-mono tracking-wider uppercase mb-1 drop-shadow-md">
                       {design.category}
                     </span>
-                    <h3 className="text-xl md:text-2xl font-bold text-white leading-tight mb-3">
+                    <h3 className="text-xl md:text-2xl font-bold text-white leading-tight mb-2 drop-shadow-lg">
                       {design.title}
                     </h3>
-                    <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 hover:bg-white/20 transition-colors">
-                      <ZoomIn size={18} className="text-white" />
+                    
+                    {/* Zoom Icon appears on hover */}
+                    <div className="opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 ease-out mt-2">
+                      <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-lg">
+                        <ZoomIn size={18} className="text-white" />
+                      </div>
                     </div>
                   </div>
                 </div>
