@@ -286,21 +286,21 @@ const DesignPage = () => {
                 />
                 
                 {/* Always-visible Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end p-6 pointer-events-none transition-opacity duration-500">
-                  <div className="flex flex-col gap-1">
-                    <span className="text-emerald-400 text-xs font-mono tracking-wider uppercase mb-1 drop-shadow-md">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent flex flex-col justify-end p-5 md:p-6 pointer-events-none transition-opacity duration-500">
+                  <div className="flex flex-col gap-1 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 ease-out">
+                    <span className="text-emerald-400 text-[10px] sm:text-xs font-mono tracking-wider uppercase drop-shadow-md">
                       {design.category}
                     </span>
-                    <h3 className="text-xl md:text-2xl font-bold text-white leading-tight mb-2 drop-shadow-lg">
+                    <h3 className="text-lg md:text-xl font-bold text-white leading-tight drop-shadow-lg">
                       {design.title}
                     </h3>
-                    
-                    {/* Zoom Icon appears on hover */}
-                    <div className="opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 ease-out mt-2">
-                      <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-lg">
-                        <ZoomIn size={18} className="text-white" />
-                      </div>
-                    </div>
+                  </div>
+                </div>
+
+                {/* View Badge (Top Right) */}
+                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none transform -translate-y-2 group-hover:translate-y-0">
+                  <div className="px-4 py-2 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold tracking-widest uppercase flex items-center shadow-2xl group-hover:bg-black/60 transition-colors">
+                    Click to View
                   </div>
                 </div>
               </div>
