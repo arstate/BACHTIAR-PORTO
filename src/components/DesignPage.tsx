@@ -30,6 +30,7 @@ interface DesignProject {
   title: string;
   category: string;
   tools?: string[];
+  figmaUrl?: string;
 }
 
 const placeholderDesigns: DesignProject[] = [
@@ -190,42 +191,42 @@ const placeholderDesigns: DesignProject[] = [
   },
   {
     id: 12,
-    thumbnail: "https://github.com/user-attachments/assets/2f04ecd4-ef9a-4dcb-b845-c7f006102fe3",
+    thumbnail: "https://github.com/user-attachments/assets/3bfd524d-8b8f-4c06-873f-47ebe0525688",
     images: [
       {
-        url: "https://github.com/user-attachments/assets/2f04ecd4-ef9a-4dcb-b845-c7f006102fe3",
+        url: "https://github.com/user-attachments/assets/3bfd524d-8b8f-4c06-873f-47ebe0525688",
         description: "Cover Depan Album Yearbook bernada retro dengan ilustrasi sekolah vintage, paduan warna hangat yang nostalgia dan elegan."
       },
       {
-        url: "https://github.com/user-attachments/assets/968f7a99-b46e-4482-96ac-7715fc93b1bd",
+        url: "https://github.com/user-attachments/assets/ff504162-bbe1-435c-b6c4-98f54c719cea",
         description: "Halaman pembuka album. Terhampar kanvas putih dominan dengan komposisi foto polaroid bertekstur pada sisi kanan."
       },
       {
-        url: "https://github.com/user-attachments/assets/7647ec21-c030-4d64-8de8-6fd7790cad29",
+        url: "https://github.com/user-attachments/assets/eee922f3-e847-43c1-97f6-a7d5fbdc33a5",
         description: "Spread profil foto siswa (format memanjang vertikal). Tipografi serif ditata rapi menyatu dengan warna bumi."
       },
       {
-        url: "https://github.com/user-attachments/assets/6ccc85ae-f87a-4af8-9af5-b93084b0523f",
+        url: "https://github.com/user-attachments/assets/c80a8efa-cf85-4d12-a7bc-c875743aaefb",
         description: "Halaman memori interaktif berisi grid mosaik berbagai angle foto grup yang candid dan organik."
       },
       {
-        url: "https://github.com/user-attachments/assets/cd648e88-a067-4dec-9373-ff7448df68c0",
+        url: "https://github.com/user-attachments/assets/23d67372-2a40-43e6-943f-c492d38db5c6",
         description: "Menampilkan estetika buku jurnal dengan coretan-coretan ilustrasi daun estetik mengiringi pas foto out-door."
       },
       {
-        url: "https://github.com/user-attachments/assets/9e341527-0d78-4fc2-843d-e1ee95248591",
+        url: "https://github.com/user-attachments/assets/64920eca-68a4-4c80-850c-78179508454d",
         description: "Pemaparan profil individu. Setiap frame foto dibalut gradasi halus dan detail biodata alumni yang minimalis."
       },
       {
-        url: "https://github.com/user-attachments/assets/4be4d483-2cff-4eaf-937b-f48f61bc6393",
+        url: "https://github.com/user-attachments/assets/3350ac1e-6cc1-4701-8d87-b1d2efe97206",
         description: "Highlight dokumentasi kegiatan seru di lingkungan sekolah. Penggunaan font brush menambah kesan kebebasan."
       },
       {
-        url: "https://github.com/user-attachments/assets/342b2bae-68a0-4541-859f-d95e59da6bf4",
+        url: "https://github.com/user-attachments/assets/8bb0a175-b5b1-4926-992b-f87bfcd61f6f",
         description: "Halaman galeri tambahan. Sentuhan layout selang-seling mengurangi kebosanan dan memberikan ruang nafas di halaman."
       },
       {
-        url: "https://github.com/user-attachments/assets/20425a46-0e8f-4a60-b5fe-8fb852e5ede9",
+        url: "https://github.com/user-attachments/assets/cb065c54-a431-4eae-ae2a-49aac81238db",
         description: "Halaman panel staf pengajar. Penghormatan terakhir guru disusun dalam style polaroid rapi bernada kehangatan."
       },
       {
@@ -236,6 +237,53 @@ const placeholderDesigns: DesignProject[] = [
     title: "Vintage Album Yearbook",
     category: "Yearbook Design",
     tools: ["Adobe Illustrator", "Adobe Photoshop"]
+  },
+  {
+    id: 13,
+    thumbnail: "https://github.com/user-attachments/assets/798aa398-8513-4073-bccd-3b1d9a592719",
+    images: [
+      {
+        url: "https://github.com/user-attachments/assets/798aa398-8513-4073-bccd-3b1d9a592719",
+        description: "Cover Depan Edu-wisata Lontar Sewu. Desain bernuansa hijau alami mengusung tema agrowisata."
+      },
+      {
+        url: "https://github.com/user-attachments/assets/0d58fe71-00bd-40eb-b431-c8279ce486bb",
+        description: "Halaman pengantar Edu-wisata Lontar Sewu. Pengenalan ekowisata alam pedesaan dengan layout modern."
+      },
+      {
+        url: "https://github.com/user-attachments/assets/87fd35eb-c89b-41f7-9be8-8356ded4c06a",
+        description: "Denah rute dan katalog wisata. Pemetaan destinasi visual yang memudahkan navigasi pengunjung."
+      },
+      {
+        url: "https://github.com/user-attachments/assets/ce6fa56f-257d-4d8b-91d4-9c5555848c78",
+        description: "Cover belakang dan detail kontak. Informasi reservasi wisata dan sosial media terintegrasi."
+      }
+    ],
+    title: "Eco-Tourism Booklet",
+    category: "Booklet Design",
+    tools: ["Adobe Illustrator", "Adobe Photoshop"]
+  },
+  {
+    id: 14,
+    thumbnail: "https://github.com/user-attachments/assets/504ccc0b-75bb-478f-8178-9084b205d864",
+    images: [
+      {
+        url: "https://github.com/user-attachments/assets/504ccc0b-75bb-478f-8178-9084b205d864",
+        description: "Desain poster visual komunikatif berupa layout informatif bernada grafis modern."
+      }
+    ],
+    title: "Creative Banner Poster",
+    category: "Poster Design",
+    tools: ["Adobe Photoshop", "Adobe Illustrator"]
+  },
+  {
+    id: 15,
+    thumbnail: "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?auto=format&fit=crop&q=80",
+    images: [],
+    title: "Resik Suroboyo App Prototype",
+    category: "UI/UX Prototype",
+    tools: ["Figma", "UI/UX Research"],
+    figmaUrl: "https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FKwpMcasCJnROXYqbknY77r%2FTUGAS-KULIAH-SEMESTER-3--Copy-%3Fnode-id%3D2059-1660%26starting-point-node-id%3D2059%253A1660%26t%3D8exfSChYh4N19i3n-1"
   }
 ];
 
@@ -274,29 +322,41 @@ const DesignPage = () => {
   const [isFlipping, setIsFlipping] = useState(false);
   const bookRef = useRef<any>(null); // Ref for HTMLFlipBook
 
-  const isYearbook = selectedProject?.category === "Yearbook Design";
+  const isFlipBook = selectedProject?.category === "Yearbook Design" || selectedProject?.category === "Booklet Design";
+  const isBooklet = selectedProject?.category === "Booklet Design";
 
   const getFlipBookPages = () => {
-    if (!isYearbook || !selectedProject) return [];
+    if (!isFlipBook || !selectedProject) return [];
     const imgs = selectedProject.images;
-    return [
-      { type: 'image', data: imgs[0] }, // Cover
-      { type: 'blank', data: null }, // Inside Front Cover
-      { type: 'image', data: imgs[1] },
-      { type: 'image', data: imgs[2] },
-      { type: 'image', data: imgs[3] },
-      { type: 'image', data: imgs[4] },
-      { type: 'image', data: imgs[5] },
-      { type: 'image', data: imgs[6] },
-      { type: 'image', data: imgs[7] },
-      { type: 'image', data: imgs[8] },
-      { type: 'blank', data: null }, // Inside Back Cover
-      { type: 'backcover', data: null } // Back Cover
-    ];
+    
+    if (selectedProject.category === "Yearbook Design") {
+      return [
+        { type: 'image', data: imgs[0] }, // Cover
+        { type: 'blank', data: null }, // Inside Front Cover
+        { type: 'image', data: imgs[1] },
+        { type: 'image', data: imgs[2] },
+        { type: 'image', data: imgs[3] },
+        { type: 'image', data: imgs[4] },
+        { type: 'image', data: imgs[5] },
+        { type: 'image', data: imgs[6] },
+        { type: 'image', data: imgs[7] },
+        { type: 'image', data: imgs[8] },
+        { type: 'blank', data: null }, // Inside Back Cover
+        { type: 'backcover', data: null } // Back Cover
+      ];
+    } else {
+      // Booklet Design (4 Images)
+      return [
+        { type: 'image', data: imgs[0] }, // Front Cover
+        { type: 'image', data: imgs[1] }, // Page 1
+        { type: 'image', data: imgs[2] }, // Page 2
+        { type: 'image', data: imgs[3] }  // Back Cover
+      ];
+    }
   };
 
   const pages = getFlipBookPages();
-  const totalSlides = isYearbook ? pages.length : selectedProject?.images.length || 0;
+  const totalSlides = isFlipBook ? pages.length : selectedProject?.images.length || 0;
 
   useEffect(() => {
     // Simulate loading delay for smooth transition
@@ -383,7 +443,7 @@ const DesignPage = () => {
               onClick={() => {
                 setSelectedProject(design);
                 setCurrentSlideIndex(0);
-                setIsPanelMinimized(design.category === "Yearbook Design");
+                setIsPanelMinimized(design.category === "Yearbook Design" || design.category === "Booklet Design");
               }}
             >
               <div className="w-full relative overflow-hidden rounded-2xl bg-white/5 border border-white/10 group-hover:border-emerald-500/30 transition-colors duration-500">
@@ -444,7 +504,7 @@ const DesignPage = () => {
                   e.stopPropagation();
                   if (isFlipping) return;
                   setDirection(-1);
-                  if (isYearbook && bookRef.current) {
+                  if (isFlipBook && bookRef.current) {
                     bookRef.current.pageFlip().flipPrev('bottom');
                   } else {
                     setCurrentSlideIndex(prev => prev === 0 ? totalSlides - 1 : prev - 1);
@@ -459,7 +519,7 @@ const DesignPage = () => {
             {/* Sliding Image Container */}
             <div className="relative w-full h-full p-4 md:p-16 flex items-center justify-center overflow-hidden" onClick={() => setSelectedProject(null)} style={{ perspective: 1500 }}>
               <div className="w-full h-full relative flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
-                {isYearbook ? (
+                {isFlipBook ? (
                   <motion.div 
                     animate={{
                       x: currentSlideIndex === 0 ? '-25%' : currentSlideIndex >= pages.length - 2 ? '25%' : '0%',
@@ -469,13 +529,13 @@ const DesignPage = () => {
                     className="w-full max-w-[1400px] flex justify-center items-center drop-shadow-2xl"
                   >
                     <HTMLFlipBook 
-                      width={650} 
-                      height={450} 
+                      width={isBooklet ? 450 : 650} 
+                      height={isBooklet ? 640 : 450} 
                       size="stretch"
-                      minWidth={300}
-                      maxWidth={700}
-                      minHeight={250}
-                      maxHeight={550}
+                      minWidth={isBooklet ? 250 : 300}
+                      maxWidth={isBooklet ? 500 : 700}
+                      minHeight={isBooklet ? 350 : 250}
+                      maxHeight={isBooklet ? 750 : 550}
                       maxShadowOpacity={0.4}
                       drawShadow={true}
                       showCover={true}
@@ -505,6 +565,21 @@ const DesignPage = () => {
                         </Page>
                       ))}
                     </HTMLFlipBook>
+                  </motion.div>
+                ) : selectedProject.figmaUrl ? (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="w-full max-w-[400px] h-[80vh] bg-black rounded-3xl overflow-hidden border-2 border-white/20 shadow-[0_0_50px_rgba(0,0,0,0.8)] relative z-[200] flex"
+                  >
+                    <iframe 
+                      style={{ border: "none" }}
+                      width="100%" 
+                      height="100%" 
+                      src={selectedProject.figmaUrl} 
+                      allowFullScreen
+                      className="bg-[#1e1e1e]"
+                    ></iframe>
                   </motion.div>
                 ) : (
                   <AnimatePresence mode="wait" custom={direction}>
@@ -550,7 +625,7 @@ const DesignPage = () => {
                       className="overflow-hidden"
                     >
                       <div className="pt-4 md:pt-6">
-                        {isYearbook ? (
+                        {isFlipBook ? (
                           <motion.div 
                             key={`desc-${currentSlideIndex}`}
                             initial={{ opacity: 0, y: 5 }}
@@ -564,7 +639,15 @@ const DesignPage = () => {
                               <p className="mb-2"><span className="text-white/40 uppercase text-[9px] mr-2">Cover</span> {pages[0]?.data?.description || ''}</p>
                             )}
                           </motion.div>
-                        ) : selectedProject.images[currentSlideIndex].description && (
+                        ) : selectedProject.figmaUrl ? (
+                          <motion.div 
+                            initial={{ opacity: 0, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-white/70 text-sm leading-relaxed mb-4 md:mb-6"
+                          >
+                            Prototipe desain interaktif aplikasi pengelola sampah terintegrasi untuk Kota Surabaya. Silakan gunakan kursor pada layar perangkat (dummy handphone) di atas untuk berinteraksi langsung memutar dan mengklik (clickable) antarmuka dan navigasi UI/UX aplikasi Resik Suroboyo ini.
+                          </motion.div>
+                        ) : selectedProject.images[currentSlideIndex]?.description && (
                           <motion.p 
                             key={currentSlideIndex}
                             initial={{ opacity: 0, y: 5 }}
@@ -592,7 +675,7 @@ const DesignPage = () => {
               </div>
               
               {/* Pagination Dots */}
-              {totalSlides > 1 && !isYearbook && (
+              {totalSlides > 1 && !isFlipBook && (
                 <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 bg-black/50 backdrop-blur-md rounded-full border border-white/10" onClick={(e) => e.stopPropagation()}>
                   {Array.from({ length: totalSlides }).map((_, idx) => (
                     <button
@@ -617,7 +700,7 @@ const DesignPage = () => {
                   e.stopPropagation();
                   if (isFlipping) return;
                   setDirection(1);
-                  if (isYearbook && bookRef.current) {
+                  if (isFlipBook && bookRef.current) {
                     bookRef.current.pageFlip().flipNext('bottom');
                   } else {
                     setCurrentSlideIndex(prev => prev === totalSlides - 1 ? 0 : prev + 1);
