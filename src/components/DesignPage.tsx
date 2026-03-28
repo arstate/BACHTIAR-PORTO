@@ -318,38 +318,7 @@ const placeholderDesigns: DesignProject[] = [
     tools: ["Figma", "Interaction Animation"],
     figmaUrl: "https://embed.figma.com/proto/STuSH8jJxUkJdd1mD0H7j7/Untitled--Copy-?node-id=3-1588&scaling=contain&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=3%3A1529&show-proto-sidebar=1&embed-host=share"
   },
-  {
-    id: 17,
-    thumbnail: "https://www.instagram.com/tiar.property/p/DVOJyo_ksJ7/media/?size=l",
-    images: [],
-    title: "Instagram Feeds Design",
-    category: "Social Media Design",
-    tools: ["Adobe Photoshop", "Adobe Illustrator"],
-    instagramUrls: [
-      "https://www.instagram.com/p/DVOJyo_ksJ7/",
-      "https://www.instagram.com/p/DUXJDD9EhHO/",
-      "https://www.instagram.com/p/DUVgggSEvIL/",
-      "https://www.instagram.com/p/DUFtXHLkrVW/",
-      "https://www.instagram.com/p/DUCUMIjkiWv/",
-      "https://www.instagram.com/p/DTnCKpuEtOm/",
-      "https://www.instagram.com/p/DTakvhJkoCz/",
-      "https://www.instagram.com/p/DTPlxYtEmwq/",
-      "https://www.instagram.com/p/DTLZQ3jkrVh/",
-      "https://www.instagram.com/p/DTKF6PREkkP/",
-      "https://www.instagram.com/p/DTJv2Q8EjDt/",
-      "https://www.instagram.com/p/DTJkewJEjnF/",
-      "https://www.instagram.com/p/DTJkEvjEip4/",
-      "https://www.instagram.com/p/DTHm3woko9F/",
-      "https://www.instagram.com/p/DTHmj8EEghb/",
-      "https://www.instagram.com/p/DTHXxcIktZ3/",
-      "https://www.instagram.com/p/DTGhhoYE_ep/",
-      "https://www.instagram.com/p/DTGavuzkp_h/",
-      "https://www.instagram.com/p/DTFzBAuElmA/",
-      "https://www.instagram.com/p/DTFy44ukhpm/",
-      "https://www.instagram.com/p/DTF287Lkv-H/",
-      "https://www.instagram.com/p/DTFy8PQEnBl/"
-    ]
-  },
+
   {
     id: 18,
     thumbnail: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697131/1_dqwtqb.png",
@@ -707,200 +676,61 @@ const DesignPage = () => {
                       ))}
                     </HTMLFlipBook>
                   </motion.div>
-                ) : selectedProject.figmaUrl ? (
-                  <div className={`w-full h-full flex pointer-events-none ${selectedProject.category === 'Presentation Design' ? 'flex-col-reverse md:flex-row-reverse overflow-y-auto md:overflow-hidden bg-black/20' : 'items-center justify-center'}`} data-lenis-prevent>
-                    {/* The Iframe Container */}
-                    <motion.div 
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className={`overflow-hidden border-2 border-white/20 shadow-[0_0_50px_rgba(0,0,0,0.8)] relative z-[200] flex pointer-events-auto ${selectedProject.category === 'Presentation Design' ? 'w-full md:w-[65%] lg:w-[70%] aspect-video md:h-auto rounded-none md:rounded-3xl md:m-12 shadow-emerald-500/10' : 'w-full max-w-[400px] h-[80vh] rounded-3xl'}`}
-                    >
-                      <iframe 
-                        style={{ border: "none" }}
-                        width="100%" 
-                        height="100%" 
-                        src={selectedProject.figmaUrl} 
-                        allowFullScreen
-                        className="bg-[#1e1e1e]"
-                      ></iframe>
-                    </motion.div>
-
-                    {/* Dedicated Info Panel for Widescreen Animation Deck */}
-                    {selectedProject.category === 'Presentation Design' && (
-                      <motion.div 
-                        initial={{ opacity: 0, x: -30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        className="w-full md:w-[35%] lg:w-[30%] h-auto md:h-full bg-black/60 md:bg-transparent backdrop-blur-3xl md:backdrop-blur-none p-8 md:p-14 md:pl-24 flex flex-col justify-center pointer-events-auto border-b md:border-b-0 md:border-r border-white/10"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <div className="max-w-md">
-                          <p className="text-emerald-400 font-mono tracking-[0.2em] text-[10px] uppercase mb-3 opacity-80">
-                            {selectedProject.category}
-                          </p>
-                          <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mb-6 md:mb-8 font-serif italic tracking-tight">
-                            {selectedProject.title}
-                          </h2>
-                          
-                          <div className="space-y-6 md:space-y-10 text-white/70 text-sm md:text-base leading-relaxed">
-                            <p>
-                              Presentasi (Pitch Deck) Interaktif yang dirancang langsung di kanvas Figma. Mengedepankan transisi mulus dan struktur narasi visual yang dinamis.
-                            </p>
-                            <p className="italic text-xs md:text-sm text-white/50">
-                              Gunakan kontrol navigasi yang tersedia langsung pada layar prototipe di samping untuk menjelajahi setiap slide animasi.
-                            </p>
-                            
-                            {selectedProject.tools && (
-                              <div className="pt-4">
-                                <h3 className="text-white/40 uppercase text-[9px] font-mono tracking-widest mb-3">Tech Stack</h3>
-                                <div className="flex flex-wrap gap-2">
-                                  {selectedProject.tools.map((tool, i) => (
-                                    <span key={i} className="px-3 py-1.5 bg-white/5 rounded-lg text-[10px] font-medium text-white/70 border border-white/10">
-                                      {tool}
-                                    </span>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </div>
-                ) : (selectedProject.isScrollableDoc || (isMobile && (selectedProject.category === "Yearbook Design" || selectedProject.category === "Booklet Design"))) ? (
+                ) : (
                   <div 
-                    className="w-full h-full flex flex-col-reverse md:flex-row-reverse pointer-events-none overflow-y-auto md:overflow-hidden custom-scrollbar" 
+                    className="w-full h-full flex flex-col-reverse md:flex-row-reverse pointer-events-none overflow-y-auto md:overflow-hidden bg-black/40" 
                     data-lenis-prevent
                   >
-                    {/* Interactive document on the right half (Desktop) / bottom (Mobile) */}
+                    {/* LEFT / TOP: Info Panel */}
                     <motion.div 
-                      initial={{ opacity: 0, x: 30 }}
+                      initial={{ opacity: 0, x: -40 }}
                       animate={{ opacity: 1, x: 0 }}
-                      className="w-full md:w-[60%] lg:w-[65%] h-auto md:h-full md:overflow-y-auto pointer-events-auto z-[200] pt-4 md:pt-24 pb-40 px-4 md:px-12 custom-scrollbar"
-                      style={{ overscrollBehavior: 'contain' }}
-                      onClick={(e) => e.stopPropagation()}
-                      data-lenis-prevent
-                    >
-                      <div className="w-full flex flex-col gap-6 md:gap-14">
-                        {selectedProject.images.map((img, i) => (
-                          <div key={i} className="w-full relative shadow-[0_20px_50px_-10px_rgba(0,0,0,0.5)] rounded-lg overflow-hidden border border-white/10 ring-1 ring-white/5 bg-zinc-900/40">
-                            <img 
-                              src={img.url} 
-                              alt={`Halaman ${i+1}`}
-                              className="w-full h-auto object-contain"
-                            />
-                            <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-md px-3 py-1 rounded-full text-[10px] text-white/50 border border-white/5 font-mono">
-                              PG.{i+1}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </motion.div>
-
-                    {/* Dedicated Info Panel on the left (Desktop) / top (Mobile) */}
-                    <motion.div 
-                      initial={{ opacity: 0, x: -30 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="w-full md:w-[40%] lg:w-[35%] h-auto md:h-full bg-black/40 md:bg-transparent backdrop-blur-2xl md:backdrop-blur-none p-6 md:p-14 md:pl-20 flex flex-col justify-center pointer-events-auto md:border-r border-white/10"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <div className="max-w-md pt-10 md:pt-0">
-                        <p className="text-emerald-400 font-mono tracking-[0.2em] text-[10px] uppercase mb-3 opacity-80">
-                          {selectedProject.category}
-                        </p>
-                        <h1 className="text-3xl md:text-5xl font-bold text-white leading-tight mb-6 md:mb-8 font-serif italic tracking-tight">
-                          {selectedProject.title}
-                        </h1>
-                        
-                        <div className="space-y-6 md:space-y-10">
-                          <div>
-                            <h3 className="text-white/40 uppercase text-[9px] font-mono tracking-widest mb-3">Project Overview</h3>
-                            <p className="text-white/80 text-sm md:text-base leading-relaxed font-light">
-                              Sistem identitas visual (GSM) komprehensif untuk <span className="text-emerald-300 font-medium">Mangkabayan Surabaya</span>. Mencakup konstruksi logo, filosofi brand, panduan warna korporat, hingga standarisasi elemen grafis untuk menjaga konsistensi brand di berbagai media.
-                            </p>
-                            <div className="flex items-center gap-2 mt-4 px-3 py-1.5 bg-emerald-500/5 border border-emerald-500/10 rounded-lg w-fit">
-                              <Users size={12} className="text-emerald-400" />
-                              <span className="text-[10px] text-emerald-400/80 font-mono uppercase tracking-widest font-semibold">
-                                Collaborative Team Project (4 People)
-                              </span>
-                            </div>
-                          </div>
-
-                          {selectedProject.tools && (
-                            <div className="pt-2 md:pt-4">
-                              <h3 className="text-white/40 uppercase text-[9px] font-mono tracking-widest mb-3">Resources Used</h3>
-                              <div className="flex flex-wrap gap-2">
-                                {selectedProject.tools.map((tool, i) => (
-                                  <span key={i} className="px-3 py-1.5 bg-emerald-500/10 rounded-lg text-[10px] font-medium text-emerald-300 border border-emerald-500/20">
-                                    {tool}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </motion.div>
-                  </div>
-                ) : selectedProject.instagramUrls ? (
-                  <div 
-                    className="w-full h-full flex flex-col-reverse md:flex-row-reverse pointer-events-none overflow-y-auto md:overflow-hidden bg-black/20" 
-                    data-lenis-prevent
-                  >
-                    {/* The Instagram Grid (Scrollable on the right half) */}
-                    <motion.div 
-                      initial={{ opacity: 0, x: 30 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="w-full md:w-[60%] lg:w-[68%] h-auto md:h-full md:overflow-y-auto pointer-events-auto z-[200] p-4 md:p-14 custom-scrollbar pb-32 md:pb-24"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                        {selectedProject.instagramUrls.map((url, i) => (
-                          <div key={i} className="w-full bg-slate-50 rounded-xl overflow-hidden shadow-2xl transition-transform hover:scale-[1.02]" style={{ minHeight: "500px", height: "100%" }}>
-                            <iframe 
-                              src={`${url}${url.endsWith('/') ? '' : '/'}embed`}
-                              className="w-full h-full border-none"
-                              scrolling="no"
-                              allowTransparency
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    </motion.div>
-
-                    {/* Dedicated Info Panel for Social Media Grid */}
-                    <motion.div 
-                      initial={{ opacity: 0, x: -30 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="w-full md:w-[40%] lg:w-[32%] h-auto md:h-full bg-black/60 md:bg-transparent backdrop-blur-3xl md:backdrop-blur-none p-8 md:p-14 md:pl-24 flex flex-col justify-center pointer-events-auto border-b md:border-b-0 md:border-r border-white/10"
+                      className="w-full md:w-[35%] lg:w-[30%] xl:w-[28%] h-auto md:h-full bg-black/60 md:bg-black/20 backdrop-blur-3xl md:backdrop-blur-none p-8 md:p-14 md:pl-24 flex flex-col justify-center pointer-events-auto border-t md:border-t-0 md:border-r border-white/10 shadow-[20px_0_50px_rgba(0,0,0,0.3)]"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <div className="max-w-md">
-                        <p className="text-emerald-400 font-mono tracking-[0.2em] text-[10px] uppercase mb-3 opacity-80">
+                        <p className="text-emerald-400 font-mono tracking-[0.2em] text-[10px] uppercase mb-4 opacity-80">
                           {selectedProject.category}
                         </p>
-                        <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mb-8 font-serif italic tracking-tight">
+                        <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-8 font-serif italic tracking-tight drop-shadow-lg">
                           {selectedProject.title}
                         </h2>
                         
-                        <div className="space-y-8 text-white/70 text-sm md:text-base leading-relaxed">
+                        <div className="space-y-10 text-white/70 text-sm md:text-base leading-relaxed">
                           <div>
-                            <h3 className="text-white/40 uppercase text-[9px] font-mono tracking-widest mb-3 text-emerald-400/50">Collection Overview</h3>
-                            <p className="font-light">
-                              Kompilasi layout desain feed Instagram yang dikurasi secara profesional. Galeri ini memungkinkan Anda berinteraksi langsung dengan sistem grid, mempelajari komposisi visual, dan melihat bagaimana setiap elemen saling bersambung secara harmonis di platform aslinya.
-                            </p>
-                          </div>
-                          
-                          <div className="flex items-center gap-2 p-3 bg-white/5 rounded-xl border border-white/10 italic text-[11px] md:text-xs">
-                            <span className="text-emerald-400 font-bold shrink-0">TIP:</span>
-                            <span>Scroll kisi-kisi di samping untuk melihat koleksi lengkap desain secara interaktif.</span>
+                            <h3 className="text-white/40 uppercase text-[9px] font-mono tracking-widest mb-4 flex items-center gap-2">
+                              <div className="w-4 h-[1px] bg-white/20"></div> Case Overview
+                            </h3>
+                            <div className="font-light space-y-4">
+                              {selectedProject.category === 'Presentation Design' ? (
+                                <p>Presentasi (Pitch Deck) Interaktif yang dirancang langsung di kanvas Figma. Mengedepankan transisi mulus dan struktur narasi visual yang dinamis.</p>
+                              ) : selectedProject.isScrollableDoc ? (
+                                <p>Sistem identitas visual komprehensif yang dikembangkan untuk memastikan konsistensi wajah brand di seluruh platform operasional dan digital.</p>
+                              ) : selectedProject.category === 'UI/UX Prototype' ? (
+                                <p>Prototipe antarmuka pengguna digital yang berfokus pada pengalaman navigasi yang intuitif dan estetik. Dirancang dengan presisi untuk memecahkan masalah pengguna secara visual.</p>
+                              ) : (
+                                <p>Eksplorasi desain visual yang mengedepankan komposisi, tipografi, dan harmoni warna untuk menciptakan pesan yang kuat dan berkesan.</p>
+                              )}
+                              
+                              {selectedProject.category === 'Brand Guidelines (GSM)' && (
+                                <div className="flex items-center gap-2 mt-4 px-3 py-1.5 bg-emerald-500/5 border border-emerald-500/10 rounded-lg w-fit">
+                                  <Users size={12} className="text-emerald-400" />
+                                  <span className="text-[10px] text-emerald-400/80 font-mono uppercase tracking-widest font-semibold">
+                                    Collaborative Team Project (4 People)
+                                  </span>
+                                </div>
+                              )}
+                            </div>
                           </div>
 
                           {selectedProject.tools && (
-                            <div className="pt-4">
-                              <h3 className="text-white/40 uppercase text-[9px] font-mono tracking-widest mb-3">Tech Context</h3>
+                            <div className="pt-6">
+                              <h3 className="text-white/40 uppercase text-[9px] font-mono tracking-widest mb-4 flex items-center gap-2">
+                                <div className="w-4 h-[1px] bg-white/20"></div> Tech Palette
+                              </h3>
                               <div className="flex flex-wrap gap-2">
                                 {selectedProject.tools.map((tool, i) => (
-                                  <span key={i} className="px-3 py-1.5 bg-emerald-500/10 rounded-lg text-[10px] font-medium text-emerald-300 border border-emerald-500/20">
+                                  <span key={i} className="px-3 py-1.5 bg-white/5 rounded-lg text-[10px] font-medium text-white/70 border border-white/10 hover:border-emerald-500/30 transition-colors">
                                     {tool}
                                   </span>
                                 ))}
@@ -910,26 +740,64 @@ const DesignPage = () => {
                         </div>
                       </div>
                     </motion.div>
+
+                    {/* RIGHT / BOTTOM: Media Content */}
+                    <motion.div 
+                      className="w-full md:w-[65%] lg:w-[70%] xl:w-[72%] h-auto md:h-full md:overflow-y-auto pointer-events-auto z-[200] custom-scrollbar p-6 md:p-14 bg-white/[0.02]"
+                      onClick={(e) => e.stopPropagation()}
+                      data-lenis-prevent
+                    >
+                      {selectedProject.figmaUrl ? (
+                         <div className={`w-full h-full flex items-center justify-center`}>
+                           <motion.div 
+                             initial={{ opacity: 0, scale: 0.98 }}
+                             animate={{ opacity: 1, scale: 1 }}
+                             className={`overflow-hidden border-2 border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.5)] relative z-[200] flex ${selectedProject.category === 'Presentation Design' ? 'w-full aspect-video rounded-3xl' : 'w-full max-w-[400px] h-[80vh] rounded-[3rem] ring-8 ring-black/50'}`}
+                           >
+                             <iframe 
+                               style={{ border: "none" }}
+                               width="100%" 
+                               height="100%" 
+                               src={selectedProject.figmaUrl} 
+                               allowFullScreen
+                               className="bg-[#1e1e1e]"
+                             ></iframe>
+                           </motion.div>
+                         </div>
+                      ) : (selectedProject.isScrollableDoc || (isMobile && (selectedProject.category === "Yearbook Design" || selectedProject.category === "Booklet Design"))) ? (
+                        <div className="w-full max-w-5xl mx-auto flex flex-col gap-8 md:gap-16 pb-40">
+                          {selectedProject.images.map((img, i) => (
+                            <div key={i} className="w-full relative shadow-[0_30px_70px_rgba(0,0,0,0.5)] rounded-2xl overflow-hidden border border-white/10 bg-zinc-900/40 group">
+                              <img 
+                                src={img.url} 
+                                alt={`Halaman ${i+1}`}
+                                className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-[1.01]"
+                                loading="lazy"
+                              />
+                              <div className="absolute top-6 right-6 bg-black/60 backdrop-blur-xl px-4 py-2 rounded-full text-[11px] text-white/60 border border-white/10 font-mono tracking-widest uppercase">
+                                Page.{i+1}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <motion.img 
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            src={selectedProject.images[0].url} 
+                            alt={selectedProject.title} 
+                            className="max-w-full max-h-full object-contain rounded-2xl shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/10"
+                          />
+                        </div>
+                      )}
+                    </motion.div>
                   </div>
-                ) : (
-                  <AnimatePresence mode="wait" custom={direction}>
-                    <motion.img 
-                      key={currentSlideIndex}
-                      custom={direction}
-                      variants={slideVariants}
-                      initial="enter" animate="center" exit="exit"
-                      src={selectedProject.images[currentSlideIndex].url} 
-                      alt={`${selectedProject.title} detail ${currentSlideIndex + 1}`} 
-                      className="max-w-full max-h-full object-contain md:max-h-[75vh] rounded-lg shadow-2xl absolute"
-                    />
-                  </AnimatePresence>
                 )}
               </div>
 
-              {/* Project Details Overlay / Floating Panel (HIDDEN for Widescreen Split Layouts) */}
-              {(!selectedProject.isScrollableDoc && 
-                selectedProject.category !== 'Presentation Design' && 
-                !selectedProject.instagramUrls) && (
+              {/* Project Details Overlay / Floating Panel (ONLY for 3D FlipBook Mode) */}
+              {isFlipBook && (
                 <div 
                   className="absolute bottom-4 left-4 right-4 md:bottom-12 md:left-24 md:right-auto z-[60] w-full max-w-sm md:max-w-lg bg-black/70 backdrop-blur-3xl border border-white/10 p-5 md:p-6 rounded-3xl shadow-2xl pointer-events-auto transition-all duration-500" 
                   onClick={(e) => e.stopPropagation()}
@@ -958,7 +826,7 @@ const DesignPage = () => {
                       className="overflow-hidden"
                     >
                       <div className="pt-4 md:pt-6">
-                        {isFlipBook ? (
+                        {isFlipBook && (
                           <motion.div 
                             key={`desc-${currentSlideIndex}`}
                             initial={{ opacity: 0, y: 5 }}
@@ -972,57 +840,6 @@ const DesignPage = () => {
                               <p className="mb-2"><span className="text-white/40 uppercase text-[9px] mr-2">Cover</span> {pages[0]?.data?.description || ''}</p>
                             )}
                           </motion.div>
-                        ) : selectedProject.isScrollableDoc ? (
-                          <motion.div 
-                            initial={{ opacity: 0, y: 5 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="text-white/70 text-sm leading-relaxed mb-4 md:mb-6"
-                          >
-                            <p className="mb-3">
-                              <strong className="text-white drop-shadow-md">Konsep Identitas Mangkabayan:</strong> Panduan standar grafis komprehensif yang mengatur setiap aspek identitas brand. Mulai dari pembedahan struktur anatomi logo, sistem grid, hingga implementasi pada media operasional untuk menjaga keutuhan karakter brand.
-                            </p>
-                            <p className="text-[10px] text-emerald-400 font-mono uppercase tracking-[0.1em] font-bold flex items-center gap-1.5 opacity-80">
-                              <Users size={11} /> Team Project Collaboration
-                            </p>
-                          </motion.div>
-                        ) : selectedProject.instagramUrls ? (
-                          <motion.div 
-                            initial={{ opacity: 0, y: 5 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="text-white/70 text-sm leading-relaxed mb-4 md:mb-6"
-                          >
-                            Kompilasi layout desain feed Instagram. Anda dapat menelusuri (scroll) kisi-kisi (grid) pos di atas untuk berinteraksi langsung dengan unggahan dan deskripsi aslinya yang tersemat secara langsung dari platform.
-                          </motion.div>
-                        ) : selectedProject.figmaUrl ? (
-                          <motion.div 
-                            initial={{ opacity: 0, y: 5 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="text-white/70 text-sm leading-relaxed mb-4 md:mb-6"
-                          >
-                            {selectedProject.category === 'Presentation Design' 
-                              ? 'Presentasi (Pitch Deck) Interaktif Figma. Jelajahi slide-slide animasi memukau ini dengan mengklik tombol/navigasi yang tersedia langsung di layar kanvas.'
-                              : 'Prototipe desain interaktif aplikasi pengelola sampah terintegrasi untuk Kota Surabaya. Silakan gunakan kursor pada layar perangkat (dummy handphone) di atas untuk berinteraksi langsung memutar dan mengklik antarmuka UI/UX ini.'}
-                          </motion.div>
-                        ) : selectedProject.images[currentSlideIndex]?.description && (
-                          <motion.p 
-                            key={currentSlideIndex}
-                            initial={{ opacity: 0, y: 5 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.3 }}
-                            className="text-white/70 text-sm leading-relaxed mb-4 md:mb-6"
-                          >
-                            {selectedProject.images[currentSlideIndex].description}
-                          </motion.p>
-                        )}
-                        
-                        {selectedProject.tools && (
-                          <div className="flex flex-wrap gap-2">
-                            {selectedProject.tools.map((tool, i) => (
-                              <span key={i} className="px-3 py-1 bg-white/10 rounded-full text-[10px] md:text-xs font-semibold tracking-wide text-white/90 border border-white/20">
-                                {tool}
-                              </span>
-                            ))}
-                          </div>
                         )}
                         </div>
                       </motion.div>
