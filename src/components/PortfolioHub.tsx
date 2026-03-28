@@ -13,11 +13,10 @@ const PortfolioHub = () => {
     const [isNavigating, setIsNavigating] = useState(false);
 
     const categories = [
-        { title: "Videography", path: "/videography", icon: Film, color: "blue" },
-        { title: "Photography", path: "/gallery", icon: ImageIcon, color: "purple" },
-        { title: "Motion Graphics", path: "/motion", icon: MonitorPlay, color: "cyan", disabled: true },
-        { title: "Behind The Scenes", path: "/bts", icon: Clapperboard, color: "amber" },
-        { title: "Design", path: "/design", icon: PenTool, color: "emerald" },
+        { title: "Videography", path: "/videography", icon: Film, color: "blue", disabled: false },
+        { title: "Photography", path: "/gallery", icon: ImageIcon, color: "purple", disabled: false },
+        { title: "Design", path: "/design", icon: PenTool, color: "emerald", disabled: false },
+        { title: "Behind The Scenes", path: "/bts", icon: Clapperboard, color: "amber", disabled: false },
     ];
 
     const containerVariants = {
@@ -118,7 +117,7 @@ const PortfolioHub = () => {
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8 w-full max-w-[95rem] z-50 px-4 md:px-12"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 w-full max-w-[80rem] z-50 px-4 md:px-12"
             >
                 {categories.map((cat, idx) => (
                     <MotionLink

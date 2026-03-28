@@ -3,20 +3,22 @@ import { Play, ArrowRight, Image as ImageIcon } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+const PHRASES = [
+  "CAPTURING moments",
+  "DIRECTING visuals",
+  "CRAFTING stories",
+  "FRAMING aesthetics",
+  "EDITING realities",
+  "MAKE YOUR moments"
+];
+
 const Hero = () => {
   const { scrollY } = useScroll();
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
+  const isVideoPlayingRef = useRef(true);
+  const [, forceUpdate] = useState({}); // Only for UI reflection if really needed, but mostly we use ref
 
   // Typewriter logic
-  const phrases = [
-    "CAPTURING moments",
-    "DIRECTING visuals",
-    "CRAFTING stories",
-    "FRAMING aesthetics",
-    "EDITING realities",
-    "MAKE YOUR moments"
-  ];
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [currentText, setCurrentText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -24,36 +26,36 @@ const Hero = () => {
 
   useEffect(() => {
     const handleTyping = () => {
-      const fullText = phrases[currentPhraseIndex];
+      const fullText = PHRASES[currentPhraseIndex];
       
       if (!isDeleting) {
         // Typing
         setCurrentText(fullText.substring(0, currentText.length + 1));
-        setTypingSpeed(100 + Math.random() * 50); // Natural typing speed
+        setTypingSpeed(100 + Math.random() * 50);
 
         if (currentText === fullText) {
           setIsDeleting(true);
-          setTypingSpeed(2000); // Pause at end
+          setTypingSpeed(2000);
         }
       } else {
         // Deleting
         setCurrentText(fullText.substring(0, currentText.length - 1));
-        setTypingSpeed(50); // Faster deleting
+        setTypingSpeed(50);
 
         if (currentText === "") {
           setIsDeleting(false);
-          setCurrentPhraseIndex((prev) => (prev + 1) % phrases.length);
-          setTypingSpeed(500); // Pause before next phrase
+          setCurrentPhraseIndex((prev) => (prev + 1) % PHRASES.length);
+          setTypingSpeed(500);
         }
       }
     };
 
     const timer = setTimeout(handleTyping, typingSpeed);
     return () => clearTimeout(timer);
-  }, [currentText, isDeleting, currentPhraseIndex, phrases]);
+  }, [currentText, isDeleting, currentPhraseIndex]);
 
   // Derived state for typewriter layout
-  const currentFullText = phrases[currentPhraseIndex];
+  const currentFullText = PHRASES[currentPhraseIndex];
   const words = currentFullText.split(' ');
   const firstWordLimit = words.length > 2 ? 2 : 1;
   const firstPartFull = words.slice(0, firstWordLimit).join(' ');
@@ -65,26 +67,19 @@ const Hero = () => {
   // Prevent scrolling when modal is open
 
 
-  // Optimize: Pause video when scrolled past viewport height
+  // Optimize: Pause video when scrolled past viewport height using Ref
   useMotionValueEvent(scrollY, "change", (latest) => {
     if (videoRef.current) {
       const viewportHeight = window.innerHeight;
-      // If scrolled past 1.2x viewport height (fully covered by next section), pause video
-      if (latest > viewportHeight * 1.2) {
-        if (isVideoPlaying) {
-          videoRef.current.pause();
-          setIsVideoPlaying(false);
-        }
-      } else {
-        if (!isVideoPlaying) {
-          const playPromise = videoRef.current.play();
-          if (playPromise !== undefined) {
-            playPromise.catch(() => {
-              // Auto-play was prevented
-            });
-          }
-          setIsVideoPlaying(true);
-        }
+      const shouldPlay = latest <= viewportHeight * 1.2;
+      
+      if (shouldPlay && !isVideoPlayingRef.current) {
+        isVideoPlayingRef.current = true;
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) playPromise.catch(() => {});
+      } else if (!shouldPlay && isVideoPlayingRef.current) {
+        isVideoPlayingRef.current = false;
+        videoRef.current.pause();
       }
     }
   });
@@ -94,20 +89,20 @@ const Hero = () => {
 
   // Parallax transforms for individual elements (moving UP and fading out as we scroll down)
   // Staggered exit: Top elements move faster and fade out earlier
+  // Optimized transforms with will-change hints
   const yBadge = useTransform(scrollY, [0, 500], [0, -200]);
   const opacityBadge = useTransform(scrollY, [0, 300], [1, 0]);
 
-  const yTitle1 = useTransform(scrollY, [0, 600], [0, -150]);
+  const yTitle1 = useTransform(scrollY, [100, 400], [0, -150]);
   const opacityTitle1 = useTransform(scrollY, [100, 400], [1, 0]);
 
-  const yTitle2 = useTransform(scrollY, [0, 700], [0, -100]);
+  const yTitle2 = useTransform(scrollY, [200, 500], [0, -100]);
   const opacityTitle2 = useTransform(scrollY, [200, 500], [1, 0]);
 
-  const yTitle3 = useTransform(scrollY, [0, 800], [0, -50]);
+  const yTitle3 = useTransform(scrollY, [300, 600], [0, -50]);
   const opacityTitle3 = useTransform(scrollY, [300, 600], [1, 0]);
 
-  // Card moves up smoothly
-  const yCard = useTransform(scrollY, [0, 900], [0, 0]);
+  const yCard = useTransform(scrollY, [500, 800], [0, 0]);
   const opacityCard = useTransform(scrollY, [500, 800], [1, 0]);
 
   return (
@@ -151,6 +146,7 @@ const Hero = () => {
           <div className="flex flex-col items-center justify-center text-center">
             {/* First Word (Bold/Sans) */}
             <motion.h1
+              style={{ willChange: 'transform, opacity' }}
               className="text-5xl sm:text-7xl md:text-[8vw] font-bold tracking-tighter uppercase text-white leading-[0.9]"
             >
               {firstPartText || <span className="opacity-0">A</span>}
@@ -168,7 +164,7 @@ const Hero = () => {
             </div>
           </div>
 
-          <motion.div style={{ y: yTitle3, opacity: opacityTitle3 }} className="mt-8 md:mt-12">
+          <motion.div style={{ y: yTitle3, opacity: opacityTitle3, willChange: 'transform, opacity' }} className="mt-8 md:mt-12">
             <motion.h1
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
@@ -180,7 +176,7 @@ const Hero = () => {
           </motion.div>
         </div>
 
-        <motion.div style={{ y: yCard, opacity: opacityCard }} className="w-full max-w-4xl">
+        <motion.div style={{ y: yCard, opacity: opacityCard, willChange: 'transform, opacity' }} className="w-full max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

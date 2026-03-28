@@ -460,11 +460,14 @@ const DesignPage = () => {
     // Lock body scroll when modal is open
     if (selectedProject) {
       document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
     } else {
       document.body.style.overflow = 'unset';
+      document.body.style.touchAction = 'auto';
     }
     return () => {
       document.body.style.overflow = 'unset';
+      document.body.style.touchAction = 'auto';
     };
   }, [selectedProject]);
 
@@ -595,7 +598,7 @@ const DesignPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[200] bg-black/40 backdrop-blur-xl flex items-center justify-center"
+            className="fixed inset-0 z-[200] bg-black flex items-center justify-center p-0"
           >
             {/* Close Button */}
             <button 
@@ -605,8 +608,8 @@ const DesignPage = () => {
               <X size={24} />
             </button>
 
-            {/* Previous Button */}
-            {totalSlides > 1 && (
+            {/* Previous Button (ONLY for FlipBook) */}
+            {totalSlides > 1 && isFlipBook && (
               <button 
                 onClick={(e) => {
                   e.stopPropagation();
@@ -618,14 +621,14 @@ const DesignPage = () => {
                     setCurrentSlideIndex(prev => prev === 0 ? totalSlides - 1 : prev - 1);
                   }
                 }}
-                className="absolute left-4 md:left-10 z-[300] w-12 h-12 bg-black/50 hover:bg-black/80 border border-white/20 rounded-full flex items-center justify-center text-white backdrop-blur-md transition-colors"
+                className={`absolute left-4 md:left-10 top-1/2 -translate-y-1/2 z-[300] w-12 h-12 bg-black/50 hover:bg-black/80 border border-white/20 rounded-full flex items-center justify-center text-white backdrop-blur-md transition-all`}
               >
                 <ChevronLeft size={28} className="mr-1" />
               </button>
             )}
 
             {/* Sliding Image Container */}
-            <div className="relative w-full h-full p-4 md:p-16 flex items-center justify-center overflow-hidden" onClick={() => setSelectedProject(null)} style={{ perspective: 1500 }}>
+            <div className="relative w-full h-full flex items-center justify-center overflow-hidden" onClick={() => setSelectedProject(null)} style={{ perspective: 1500 }}>
               <div className="w-full h-full relative flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
                 {isFlipBook ? (
                   <motion.div 
@@ -678,14 +681,14 @@ const DesignPage = () => {
                   </motion.div>
                 ) : (
                   <div 
-                    className="w-full h-full flex flex-col-reverse md:flex-row-reverse pointer-events-none overflow-y-auto md:overflow-hidden bg-black/40" 
+                    className="w-full h-full flex flex-col md:flex-row pointer-events-none overflow-y-auto md:overflow-hidden bg-black" 
                     data-lenis-prevent
                   >
                     {/* LEFT / TOP: Info Panel */}
                     <motion.div 
                       initial={{ opacity: 0, x: -40 }}
                       animate={{ opacity: 1, x: 0 }}
-                      className="w-full md:w-[35%] lg:w-[30%] xl:w-[28%] h-auto md:h-full bg-black/60 md:bg-black/20 backdrop-blur-3xl md:backdrop-blur-none p-8 md:p-14 md:pl-24 flex flex-col justify-center pointer-events-auto border-t md:border-t-0 md:border-r border-white/10 shadow-[20px_0_50px_rgba(0,0,0,0.3)]"
+                      className="w-full md:w-[28%] lg:w-[25%] xl:w-[22%] h-auto md:h-full bg-black md:bg-[#050505] p-8 md:p-14 md:pl-16 flex flex-col justify-center pointer-events-auto border-b md:border-b-0 md:border-r border-white/10 shadow-[20px_0_50px_rgba(0,0,0,0.3)]"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <div className="max-w-md">
@@ -743,7 +746,7 @@ const DesignPage = () => {
 
                     {/* RIGHT / BOTTOM: Media Content */}
                     <motion.div 
-                      className="w-full md:w-[65%] lg:w-[70%] xl:w-[72%] h-auto md:h-full md:overflow-y-auto pointer-events-auto z-[200] custom-scrollbar p-6 md:p-14 bg-white/[0.02]"
+                      className="w-full md:w-[72%] lg:w-[75%] xl:w-[78%] h-auto md:h-full md:overflow-y-auto pointer-events-auto z-[200] custom-scrollbar p-2 md:p-6 bg-black"
                       onClick={(e) => e.stopPropagation()}
                       data-lenis-prevent
                     >
@@ -767,7 +770,7 @@ const DesignPage = () => {
                       ) : (selectedProject.isScrollableDoc || (isMobile && (selectedProject.category === "Yearbook Design" || selectedProject.category === "Booklet Design"))) ? (
                         <div className="w-full max-w-5xl mx-auto flex flex-col gap-8 md:gap-16 pb-40">
                           {selectedProject.images.map((img, i) => (
-                            <div key={i} className="w-full relative shadow-[0_30px_70px_rgba(0,0,0,0.5)] rounded-2xl overflow-hidden border border-white/10 bg-zinc-900/40 group">
+                            <div key={i} className="w-full relative overflow-hidden bg-zinc-900/40 group border-b border-white/5 last:border-0">
                               <img 
                                 src={img.url} 
                                 alt={`Halaman ${i+1}`}
@@ -783,11 +786,12 @@ const DesignPage = () => {
                       ) : (
                         <div className="w-full h-full flex items-center justify-center p-4">
                           <motion.img 
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            src={selectedProject.images[0].url} 
+                            key={currentSlideIndex}
+                            initial={{ opacity: 0, x: direction * 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            src={selectedProject.images[currentSlideIndex]?.url || selectedProject.images[0].url} 
                             alt={selectedProject.title} 
-                            className="max-w-full max-h-full object-contain rounded-2xl shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/10"
+                            className="max-w-full max-h-full object-contain"
                           />
                         </div>
                       )}
@@ -848,27 +852,53 @@ const DesignPage = () => {
                 </div>
               )}
             
-            {/* Pagination Dots */}
-              {totalSlides > 1 && !isFlipBook && (
-                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 bg-black/50 backdrop-blur-md rounded-full border border-white/10" onClick={(e) => e.stopPropagation()}>
+            {/* Pagination Controls (Dots + Buttons Beside) */}
+            {totalSlides > 1 && !isFlipBook && (
+              <div 
+                className={`absolute bottom-8 ${isMobile ? 'left-1/2 -translate-x-1/2' : 'left-[64%] -translate-x-1/2'} z-[305] flex items-center gap-4`}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Prev Button */}
+                <button 
+                  onClick={() => {
+                    setDirection(-1);
+                    setCurrentSlideIndex(prev => prev === 0 ? totalSlides - 1 : prev - 1);
+                  }}
+                  className="w-10 h-10 bg-black/50 hover:bg-black/80 border border-white/20 rounded-full flex items-center justify-center text-white backdrop-blur-md transition-all"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+
+                {/* Dots Container */}
+                <div className="flex items-center gap-2 px-4 py-2 bg-black/50 backdrop-blur-md rounded-full border border-white/10 h-10">
                   {Array.from({ length: totalSlides }).map((_, idx) => (
                     <button
                       key={idx}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (isFlipping) return;
+                      onClick={() => {
                         setDirection(idx > currentSlideIndex ? 1 : -1);
                         setCurrentSlideIndex(idx);
                       }}
-                      className={`transition-all duration-300 rounded-full ${idx === currentSlideIndex ? 'w-6 h-2 bg-emerald-500' : 'w-2 h-2 bg-white/30 hover:bg-white/50'}`}
+                      className={`transition-all duration-300 rounded-full ${idx === currentSlideIndex ? 'w-6 h-1.5 bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'w-1.5 h-1.5 bg-white/30 hover:bg-white/50'}`}
                     />
                   ))}
                 </div>
-              )}
+
+                {/* Next Button */}
+                <button 
+                  onClick={() => {
+                    setDirection(1);
+                    setCurrentSlideIndex(prev => prev === totalSlides - 1 ? 0 : prev + 1);
+                  }}
+                  className="w-10 h-10 bg-black/50 hover:bg-black/80 border border-white/20 rounded-full flex items-center justify-center text-white backdrop-blur-md transition-all"
+                >
+                  <ChevronRight size={20} />
+                </button>
+              </div>
+            )}
             </div>
 
-            {/* Next Button */}
-            {totalSlides > 1 && (
+            {/* Next Button (ONLY for FlipBook) */}
+            {totalSlides > 1 && isFlipBook && (
               <button 
                 onClick={(e) => {
                   e.stopPropagation();
@@ -880,7 +910,7 @@ const DesignPage = () => {
                     setCurrentSlideIndex(prev => prev === totalSlides - 1 ? 0 : prev + 1);
                   }
                 }}
-                className="absolute right-4 md:right-10 z-[300] w-12 h-12 bg-black/50 hover:bg-black/80 border border-white/20 rounded-full flex items-center justify-center text-white backdrop-blur-md transition-colors"
+                className={`absolute right-4 md:right-10 top-1/2 -translate-y-1/2 z-[300] w-12 h-12 bg-black/50 hover:bg-black/80 border border-white/20 rounded-full flex items-center justify-center text-white backdrop-blur-md transition-all`}
               >
                 <ChevronRight size={28} className="ml-1" />
               </button>

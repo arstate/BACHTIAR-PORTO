@@ -1,53 +1,50 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { Quote } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+";
 
 const ScrambleText = ({ text, className }: { text: string; className?: string }) => {
   const [displayText, setDisplayText] = useState(text);
-  const [isScrambling, setIsScrambling] = useState(false);
-
+  const containerRef = useRef<HTMLSpanElement>(null);
+  
   useEffect(() => {
-    let frameId: number;
     let iteration = 0;
-    const maxIterations = 15;
+    const maxIterations = 10; // Reduced for performance
+    let timeoutId: NodeJS.Timeout;
 
-    setIsScrambling(true);
-
-    const scramble = () => {
+    const startScramble = () => {
       if (iteration >= maxIterations) {
         setDisplayText(text);
-        setIsScrambling(false);
         return;
       }
 
-      const throttledScramble = () => {
-        setDisplayText(
-          text
-            .split("")
-            .map((char, index) => {
-              if (char === " ") return " ";
-              if (iteration > (index / text.length) * maxIterations) return text[index];
-              return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
-            })
-            .join("")
-        );
-        iteration++;
-        frameId = requestAnimationFrame(scramble);
-      };
+      setDisplayText(
+        text
+          .split("")
+          .map((char, index) => {
+            if (char === " ") return " ";
+            if (iteration > (index / text.length) * maxIterations) return text[index];
+            return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+          })
+          .join("")
+      );
 
-      // Speed control
-      setTimeout(throttledScramble, 30);
+      iteration++;
+      timeoutId = setTimeout(startScramble, 40); // Throttled to 25fps for CPU safety
     };
 
-    scramble();
-    return () => {
-      cancelAnimationFrame(frameId);
-    };
+    // Only scramble if the browser tab is active and visible to avoid background CPU burn
+    if (document.visibilityState === 'visible') {
+      startScramble();
+    } else {
+      setDisplayText(text);
+    }
+
+    return () => clearTimeout(timeoutId);
   }, [text]);
 
-  return <span className={className}>{displayText}</span>;
+  return <span ref={containerRef} className={className}>{displayText}</span>;
 };
 
 const clients = [
@@ -207,7 +204,7 @@ const Clients = () => {
         style={{ maskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)' }}
       >
         <motion.div
-          className="flex gap-8 md:gap-12 pr-8 md:pr-12 items-center"
+          className="flex gap-8 md:gap-12 pr-8 md:pr-12 items-center will-change-transform"
           animate={{ x: "-50%" }}
           transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
         >

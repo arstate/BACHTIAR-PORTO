@@ -123,9 +123,9 @@ const Skills = () => {
             <h3 className="text-sm uppercase tracking-widest text-white/50 mb-8">Software Proficiency</h3>
             <div className="flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] -mx-8 md:-mx-12 px-8 md:px-12">
               <motion.div
-                className="flex gap-4 pr-4"
-                animate={{ x: ["0%", "-50%"] }}
-                transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                className="flex gap-8 md:gap-12 pr-8 md:pr-12 items-center will-change-transform"
+                animate={{ x: "-50%" }}
+                transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
               >
                 {[...software, ...software].map((sw, i) => (
                   <div key={i} className="flex flex-col items-center justify-center gap-4 p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-blue-500/50 transition-colors aspect-square w-32 md:w-40 flex-shrink-0 group relative">
