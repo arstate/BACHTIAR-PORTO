@@ -31,7 +31,30 @@ interface DesignProject {
   category: string;
   tools?: string[];
   figmaUrl?: string;
+  igUrls?: string[];
 }
+
+const LazyImage = ({ src, alt, className }: { src: string, alt: string, className?: string }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  
+  return (
+    <div className="relative w-full overflow-hidden bg-white/5 min-h-[250px] flex object-cover items-center justify-center">
+      {!isLoaded && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full border-2 border-emerald-500/30 border-t-emerald-400 animate-spin"></div>
+        </div>
+      )}
+      <img
+        src={src}
+        alt={alt}
+        onLoad={() => setIsLoaded(true)}
+        className={`${className} ${isLoaded ? 'opacity-100' : 'opacity-0'} transition-all duration-700`}
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+  );
+};
 
 const placeholderDesigns: DesignProject[] = [
   {
@@ -278,12 +301,40 @@ const placeholderDesigns: DesignProject[] = [
   },
   {
     id: 15,
-    thumbnail: "https://images.unsplash.com/photo-1618761714954-0b8cd0026356?auto=format&fit=crop&q=80",
+    thumbnail: "https://github.com/user-attachments/assets/0a865a6a-3571-469d-827b-57084e0141fe",
     images: [],
     title: "Resik Suroboyo App Prototype",
     category: "UI/UX Prototype",
     tools: ["Figma", "UI/UX Research"],
     figmaUrl: "https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FKwpMcasCJnROXYqbknY77r%2FTUGAS-KULIAH-SEMESTER-3--Copy-%3Fnode-id%3D2059-1660%26starting-point-node-id%3D2059%253A1660%26t%3D8exfSChYh4N19i3n-1"
+  },
+  {
+    id: 16,
+    thumbnail: "https://github.com/user-attachments/assets/7e76b050-0b0c-4120-8d81-8c91d2a2b850",
+    images: [],
+    title: "Animated Pitch Deck",
+    category: "Presentation Design",
+    tools: ["Figma", "Interaction Animation"],
+    figmaUrl: "https://embed.figma.com/proto/STuSH8jJxUkJdd1mD0H7j7/Untitled--Copy-?node-id=3-1588&scaling=contain&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=3%3A1529&show-proto-sidebar=1&embed-host=share"
+  },
+  {
+    id: 17,
+    thumbnail: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&q=80",
+    images: [],
+    title: "Real Estate IG Feed",
+    category: "Social Media Design",
+    tools: ["Instagram", "Social Media"],
+    igUrls: [
+      "https://www.instagram.com/p/DTFy44ukhpm/embed",
+      "https://www.instagram.com/p/DTFy8PQEnBl/embed",
+      "https://www.instagram.com/p/DTFzBAuElmA/embed",
+      "https://www.instagram.com/p/DTF287Lkv-H/embed",
+      "https://www.instagram.com/p/DTGavuzkp_h/embed",
+      "https://www.instagram.com/p/DTGhhoYE_ep/embed",
+      "https://www.instagram.com/p/DTHXxcIktZ3/embed",
+      "https://www.instagram.com/p/DTHmj8EEghb/embed",
+      "https://www.instagram.com/p/DTHm3woko9F/embed"
+    ]
   }
 ];
 
@@ -357,6 +408,18 @@ const DesignPage = () => {
 
   const pages = getFlipBookPages();
   const totalSlides = isFlipBook ? pages.length : selectedProject?.images.length || 0;
+
+  useEffect(() => {
+    // Lock body scroll when modal is open
+    if (selectedProject) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [selectedProject]);
 
   useEffect(() => {
     // Simulate loading delay for smooth transition
@@ -447,12 +510,10 @@ const DesignPage = () => {
               }}
             >
               <div className="w-full relative overflow-hidden rounded-2xl bg-white/5 border border-white/10 group-hover:border-emerald-500/30 transition-colors duration-500">
-                <img
+                <LazyImage
                   src={optimizeImage(design.thumbnail)}
                   alt={design.title}
                   className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
-                  loading="lazy"
-                  decoding="async"
                 />
                 
                 {/* Always-visible Gradient Overlay */}
@@ -487,7 +548,7 @@ const DesignPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-xl flex items-center justify-center"
+            className="fixed inset-0 z-[200] bg-black/40 backdrop-blur-xl flex items-center justify-center"
           >
             {/* Close Button */}
             <button 
@@ -523,7 +584,9 @@ const DesignPage = () => {
                   <motion.div 
                     animate={{
                       x: currentSlideIndex === 0 ? '-25%' : currentSlideIndex >= pages.length - 2 ? '25%' : '0%',
-                      scale: currentSlideIndex === 0 || currentSlideIndex >= pages.length - 2 ? 1.25 : 1.1
+                      scale: currentSlideIndex === 0 || currentSlideIndex >= pages.length - 2 
+                        ? (isBooklet ? 1 : 1.25) 
+                        : (isBooklet ? 0.95 : 1.1)
                     }}
                     transition={{ type: "spring", stiffness: 200, damping: 25 }}
                     className="w-full max-w-[1400px] flex justify-center items-center drop-shadow-2xl"
@@ -566,11 +629,36 @@ const DesignPage = () => {
                       ))}
                     </HTMLFlipBook>
                   </motion.div>
+                ) : selectedProject.igUrls ? (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="w-full max-w-[1000px] h-full max-h-[85vh] overflow-y-auto no-scrollbar grid grid-cols-2 md:grid-cols-3 gap-1 md:gap-[2px] p-2 md:p-6 z-[200] pointer-events-auto"
+                  >
+                    {selectedProject.igUrls.map((url, i) => (
+                      <div key={i} className="w-full bg-[#131313] relative overflow-hidden group">
+                        <div style={{ paddingTop: '125%' }} className="w-full"></div>
+                        <iframe 
+                          src={`${url}/?hidecaption=true`}
+                          className="absolute inset-x-0"
+                          style={{ 
+                            border: "none", 
+                            top: "0",
+                            marginTop: "-54px",
+                            height: "calc(100% + 54px)",
+                            width: "100%"
+                          }} 
+                          scrolling="no" 
+                          allowTransparency={true}
+                        />
+                      </div>
+                    ))}
+                  </motion.div>
                 ) : selectedProject.figmaUrl ? (
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="w-full max-w-[400px] h-[80vh] bg-black rounded-3xl overflow-hidden border-2 border-white/20 shadow-[0_0_50px_rgba(0,0,0,0.8)] relative z-[200] flex"
+                    className={`w-full bg-black overflow-hidden border-2 border-white/20 shadow-[0_0_50px_rgba(0,0,0,0.8)] relative z-[200] flex ${selectedProject.category === 'Presentation Design' ? 'max-w-[1200px] aspect-video rounded-xl' : 'max-w-[400px] h-[80vh] rounded-3xl'}`}
                   >
                     <iframe 
                       style={{ border: "none" }}
@@ -639,13 +727,23 @@ const DesignPage = () => {
                               <p className="mb-2"><span className="text-white/40 uppercase text-[9px] mr-2">Cover</span> {pages[0]?.data?.description || ''}</p>
                             )}
                           </motion.div>
+                        ) : selectedProject.igUrls ? (
+                          <motion.div 
+                            initial={{ opacity: 0, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-white/70 text-sm leading-relaxed mb-4 md:mb-6"
+                          >
+                            Grid layout postingan Instagram yang disusun secara harmonis untuk memperkuat brand profile. Tampilan tata letak 3x3 ini di-embed secara native dari platform sosial medianya langsung (Bisa discroll jika tertutup layar bawah).
+                          </motion.div>
                         ) : selectedProject.figmaUrl ? (
                           <motion.div 
                             initial={{ opacity: 0, y: 5 }}
                             animate={{ opacity: 1, y: 0 }}
                             className="text-white/70 text-sm leading-relaxed mb-4 md:mb-6"
                           >
-                            Prototipe desain interaktif aplikasi pengelola sampah terintegrasi untuk Kota Surabaya. Silakan gunakan kursor pada layar perangkat (dummy handphone) di atas untuk berinteraksi langsung memutar dan mengklik (clickable) antarmuka dan navigasi UI/UX aplikasi Resik Suroboyo ini.
+                            {selectedProject.category === 'Presentation Design' 
+                              ? 'Presentasi (Pitch Deck) Interaktif Figma. Jelajahi slide-slide animasi memukau ini dengan mengklik tombol/navigasi yang tersedia langsung di layar kanvas.'
+                              : 'Prototipe desain interaktif aplikasi pengelola sampah terintegrasi untuk Kota Surabaya. Silakan gunakan kursor pada layar perangkat (dummy handphone) di atas untuk berinteraksi langsung memutar dan mengklik antarmuka UI/UX ini.'}
                           </motion.div>
                         ) : selectedProject.images[currentSlideIndex]?.description && (
                           <motion.p 
