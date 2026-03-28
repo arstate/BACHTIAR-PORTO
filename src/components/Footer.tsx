@@ -58,9 +58,17 @@ const Footer = () => {
           </div>
         </motion.div>
         
-        <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/10 text-white/40 text-sm font-light">
-          <p>© {new Date().getFullYear()} Bachtiar Aryansyah Putra.</p>
-          <p>Designed with passion & precision.</p>
+        <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/10 text-white/40 text-sm font-light gap-6 md:gap-0">
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-6 text-center md:text-left">
+            <p>© {new Date().getFullYear()} Bachtiar Aryansyah Putra.</p>
+            <div className="hidden md:block w-1 h-1 rounded-full bg-white/20"></div>
+            <p>Designed with passion & precision.</p>
+          </div>
+          
+          <div className="flex items-center gap-6">
+            <a href="#privacy" onClick={(e) => e.preventDefault()} className="hover:text-white hover:underline transition-all">Privacy Policy</a>
+            <a href="#terms" onClick={(e) => e.preventDefault()} className="hover:text-white hover:underline transition-all">Terms of Service</a>
+          </div>
         </div>
       </div>
     </footer>
