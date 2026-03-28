@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Palette, ZoomIn, ChevronLeft, ChevronRight, X, ChevronUp, ChevronDown } from 'lucide-react';
+import { Palette, ZoomIn, ChevronLeft, ChevronRight, X, ChevronUp, ChevronDown, Users } from 'lucide-react';
 import FloatingNavbar from './FloatingNavbar';
 // @ts-ignore
 import HTMLFlipBook from 'react-pageflip';
@@ -320,73 +320,86 @@ const placeholderDesigns: DesignProject[] = [
   },
   {
     id: 17,
-    thumbnail: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&q=80",
+    thumbnail: "https://www.instagram.com/tiar.property/p/DVOJyo_ksJ7/media/?size=l",
     images: [],
     title: "Instagram Feeds Design",
     category: "Social Media Design",
     tools: ["Adobe Photoshop", "Adobe Illustrator"],
     instagramUrls: [
-      "https://www.instagram.com/p/DTFy44ukhpm/",
-      "https://www.instagram.com/p/DTFy8PQEnBl/",
-      "https://www.instagram.com/p/DTFzBAuElmA/",
-      "https://www.instagram.com/p/DTF287Lkv-H/",
-      "https://www.instagram.com/p/DTGavuzkp_h/",
-      "https://www.instagram.com/p/DTGhhoYE_ep/",
-      "https://www.instagram.com/p/DTHXxcIktZ3/",
+      "https://www.instagram.com/p/DVOJyo_ksJ7/",
+      "https://www.instagram.com/p/DUXJDD9EhHO/",
+      "https://www.instagram.com/p/DUVgggSEvIL/",
+      "https://www.instagram.com/p/DUFtXHLkrVW/",
+      "https://www.instagram.com/p/DUCUMIjkiWv/",
+      "https://www.instagram.com/p/DTnCKpuEtOm/",
+      "https://www.instagram.com/p/DTakvhJkoCz/",
+      "https://www.instagram.com/p/DTPlxYtEmwq/",
+      "https://www.instagram.com/p/DTLZQ3jkrVh/",
+      "https://www.instagram.com/p/DTKF6PREkkP/",
+      "https://www.instagram.com/p/DTJv2Q8EjDt/",
+      "https://www.instagram.com/p/DTJkewJEjnF/",
+      "https://www.instagram.com/p/DTJkEvjEip4/",
+      "https://www.instagram.com/p/DTHm3woko9F/",
       "https://www.instagram.com/p/DTHmj8EEghb/",
-      "https://www.instagram.com/p/DTHm3woko9F/"
+      "https://www.instagram.com/p/DTHXxcIktZ3/",
+      "https://www.instagram.com/p/DTGhhoYE_ep/",
+      "https://www.instagram.com/p/DTGavuzkp_h/",
+      "https://www.instagram.com/p/DTFzBAuElmA/",
+      "https://www.instagram.com/p/DTFy44ukhpm/",
+      "https://www.instagram.com/p/DTF287Lkv-H/",
+      "https://www.instagram.com/p/DTFy8PQEnBl/"
     ]
   },
   {
     id: 18,
-    thumbnail: "https://github.com/user-attachments/assets/3cd6b7b3-6312-4e2b-b26f-ffd6e83b1bec",
+    thumbnail: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697131/1_dqwtqb.png",
     images: [
-      { url: "https://github.com/user-attachments/assets/3cd6b7b3-6312-4e2b-b26f-ffd6e83b1bec", description: "Buku Panduan Standar Manual Grafis (GSM) Identitas Brand Mangkabayan." },
-      { url: "https://github.com/user-attachments/assets/59a6389f-68f5-4af4-a7a1-8c4118ae973c", description: "Aturan margin keamanan dan panduan eksklusi ruang (clear space) Logo utama." },
-      { url: "https://github.com/user-attachments/assets/9ec7a9b9-fe39-4dba-8e45-9e6dcf59ede5", description: "Proporsi teknis logo, membedah struktur anatomi golden ratio dan lekukan grafisnya." },
-      { url: "https://github.com/user-attachments/assets/c04d1225-7766-420d-a977-2bcd5383f09e", description: "Halaman 4 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/3eea7d6c-9198-48b0-b704-07b1c91045b4", description: "Halaman 5 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/67037b8f-1ce2-43cc-a39c-a0830d329b83", description: "Halaman 6 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/f0ea8ad6-2eb1-4484-bbe1-cd39ab62b4cf", description: "Halaman 7 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/60e54e83-bcaf-49ae-baa9-35ac89f0fdaa", description: "Halaman 8 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/df8e4fba-d0a5-4437-b347-b1c7029865de", description: "Halaman 9 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/e24ad403-6a9f-4afa-bd55-339176536956", description: "Halaman 10 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/eedf99dd-b941-43ba-b774-51db51c63b94", description: "Halaman 11 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/2264cf86-c1d0-4019-814e-8ec6dbc6e468", description: "Halaman 12 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/d0a54d20-7704-4e68-af13-a10631b7c172", description: "Halaman 13 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/28c069df-c4d9-4209-9358-1eab3bd367e5", description: "Halaman 14 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/a5e80186-747b-46cf-8e7f-0fd5ea4e77d8", description: "Halaman 15 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/4d1aba29-3bd7-42fa-8313-37d8eb3b1e6f", description: "Halaman 16 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/6fa9e65c-5928-4065-85f0-7f41a58503c6", description: "Halaman 17 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/bba9e5ab-818e-4489-ba59-83b3e3a55f88", description: "Halaman 18 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/2ed33fdd-8e63-4e55-9454-6c6d2b509b8f", description: "Halaman 19 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/58c14d96-2201-4e0f-a112-bc0356a72491", description: "Halaman 20 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/bb17b897-f5ec-464b-ab50-754180fbfa63", description: "Halaman 21 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/81072717-38d6-4e8a-8b49-4a073fc18c0f", description: "Halaman 22 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/5461d499-a059-4078-ba68-bcafcd9dcbe9", description: "Halaman 23 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/11728051-1b79-4c14-9124-b9c661a35e1e", description: "Halaman 24 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/53a57020-6067-4da2-bfd5-db94494027bd", description: "Halaman 25 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/c1c97e74-a237-4e1a-b39c-15db11f1722c", description: "Halaman 26 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/197b6645-aa08-4d83-8fef-8f5c66c8f697", description: "Halaman 27 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/53d2846c-570f-451b-8e88-2049ee55f5a9", description: "Halaman 28 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/a312ea96-87cb-4222-b3e9-5481ce0e744f", description: "Halaman 29 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/6097d815-94af-405b-8656-3eff9b0f5309", description: "Halaman 30 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/8cb9ac39-f5fb-4c6d-b618-d421383315c7", description: "Halaman 31 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/277bd29f-73b7-4131-8b0d-f181ca83ab81", description: "Halaman 32 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/5d432b7e-ba50-4d79-9a4a-0122e87e80bb", description: "Halaman 33 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/3063a525-be65-405f-8ee8-7db7bc895894", description: "Halaman 34 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/814aed9a-0ef6-463c-86dc-95373fedf978", description: "Halaman 35 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/0eb3ce7a-eddb-4cac-8210-e76b51987beb", description: "Halaman 36 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/6c3ad5e0-8287-47e5-b994-aeabb6898d41", description: "Halaman 37 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/e2e116a4-fc5b-4bc2-9695-8bb933f24c3b", description: "Halaman 38 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/0a2cb952-e61b-4496-8a2b-0980f4c14f51", description: "Halaman 39 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/b2d1d516-f7b3-4a8f-819e-e4baaeeb2d61", description: "Halaman 40 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/18d17abe-de16-4b8f-95da-4b86827920ff", description: "Halaman 41 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/14cee3bc-25ed-4594-9eac-c69f0b186e49", description: "Halaman 42 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/4fde5830-9667-4247-b40c-4e85b909d978", description: "Halaman 43 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/0ed98c3f-13d5-4921-bf91-42bc5456dfd2", description: "Halaman 44 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/9295774d-d335-40e0-bfba-32cdec16b206", description: "Halaman 45 GSM Mangkabayan" },
-      { url: "https://github.com/user-attachments/assets/ea5c68b0-c8fe-4893-bdd4-8a9fb9928f38", description: "Halaman Penutup Standar Operasional Identitas. Diharapkan pedoman ini mengikat konsistensi wajah brand bagi pemangkunya." }
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697131/1_dqwtqb.png", description: "Buku Panduan Standar Manual Grafis (GSM) Identitas Brand Mangkabayan." },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697132/2_i1fdkx.png", description: "Aturan margin keamanan dan panduan eksklusi ruang (clear space) Logo utama." },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697135/3_ds4vgo.png", description: "Proporsi teknis logo, membedah struktur anatomi golden ratio dan lekukan grafisnya." },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697132/4_jusncb.png", description: "Halaman 4 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697142/5_lggfj3.png", description: "Halaman 5 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697137/6_uuy0g7.png", description: "Halaman 6 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697138/7_xlcg3k.png", description: "Halaman 7 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697140/8_btdms4.png", description: "Halaman 8 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697138/9_fs7fon.png", description: "Halaman 9 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697141/10_gqlg2g.png", description: "Halaman 10 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697142/11_vcxxcm.png", description: "Halaman 11 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697143/12_hltjhr.png", description: "Halaman 12 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697145/13_nbdb8j.png", description: "Halaman 13 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697145/14_ejliag.png", description: "Halaman 14 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697145/15_sgqflr.png", description: "Halaman 15 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697146/16_aovkvk.png", description: "Halaman 16 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697146/17_sdz1yk.png", description: "Halaman 17 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697148/18_dweblv.png", description: "Halaman 18 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697149/19_av8vow.png", description: "Halaman 19 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697133/20_rx8yel.png", description: "Halaman 20 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697133/21_f5dlut.png", description: "Halaman 21 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697136/22_qsk5dl.png", description: "Halaman 22 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697133/23_ldd5xc.png", description: "Halaman 23 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697135/24_g9bikp.png", description: "Halaman 24 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697138/25_iswuui.png", description: "Halaman 25 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697140/26_uwxskz.png", description: "Halaman 26 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697137/27_k8soap.png", description: "Halaman 27 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697141/28_xagndd.png", description: "Halaman 28 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697144/29_ypeev1.png", description: "Halaman 29 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697143/30_s1mdp5.png", description: "Halaman 30 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697145/31_uybaem.png", description: "Halaman 31 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697155/32_kgfnwx.png", description: "Halaman 32 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697153/33_dy7tbe.png", description: "Halaman 33 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697153/34_xnnwxz.png", description: "Halaman 34 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697159/35_ierqpx.png", description: "Halaman 35 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697155/36_o7rkjl.png", description: "Halaman 36 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697152/37_dca5u0.png", description: "Halaman 37 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697155/38_qyaigh.png", description: "Halaman 38 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697156/39_mlx6mp.png", description: "Halaman 39 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697155/40_nc4npi.png", description: "Halaman 40 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697161/41_p7csrc.png", description: "Halaman 41 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697158/42_pvufi2.png", description: "Halaman 42 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697159/43_yvfyyp.png", description: "Halaman 43 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697159/44_esokvn.png", description: "Halaman 44 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697161/45_lzeo2k.png", description: "Halaman 45 GSM Mangkabayan" },
+      { url: "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697159/46_uruazo.png", description: "Halaman Penutup Standar Operasional Identitas. Diharapkan pedoman ini mengikat konsistensi wajah brand bagi pemangkunya." }
     ],
     title: "Brand Guidelines Mangkabayan",
     category: "Brand Guidelines (GSM)",
@@ -428,9 +441,17 @@ const DesignPage = () => {
   const [direction, setDirection] = useState(0);
   const [isPanelMinimized, setIsPanelMinimized] = useState(false);
   const [isFlipping, setIsFlipping] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
   const bookRef = useRef<any>(null); // Ref for HTMLFlipBook
 
-  const isFlipBook = selectedProject?.category === "Yearbook Design" || selectedProject?.category === "Booklet Design";
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isMobile = windowWidth < 768;
+  const isFlipBook = (selectedProject?.category === "Yearbook Design" || selectedProject?.category === "Booklet Design") && !isMobile;
   const isBooklet = selectedProject?.category === "Booklet Design";
 
   const getFlipBookPages = () => {
@@ -745,7 +766,7 @@ const DesignPage = () => {
                       </motion.div>
                     )}
                   </div>
-                ) : selectedProject.isScrollableDoc ? (
+                ) : (selectedProject.isScrollableDoc || (isMobile && (selectedProject.category === "Yearbook Design" || selectedProject.category === "Booklet Design"))) ? (
                   <div 
                     className="w-full h-full flex flex-col-reverse md:flex-row-reverse pointer-events-none overflow-y-auto md:overflow-hidden custom-scrollbar" 
                     data-lenis-prevent
@@ -764,7 +785,7 @@ const DesignPage = () => {
                           <div key={i} className="w-full relative shadow-[0_20px_50px_-10px_rgba(0,0,0,0.5)] rounded-lg overflow-hidden border border-white/10 ring-1 ring-white/5 bg-zinc-900/40">
                             <img 
                               src={img.url} 
-                              alt={`Halaman ${i+1} GSM Mangkabayan`}
+                              alt={`Halaman ${i+1}`}
                               className="w-full h-auto object-contain"
                             />
                             <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-md px-3 py-1 rounded-full text-[10px] text-white/50 border border-white/5 font-mono">
@@ -796,6 +817,12 @@ const DesignPage = () => {
                             <p className="text-white/80 text-sm md:text-base leading-relaxed font-light">
                               Sistem identitas visual (GSM) komprehensif untuk <span className="text-emerald-300 font-medium">Mangkabayan Surabaya</span>. Mencakup konstruksi logo, filosofi brand, panduan warna korporat, hingga standarisasi elemen grafis untuk menjaga konsistensi brand di berbagai media.
                             </p>
+                            <div className="flex items-center gap-2 mt-4 px-3 py-1.5 bg-emerald-500/5 border border-emerald-500/10 rounded-lg w-fit">
+                              <Users size={12} className="text-emerald-400" />
+                              <span className="text-[10px] text-emerald-400/80 font-mono uppercase tracking-widest font-semibold">
+                                Collaborative Team Project (4 People)
+                              </span>
+                            </div>
                           </div>
 
                           {selectedProject.tools && (
@@ -815,25 +842,75 @@ const DesignPage = () => {
                     </motion.div>
                   </div>
                 ) : selectedProject.instagramUrls ? (
-                  <motion.div 
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="w-full h-[85vh] max-w-[1200px] overflow-y-auto pointer-events-auto z-[200] p-4 md:p-8 custom-scrollbar relative"
+                  <div 
+                    className="w-full h-full flex flex-col-reverse md:flex-row-reverse pointer-events-none overflow-y-auto md:overflow-hidden bg-black/20" 
                     data-lenis-prevent
                   >
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-24 md:pb-0">
-                      {selectedProject.instagramUrls.map((url, i) => (
-                        <div key={i} className="w-full bg-white rounded-xl overflow-hidden shadow-2xl" style={{ minHeight: "500px", height: "100%" }}>
-                          <iframe 
-                            src={`${url}embed`}
-                            className="w-full h-full border-none"
-                            scrolling="no"
-                            allowTransparency
-                          />
+                    {/* The Instagram Grid (Scrollable on the right half) */}
+                    <motion.div 
+                      initial={{ opacity: 0, x: 30 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      className="w-full md:w-[60%] lg:w-[68%] h-auto md:h-full md:overflow-y-auto pointer-events-auto z-[200] p-4 md:p-14 custom-scrollbar pb-32 md:pb-24"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                        {selectedProject.instagramUrls.map((url, i) => (
+                          <div key={i} className="w-full bg-slate-50 rounded-xl overflow-hidden shadow-2xl transition-transform hover:scale-[1.02]" style={{ minHeight: "500px", height: "100%" }}>
+                            <iframe 
+                              src={`${url}${url.endsWith('/') ? '' : '/'}embed`}
+                              className="w-full h-full border-none"
+                              scrolling="no"
+                              allowTransparency
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </motion.div>
+
+                    {/* Dedicated Info Panel for Social Media Grid */}
+                    <motion.div 
+                      initial={{ opacity: 0, x: -30 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      className="w-full md:w-[40%] lg:w-[32%] h-auto md:h-full bg-black/60 md:bg-transparent backdrop-blur-3xl md:backdrop-blur-none p-8 md:p-14 md:pl-24 flex flex-col justify-center pointer-events-auto border-b md:border-b-0 md:border-r border-white/10"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <div className="max-w-md">
+                        <p className="text-emerald-400 font-mono tracking-[0.2em] text-[10px] uppercase mb-3 opacity-80">
+                          {selectedProject.category}
+                        </p>
+                        <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mb-8 font-serif italic tracking-tight">
+                          {selectedProject.title}
+                        </h2>
+                        
+                        <div className="space-y-8 text-white/70 text-sm md:text-base leading-relaxed">
+                          <div>
+                            <h3 className="text-white/40 uppercase text-[9px] font-mono tracking-widest mb-3 text-emerald-400/50">Collection Overview</h3>
+                            <p className="font-light">
+                              Kompilasi layout desain feed Instagram yang dikurasi secara profesional. Galeri ini memungkinkan Anda berinteraksi langsung dengan sistem grid, mempelajari komposisi visual, dan melihat bagaimana setiap elemen saling bersambung secara harmonis di platform aslinya.
+                            </p>
+                          </div>
+                          
+                          <div className="flex items-center gap-2 p-3 bg-white/5 rounded-xl border border-white/10 italic text-[11px] md:text-xs">
+                            <span className="text-emerald-400 font-bold shrink-0">TIP:</span>
+                            <span>Scroll kisi-kisi di samping untuk melihat koleksi lengkap desain secara interaktif.</span>
+                          </div>
+
+                          {selectedProject.tools && (
+                            <div className="pt-4">
+                              <h3 className="text-white/40 uppercase text-[9px] font-mono tracking-widest mb-3">Tech Context</h3>
+                              <div className="flex flex-wrap gap-2">
+                                {selectedProject.tools.map((tool, i) => (
+                                  <span key={i} className="px-3 py-1.5 bg-emerald-500/10 rounded-lg text-[10px] font-medium text-emerald-300 border border-emerald-500/20">
+                                    {tool}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
                         </div>
-                      ))}
-                    </div>
-                  </motion.div>
+                      </div>
+                    </motion.div>
+                  </div>
                 ) : (
                   <AnimatePresence mode="wait" custom={direction}>
                     <motion.img 
@@ -850,7 +927,9 @@ const DesignPage = () => {
               </div>
 
               {/* Project Details Overlay / Floating Panel (HIDDEN for Widescreen Split Layouts) */}
-              {(!selectedProject.isScrollableDoc && selectedProject.category !== 'Presentation Design') && (
+              {(!selectedProject.isScrollableDoc && 
+                selectedProject.category !== 'Presentation Design' && 
+                !selectedProject.instagramUrls) && (
                 <div 
                   className="absolute bottom-4 left-4 right-4 md:bottom-12 md:left-24 md:right-auto z-[60] w-full max-w-sm md:max-w-lg bg-black/70 backdrop-blur-3xl border border-white/10 p-5 md:p-6 rounded-3xl shadow-2xl pointer-events-auto transition-all duration-500" 
                   onClick={(e) => e.stopPropagation()}
@@ -899,7 +978,12 @@ const DesignPage = () => {
                             animate={{ opacity: 1, y: 0 }}
                             className="text-white/70 text-sm leading-relaxed mb-4 md:mb-6"
                           >
-                            <strong className="text-white drop-shadow-md">Konsep Identitas Mangkabayan:</strong> Panduan standar grafis komprehensif yang mengatur setiap aspek identitas brand. Mulai dari pembedahan struktur anatomi logo, sistem grid, hingga implementasi pada media operasional untuk menjaga keutuhan karakter brand.
+                            <p className="mb-3">
+                              <strong className="text-white drop-shadow-md">Konsep Identitas Mangkabayan:</strong> Panduan standar grafis komprehensif yang mengatur setiap aspek identitas brand. Mulai dari pembedahan struktur anatomi logo, sistem grid, hingga implementasi pada media operasional untuk menjaga keutuhan karakter brand.
+                            </p>
+                            <p className="text-[10px] text-emerald-400 font-mono uppercase tracking-[0.1em] font-bold flex items-center gap-1.5 opacity-80">
+                              <Users size={11} /> Team Project Collaboration
+                            </p>
                           </motion.div>
                         ) : selectedProject.instagramUrls ? (
                           <motion.div 
