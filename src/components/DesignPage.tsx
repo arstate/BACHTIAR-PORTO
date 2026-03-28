@@ -457,17 +457,17 @@ const DesignPage = () => {
   const totalSlides = isFlipBook ? pages.length : (selectedProject?.isScrollableDoc ? 0 : selectedProject?.images.length || 0);
 
   useEffect(() => {
-    // Lock body scroll when modal is open
+    // Lock body scroll and Lenis when modal is open
     if (selectedProject) {
       document.body.style.overflow = 'hidden';
-      document.body.style.touchAction = 'none';
+      if ((window as any).lenis) (window as any).lenis.stop();
     } else {
       document.body.style.overflow = 'unset';
-      document.body.style.touchAction = 'auto';
+      if ((window as any).lenis) (window as any).lenis.start();
     }
     return () => {
       document.body.style.overflow = 'unset';
-      document.body.style.touchAction = 'auto';
+      if ((window as any).lenis) (window as any).lenis.start();
     };
   }, [selectedProject]);
 
@@ -681,7 +681,7 @@ const DesignPage = () => {
                   </motion.div>
                 ) : (
                   <div 
-                    className="w-full h-full flex flex-col md:flex-row pointer-events-none overflow-y-auto md:overflow-hidden bg-black" 
+                    className="w-full h-full flex flex-col md:flex-row pointer-events-auto overflow-y-auto md:overflow-hidden bg-black" 
                     data-lenis-prevent
                   >
                     {/* LEFT / TOP: Info Panel */}

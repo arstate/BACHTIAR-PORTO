@@ -78,9 +78,11 @@ export default function App() {
     }
 
     reqId = requestAnimationFrame(raf);
+    (window as any).lenis = lenis;
 
     return () => {
       lenis.destroy();
+      (window as any).lenis = undefined;
       cancelAnimationFrame(reqId);
     };
   }, []);
