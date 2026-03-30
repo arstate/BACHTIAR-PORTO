@@ -23,7 +23,7 @@ const FloatingNavbar = () => {
   const isHubPage = location.pathname === '/portfolio';
   const isDropdownPage = isGalleryPage || isVideographyPage || isMotionPage || isBTSPage || isDesignPage;
 
-  const [activeCategory, setActiveCategory] = useState('Konser');
+  const [activeCategory, setActiveCategory] = useState('All');
   const [isTutorialActive, setIsTutorialActive] = useState(false);
 
   useEffect(() => {
@@ -44,13 +44,14 @@ const FloatingNavbar = () => {
     if (isDropdownPage) {
       const hash = location.hash.replace('#', '');
       if (hash) {
-        const category = hash.charAt(0).toUpperCase() + hash.slice(1);
+        let category = hash.charAt(0).toUpperCase() + hash.slice(1);
+        if (category === 'Angkatan') category = 'Angkatan Sekolah';
         setActiveCategory(category);
       } else {
         if (isGalleryPage) {
           setActiveCategory('Konser');
         } else if (isVideographyPage) {
-          setActiveCategory('Ads');
+          setActiveCategory('All');
         } else {
           setActiveCategory('All');
         }
@@ -113,7 +114,7 @@ const FloatingNavbar = () => {
   const videographyNavLinks = [
     { name: 'All', href: '#all' },
     { name: 'Ads', href: '#ads' },
-    { name: 'Angkatan', href: '#angkatan' },
+    { name: 'Angkatan Sekolah', href: '#angkatan' },
     { name: 'Corporate/Event', href: '#corporate/event' },
     { name: 'Prewedding', href: '#prewedding' },
     { name: 'Wedding', href: '#wedding' },

@@ -117,7 +117,7 @@ const ManualRow: React.FC<{ cat: string; onSelectVideo: (data: any) => void }> =
   const videographyDb = db['videography'] || {};
   
   // Map category names to database keys
-  const dbKey = cat.toLowerCase().replace('/event', '');
+  const dbKey = cat === 'Angkatan Sekolah' ? 'angkatan' : cat.toLowerCase().replace('/event', '');
   let dbItems = videographyDb[dbKey] || [];
 
   const groupedItemsMap = new Map<string, any>();
@@ -154,7 +154,7 @@ const ManualRow: React.FC<{ cat: string; onSelectVideo: (data: any) => void }> =
 
   const originalItems = Array.from(groupedItemsMap.values());
   if (originalItems.length === 0) {
-    originalItems.push({ baseTitle: 'Placeholder', mainItem: 'Placeholder', variants: [] });
+    return null;
   }
 
   // Use 9 duplicates for massive scroll bounds so user never hits the edge while swiping
@@ -261,9 +261,9 @@ const ManualRow: React.FC<{ cat: string; onSelectVideo: (data: any) => void }> =
 };
 
 const PortfolioPage = () => {
-  const categories = ["Ads", "Angkatan", "Corporate/Event", "Prewedding", "Wedding", "Wisuda"];
+  const categories = ["Ads", "Angkatan Sekolah", "Corporate/Event", "Prewedding", "Wedding", "Wisuda"];
   const location = useLocation();
-  const [activeCategory, setActiveCategory] = useState("Ads");
+  const [activeCategory, setActiveCategory] = useState("All");
   const [selectedVideo, setSelectedVideo] = useState<any | null>(null);
   const [activeUrl, setActiveUrl] = useState<string>('');
 
@@ -290,13 +290,16 @@ const PortfolioPage = () => {
         category = hash.charAt(0).toUpperCase() + hash.slice(1);
       }
 
+      // Handle custom mapping
+      if (category === 'Angkatan') category = 'Angkatan Sekolah';
+
       if (categories.includes(category)) {
         setActiveCategory(category);
       } else {
-        setActiveCategory('Ads');
+        setActiveCategory('All');
       }
     } else {
-      setActiveCategory('Ads');
+      setActiveCategory('All');
     }
   }, [location.hash]);
 
