@@ -40,6 +40,15 @@ const Portfolio = () => {
     { name: "Arstate Cinema Web", url: "https://www.arstatecinema.com", icon: <ExternalLink size={20} /> },
     { name: "@aryansyah.ow", url: "https://instagram.com/aryansyah.ow", icon: <Instagram size={20} /> },
     { name: "@arstate.cinema", url: "https://instagram.com/arstate.cinema", icon: <Instagram size={20} /> },
+    { 
+      name: "@tiar.arstate.cinema", 
+      url: "https://tiktok.com/@tiar.arstate.cinema", 
+      icon: (
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="20" width="20" xmlns="http://www.w3.org/2000/svg">
+          <path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"></path>
+        </svg>
+      ) 
+    },
   ];
 
   const projects = [
@@ -87,23 +96,13 @@ const Portfolio = () => {
         "https://github.com/user-attachments/assets/1f48c8f8-0a43-46c0-b27d-0728019f896a",
         "https://github.com/user-attachments/assets/358e11a1-51be-4a43-9e64-709a6b6488db"
       ],
-      span: "md:col-span-1 md:row-span-1",
+      span: "md:col-span-2 md:row-span-1",
       date: "2025",
       city: "Surabaya",
       duration: "1 day shoot, 2 days editing",
       brief: "Official photography documentation for Pocari Sweat IONation 6 event held in Surabaya. The project covered the full event — from participant activities and brand installations to crowd atmosphere and key moments on stage. Visuals were produced for social media publication and brand archive purposes.",
       tools: ["Sony A7II", "Sony A7SII", "Flash Godox", "Lightroom"],
       tags: ['event', 'corporate', 'generalist']
-    },
-    { 
-      title: "See More", 
-      category: "Explore", 
-      img: "https://picsum.photos/seed/explore/400/400.webp", 
-      span: "md:col-span-1 md:row-span-1",
-      brief: "Explore our full portfolio of work across various categories.",
-      tools: [],
-      isSeeMore: true,
-      tags: ['wedding', 'graduation', 'corporate', 'event', 'generalist']
     },
     { 
       title: "Design", 
@@ -128,10 +127,20 @@ const Portfolio = () => {
         "https://github.com/user-attachments/assets/7e76b050-0b0c-4120-8d81-8c91d2a2b850",
         "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697131/1_dqwtqb.png"
       ],
-      span: "md:col-span-1 md:row-span-1",
+      span: "md:col-span-2 md:row-span-1",
       brief: "A diverse collection of graphic design, typography, and visual branding projects. From stage designs to digital prototypes, each work explores the intersection of aesthetics and utility.",
       tools: ["Photoshop", "Illustrator", "InDesign", "Figma"],
       tags: ['graduation', 'generalist']
+    },
+    { 
+      title: "See More", 
+      category: "Explore", 
+      img: "https://picsum.photos/seed/explore/400/400.webp", 
+      span: "md:col-span-2 md:row-span-1",
+      brief: "Explore our full portfolio of work across various categories.",
+      tools: [],
+      isSeeMore: true,
+      tags: ['wedding', 'graduation', 'corporate', 'event', 'generalist']
     }
   ];
 
