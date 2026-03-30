@@ -2,15 +2,23 @@ import { motion, useScroll, useTransform, useMotionValueEvent, AnimatePresence }
 import { Play, ArrowRight, Image as ImageIcon } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useUserIntent } from '../context/UserIntentContext';
 
-const PHRASES = [
-  "CAPTURING moments",
-  "DIRECTING visuals",
-  "CRAFTING stories",
-  "FRAMING aesthetics",
-  "EDITING realities",
-  "MAKE YOUR moments"
-];
+const INTENT_PHRASES: Record<string, string[]> = {
+  wedding: ["ETERNAL romance", "CHERISHING love", "CELEBRATING unions", "CAPTURING beauty"],
+  graduation: ["ACADEMIC legacy", "HONORING success", "CAPTURING milestones", "YOUR journey"],
+  corporate: ["BRAND identity", "ELEVATING visuals", "PROFESSIONAL media", "IMPACTFUL stories"],
+  event: ["LIVE energy", "DOCUMENTING moments", "PRESERVING vibes", "DYNAMIC visuals"],
+  generalist: ["CAPTURING moments", "DIRECTING visuals", "CRAFTING stories", "FRAMING aesthetics", "EDITING realities", "MAKE YOUR moments"]
+};
+
+const INTENT_SUBHEADINGS: Record<string, string> = {
+  wedding: "Capturing Your Eternal Romance",
+  graduation: "Preserving Your Academic Legacy",
+  corporate: "Elevating Your Brand's Visual Identity",
+  event: "Documenting Your Most Dynamic Moments",
+  generalist: "Visual Masterpieces & Cinematic Stories"
+};
 
 const Hero = () => {
   const { scrollY } = useScroll();
@@ -19,14 +27,25 @@ const Hero = () => {
   const [, forceUpdate] = useState({}); // Only for UI reflection if really needed, but mostly we use ref
 
   // Typewriter logic
+  const { activeIntent } = useUserIntent();
+  const currentIntent = activeIntent || 'generalist';
+  const phrases = INTENT_PHRASES[currentIntent] || INTENT_PHRASES.generalist;
+
+  // Typewriter logic
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [currentText, setCurrentText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [typingSpeed, setTypingSpeed] = useState(150);
 
   useEffect(() => {
+    setCurrentPhraseIndex(0);
+    setCurrentText("");
+    setIsDeleting(false);
+  }, [activeIntent]);
+
+  useEffect(() => {
     const handleTyping = () => {
-      const fullText = PHRASES[currentPhraseIndex];
+      const fullText = phrases[currentPhraseIndex];
       
       if (!isDeleting) {
         // Typing
@@ -44,7 +63,7 @@ const Hero = () => {
 
         if (currentText === "") {
           setIsDeleting(false);
-          setCurrentPhraseIndex((prev) => (prev + 1) % PHRASES.length);
+          setCurrentPhraseIndex((prev) => (prev + 1) % phrases.length);
           setTypingSpeed(500);
         }
       }
@@ -52,10 +71,10 @@ const Hero = () => {
 
     const timer = setTimeout(handleTyping, typingSpeed);
     return () => clearTimeout(timer);
-  }, [currentText, isDeleting, currentPhraseIndex]);
+  }, [currentText, isDeleting, currentPhraseIndex, phrases]);
 
   // Derived state for typewriter layout
-  const currentFullText = PHRASES[currentPhraseIndex];
+  const currentFullText = phrases[currentPhraseIndex] || "";
   const words = currentFullText.split(' ');
   const firstWordLimit = words.length > 2 ? 2 : 1;
   const firstPartFull = words.slice(0, firstWordLimit).join(' ');
@@ -165,14 +184,25 @@ const Hero = () => {
           </div>
 
           <motion.div style={{ y: yTitle3, opacity: opacityTitle3, willChange: 'transform, opacity' }} className="mt-8 md:mt-12">
-            <motion.h1
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="text-4xl sm:text-6xl md:text-[6.5vw] font-bold tracking-tighter uppercase text-outline leading-none"
-            >
-              Masterpieces
-            </motion.h1>
+            {currentIntent === 'generalist' ? (
+              <motion.h1
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                className="text-4xl sm:text-6xl md:text-[6.5vw] font-bold tracking-tighter uppercase text-outline leading-none"
+              >
+                Masterpieces
+              </motion.h1>
+            ) : (
+              <motion.h1
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                className="text-2xl sm:text-4xl md:text-[4vw] font-bold tracking-tighter uppercase text-outline leading-none mt-4"
+              >
+                {INTENT_SUBHEADINGS[currentIntent]}
+              </motion.h1>
+            )}
           </motion.div>
         </div>
 

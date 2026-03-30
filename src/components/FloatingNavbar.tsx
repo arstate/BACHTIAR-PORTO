@@ -1,6 +1,7 @@
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'motion/react';
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useUserIntent } from '../context/UserIntentContext';
 import { ArrowLeft, ChevronDown, Menu } from 'lucide-react';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -23,6 +24,7 @@ const FloatingNavbar = () => {
   const isHubPage = location.pathname === '/portfolio';
   const isDropdownPage = isGalleryPage || isVideographyPage || isMotionPage || isBTSPage || isDesignPage;
 
+  const { activeIntent } = useUserIntent();
   const [activeCategory, setActiveCategory] = useState('All');
   const [isTutorialActive, setIsTutorialActive] = useState(false);
 
@@ -48,16 +50,17 @@ const FloatingNavbar = () => {
         if (category === 'Angkatan') category = 'Angkatan Sekolah';
         setActiveCategory(category);
       } else {
+        const defaultValue = (activeIntent && activeIntent !== 'generalist') ? activeIntent : null;
         if (isGalleryPage) {
-          setActiveCategory('Konser');
+          setActiveCategory(defaultValue || 'Konser');
         } else if (isVideographyPage) {
-          setActiveCategory('All');
+          setActiveCategory(defaultValue || 'All');
         } else {
-          setActiveCategory('All');
+          setActiveCategory(defaultValue || 'All');
         }
       }
     }
-  }, [location.hash, isDropdownPage, isGalleryPage]);
+  }, [location.hash, isDropdownPage, isGalleryPage, isVideographyPage, activeIntent]);
 
   // Close dropdown when clicking outside
   useEffect(() => {

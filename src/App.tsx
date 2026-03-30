@@ -21,6 +21,9 @@ import BTSPage from './components/BTSPage';
 import DesignPage from './components/DesignPage';
 import PageTransitionOverlay from './components/PageTransitionOverlay';
 import CustomScrollbar from './components/CustomScrollbar';
+import { UserIntentProvider } from './context/UserIntentContext';
+import WelcomeGate from './components/WelcomeGate';
+import { AnimatePresence } from 'motion/react';
 
 function Home() {
   return (
@@ -88,24 +91,29 @@ export default function App() {
   }, []);
 
   return (
-    <Router>
-      <div className="relative min-h-screen w-full overflow-x-hidden selection:bg-blue-500/30 selection:text-white">
-        <CustomScrollbar />
-        <FloatingNavbar />
-        <PageTransitionOverlay />
-        <Background />
+    <UserIntentProvider>
+      <Router>
+        <div className="relative min-h-screen w-full overflow-x-hidden selection:bg-blue-500/30 selection:text-white">
+          <AnimatePresence>
+            <WelcomeGate key="welcome-gate" />
+          </AnimatePresence>
+          <CustomScrollbar />
+          <FloatingNavbar />
+          <PageTransitionOverlay />
+          <Background />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/portfolio" element={<PortfolioHub />} />
-          <Route path="/gallery" element={<PortfolioGallery />} />
-          <Route path="/videography" element={<PortfolioPage />} />
-          <Route path="/motion" element={<MotionPage />} />
-          <Route path="/bts" element={<BTSPage />} />
-          <Route path="/bts/:videoId" element={<BTSPage />} />
-          <Route path="/design" element={<DesignPage />} />
-        </Routes>
-      </div>
-    </Router>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/portfolio" element={<PortfolioHub />} />
+            <Route path="/gallery" element={<PortfolioGallery />} />
+            <Route path="/videography" element={<PortfolioPage />} />
+            <Route path="/motion" element={<MotionPage />} />
+            <Route path="/bts" element={<BTSPage />} />
+            <Route path="/bts/:videoId" element={<BTSPage />} />
+            <Route path="/design" element={<DesignPage />} />
+          </Routes>
+        </div>
+      </Router>
+    </UserIntentProvider>
   );
 }

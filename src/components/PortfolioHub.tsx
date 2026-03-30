@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Film, Image as ImageIcon, ArrowLeft, Clapperboard, PenTool, MonitorPlay } from 'lucide-react';
 import { navigateWithTransition } from './PageTransitionOverlay';
 import YouTubeBackground from './YouTubeBackground';
+import { useUserIntent } from '../context/UserIntentContext';
 
 const MotionLink = motion.create(Link);
 
@@ -12,9 +13,23 @@ const PortfolioHub = () => {
     const [clickedIndex, setClickedIndex] = useState<number | null>(null);
     const [isNavigating, setIsNavigating] = useState(false);
 
+    const { activeIntent } = useUserIntent();
+
     const categories = [
-        { title: "Videography", path: "/videography", icon: Film, color: "blue", disabled: false },
-        { title: "Photography", path: "/gallery", icon: ImageIcon, color: "purple", disabled: false },
+        { 
+          title: "Videography", 
+          path: (activeIntent && activeIntent !== 'generalist') ? `/videography#${activeIntent}` : "/videography", 
+          icon: Film, 
+          color: "blue", 
+          disabled: false 
+        },
+        { 
+          title: "Photography", 
+          path: (activeIntent && activeIntent !== 'generalist') ? `/gallery#${activeIntent}` : "/gallery", 
+          icon: ImageIcon, 
+          color: "purple", 
+          disabled: false 
+        },
         { title: "Design", path: "/design", icon: PenTool, color: "emerald", disabled: false },
         { title: "Behind The Scenes", path: "/bts", icon: Clapperboard, color: "amber", disabled: false },
     ];

@@ -3,6 +3,7 @@ import { ExternalLink, Instagram, Video, ArrowRight, X } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
+import { useUserIntent } from '../context/UserIntentContext';
 
 const Portfolio = () => {
   const ref = useRef(null);
@@ -10,6 +11,7 @@ const Portfolio = () => {
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1.5, 0.8]);
   const rotate = useTransform(scrollYProgress, [0, 1], [-45, 45]);
   const navigate = useNavigate();
+  const { activeIntent } = useUserIntent();
 
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [slideshowIndex, setSlideshowIndex] = useState(0);
@@ -54,7 +56,8 @@ const Portfolio = () => {
       ],
       span: "md:col-span-2 md:row-span-2",
       brief: "A professional wedding photography capturing the emotional journey of the couple's special day. Focus on storytelling, candid moments, and elegant aesthetics.",
-      tools: ["Sony A7II", "Sony A7SII", "Lightroom", "Photoshop"]
+      tools: ["Sony A7II", "Sony A7SII", "Lightroom", "Photoshop"],
+      tags: ['wedding', 'generalist']
     },
     {
       title: "Videography",
@@ -70,7 +73,8 @@ const Portfolio = () => {
       span: "md:col-span-2 md:row-span-1",
       brief: "Professional videography documentation capturing the energy and atmosphere of live events. High-quality visuals synced with the rhythm of the moment.",
       tools: ["Sony A7II", "Sony A7SII", "DJI Ronin", "Premiere Pro"],
-      videoLink: "https://www.youtube.com/embed/-YjYYBbSAIw"
+      videoLink: "https://www.youtube.com/embed/-YjYYBbSAIw",
+      tags: ['event', 'corporate', 'generalist']
     },
     { 
       title: "Event Photography", 
@@ -88,7 +92,8 @@ const Portfolio = () => {
       city: "Surabaya",
       duration: "1 day shoot, 2 days editing",
       brief: "Official photography documentation for Pocari Sweat IONation 6 event held in Surabaya. The project covered the full event — from participant activities and brand installations to crowd atmosphere and key moments on stage. Visuals were produced for social media publication and brand archive purposes.",
-      tools: ["Sony A7II", "Sony A7SII", "Flash Godox", "Lightroom"]
+      tools: ["Sony A7II", "Sony A7SII", "Flash Godox", "Lightroom"],
+      tags: ['event', 'corporate', 'generalist']
     },
     { 
       title: "See More", 
@@ -97,13 +102,37 @@ const Portfolio = () => {
       span: "md:col-span-1 md:row-span-1",
       brief: "Explore our full portfolio of work across various categories.",
       tools: [],
-      isSeeMore: true
+      isSeeMore: true,
+      tags: ['wedding', 'graduation', 'corporate', 'event', 'generalist']
     },
+    {
+      title: "Yearbook Design",
+      category: "Design",
+      img: "https://github.com/user-attachments/assets/19f5df6d-968e-49b8-a764-904082531061",
+      images: [
+        "https://github.com/user-attachments/assets/19f5df6d-968e-49b8-a764-904082531061",
+        "https://github.com/user-attachments/assets/404a3f4e-9844-48f5-9304-44da40391d15",
+        "https://github.com/user-attachments/assets/5881477f-1d11-447a-8531-18237fc68233"
+      ],
+      span: "md:col-span-1 md:row-span-1",
+      brief: "End-to-end design and photography for premium school yearbooks. Creating lasting memories through thoughtful layout and high-end aesthetics.",
+      tools: ["InDesign", "Photoshop", "Sony A7II"],
+      tags: ['graduation', 'generalist']
+    }
   ];
+
+  const filteredProjects = projects.filter(p => 
+    !activeIntent || activeIntent === 'generalist' || (p.tags && p.tags.includes(activeIntent))
+  );
 
   const handleProjectClick = (project: any) => {
     if (project.isSeeMore) {
-      navigate('/portfolio');
+      if (activeIntent && activeIntent !== 'generalist') {
+        const path = activeIntent === 'wedding' || activeIntent === 'graduation' ? `/gallery#${activeIntent}` : `/videography#${activeIntent}`;
+        navigate(path);
+      } else {
+        navigate('/portfolio');
+      }
       window.scrollTo(0, 0);
     } else {
       setSelectedProject(project);
@@ -172,7 +201,7 @@ const Portfolio = () => {
           }}
           className="grid grid-cols-1 md:grid-cols-4 auto-rows-[300px] gap-6 mb-16"
         >
-          {projects.map((project, i) => (
+          {filteredProjects.map((project, i) => (
             <motion.div
               key={i}
               variants={{ hidden: { opacity: 0, scale: 0.9, y: 20 }, visible: { opacity: 1, scale: 1, y: 0 } }}
