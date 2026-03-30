@@ -55,6 +55,7 @@ const Portfolio = () => {
     { 
       title: "Wedding Photography", 
       category: "Photography", 
+      seeAllLink: "/gallery#wedding",
       img: "https://github.com/user-attachments/assets/be2f3bce-ca30-4275-a94d-0969f890cbd1", 
       images: [
         "https://github.com/user-attachments/assets/be2f3bce-ca30-4275-a94d-0969f890cbd1",
@@ -70,7 +71,8 @@ const Portfolio = () => {
     },
     {
       title: "Videography",
-      category: "Documentation",
+      category: "Ads",
+      seeAllLink: "/videography",
       img: "https://github.com/user-attachments/assets/43b6911a-a5a9-4ebe-b05b-0f11912f46cb",
       images: [
         "https://github.com/user-attachments/assets/43b6911a-a5a9-4ebe-b05b-0f11912f46cb",
@@ -88,6 +90,7 @@ const Portfolio = () => {
     { 
       title: "Event Photography", 
       category: "Photography", 
+      seeAllLink: "/gallery#event",
       img: "https://github.com/user-attachments/assets/88247a29-7145-4a89-b945-e2db00f27d97", 
       images: [
         "https://github.com/user-attachments/assets/88247a29-7145-4a89-b945-e2db00f27d97",
@@ -107,7 +110,8 @@ const Portfolio = () => {
     { 
       title: "Design", 
       category: "Design", 
-      img: "https://github.com/user-attachments/assets/bb77040c-c6b3-4e3c-a795-f9149d42fa54", 
+      seeAllLink: "/design",
+      img: "https://github.com/user-attachments/assets/bb77040c-c6b3-4e3c-a795-f9149d42fa54",
       images: [
         "https://github.com/user-attachments/assets/bb77040c-c6b3-4e3c-a795-f9149d42fa54",
         "https://github.com/user-attachments/assets/a90987a3-b93b-4012-91cc-d7e747439b05",
@@ -130,17 +134,15 @@ const Portfolio = () => {
       span: "md:col-span-2 md:row-span-1",
       brief: "A diverse collection of graphic design, typography, and visual branding projects. From stage designs to digital prototypes, each work explores the intersection of aesthetics and utility.",
       tools: ["Photoshop", "Illustrator", "InDesign", "Figma"],
-      tags: ['graduation', 'generalist']
+      tags: ['graphic-design', 'branding', 'generalist']
     },
     { 
       title: "See More", 
-      category: "Explore", 
-      img: "https://picsum.photos/seed/explore/400/400.webp", 
+      category: "Projects", 
+      img: "https://github.com/user-attachments/assets/5ba43c16-ca93-41d2-89aa-5936f7e353e6", 
       span: "md:col-span-2 md:row-span-1",
-      brief: "Explore our full portfolio of work across various categories.",
-      tools: [],
-      isSeeMore: true,
-      tags: ['wedding', 'graduation', 'corporate', 'event', 'generalist']
+      isRedirect: true,
+      path: "/portfolio"
     }
   ];
 
@@ -149,13 +151,8 @@ const Portfolio = () => {
   );
 
   const handleProjectClick = (project: any) => {
-    if (project.isSeeMore) {
-      if (activeIntent && activeIntent !== 'generalist') {
-        const path = activeIntent === 'wedding' || activeIntent === 'graduation' ? `/gallery#${activeIntent}` : `/videography#${activeIntent}`;
-        navigate(path);
-      } else {
-        navigate('/portfolio');
-      }
+    if (project.isRedirect) {
+      navigate(project.path);
       window.scrollTo(0, 0);
     } else {
       setSelectedProject(project);
@@ -232,7 +229,7 @@ const Portfolio = () => {
               onClick={() => handleProjectClick(project)}
               className={`portfolio-item group relative rounded-[2rem] overflow-hidden cursor-pointer ${project.span}`}
             >
-              {!project.isSeeMore ? (
+              {!project.isRedirect ? (
                 <>
                   <AnimatePresence mode="wait">
                     <motion.img 
@@ -283,14 +280,13 @@ const Portfolio = () => {
           ))}
         </motion.div>
 
-
         {/* Links Section */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="glass-card p-8 md:p-12"
+          className="glass-card p-8 md:p-12 mt-32"
         >
           <h3 className="text-sm uppercase tracking-widest text-white/50 mb-8 text-center">Connect & Discover More</h3>
           <div className="flex flex-wrap justify-center gap-4">
@@ -402,7 +398,7 @@ const Portfolio = () => {
                   <div className="mt-auto">
                     <h4 className="text-sm uppercase tracking-widest text-white/50 mb-3">Tools Used</h4>
                     <div className="flex flex-wrap gap-2">
-                      {selectedProject.tools.map((tool: string, i: number) => (
+                      {selectedProject.tools && selectedProject.tools.map((tool: string, i: number) => (
                         <span key={i} className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white/70 text-sm">
                           {tool}
                         </span>
@@ -410,17 +406,19 @@ const Portfolio = () => {
                     </div>
                   </div>
 
-                  {selectedProject.videoLink && (
+                  {selectedProject.seeAllLink && (
                     <div className="mt-6 pt-6 border-t border-white/10">
-                      <a
-                        href={selectedProject.videoLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-medium transition-colors"
+                      <button
+                        onClick={() => {
+                          setSelectedProject(null);
+                          navigate(selectedProject.seeAllLink);
+                          window.scrollTo(0, 0);
+                        }}
+                        className="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-white hover:bg-white/90 text-black font-medium transition-colors"
                       >
-                        <Video size={18} />
-                        Watch on YouTube
-                      </a>
+                        <ExternalLink size={18} />
+                        See All {selectedProject.title}
+                      </button>
                     </div>
                   )}
                 </div>
