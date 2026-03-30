@@ -96,6 +96,7 @@ const placeholderDesigns: DesignProject[] = [
     ],
     title: "Chinese New Year 2026",
     category: "Greeting Poster",
+    description: "Fokus: Selebrasi dan integrasi budaya.\n\n\"Desain poster perayaan yang memancarkan energi dan kemeriahan. Komposisi ini mengintegrasikan elemen budaya tradisional—seperti naga dan barongsai—dengan tata letak modern, dibalut dalam narasi warna merah dan emas yang melambangkan kemakmuran.\"",
     tools: ["Adobe Illustrator", "Adobe Photoshop"]
   },
   {
@@ -109,6 +110,7 @@ const placeholderDesigns: DesignProject[] = [
     ],
     title: "OWLTHH Retro Vector",
     category: "Vector Illustration",
+    description: "Fokus: Estetika vintage dan ilustrasi karakter.\n\n\"Eksplorasi gaya retro melalui ilustrasi vektor karakter. Proyek ini memadukan palet warna vintage yang hangat dengan elemen grafis sunburst dan tipografi custom bergaya Jepang, menciptakan identitas visual yang ikonik dan timeless.\"",
     tools: ["Adobe Illustrator"]
   },
   {
@@ -122,6 +124,7 @@ const placeholderDesigns: DesignProject[] = [
     ],
     title: "Zoo Family Drawing",
     category: "Digital Drawing",
+    description: "Fokus: Storytelling dan ekspresi karakter.\n\n\"Ilustrasi naratif yang menangkap momen emosional dan interaksi keluarga. Melalui pendekatan gaya digital drawing yang detail, karya ini berfokus pada ekspresi wajah karakter, penciptaan suasana, dan komposisi latar belakang yang hidup.\"",
     tools: ["Adobe Photoshop", "Adobe Firefly"]
   },
   {
@@ -135,6 +138,7 @@ const placeholderDesigns: DesignProject[] = [
     ],
     title: "U-Steak Food Menu",
     category: "Restaurant Menu",
+    description: "Fokus: Appetite appeal dan fungsionalitas menu.\n\n\"Desain tata letak menu yang menggugah selera sekaligus sangat fungsional. Komposisi ini memprioritaskan keterbacaan hierarki (item, harga, deskripsi), didukung oleh latar belakang dark-fire untuk semakin menonjolkan tekstur dan warna hidangan.\"",
     tools: ["Adobe Photoshop", "Adobe Illustrator"]
   },
   {
@@ -148,6 +152,7 @@ const placeholderDesigns: DesignProject[] = [
     ],
     title: "Stop Bullying Campaign",
     category: "Social Campaign",
+    description: "Fokus: Pesan sosial, metafora visual, dan mood dramatis.\n\n\"Poster kampanye sosial yang mengandalkan storytelling visual dan dampak emosional. Penggunaan pencahayaan yang kontras serta elemen metaforis dirancang khusus untuk memperkuat urgensi pesan dan menyuarakan empati secara mendalam.\"",
     tools: ["Figma"]
   },
   {
@@ -188,6 +193,7 @@ const placeholderDesigns: DesignProject[] = [
     ],
     title: "MLBB Tournament Poster",
     category: "E-Sports Promo",
+    description: "Fokus: Desain dinamis khas gaming dan hierarki informasi.\n\n\"Desain promo e-sports yang dirancang untuk memacu adrenalin. Menggabungkan komposisi karakter dengan latar belakang yang dinamis dan tipografi agresif, visual ini menonjolkan hierarki pada nominal hadiah untuk menarik partisipasi maksimal dari para player.\"",
     tools: ["Adobe Photoshop", "Figma"]
   },
   {
@@ -201,6 +207,7 @@ const placeholderDesigns: DesignProject[] = [
     ],
     title: "Karang Taruna Banner",
     category: "Banner Design",
+    description: "Fokus: Tipografi tebal dan elemen patriotik.\n\n\"Perancangan banner skala besar dengan pendekatan tipografi 3D yang tebal dan bold. Kombinasi siluet pemuda dan sapuan bendera menciptakan kesan energik serta patriotik, memastikan pesannya tetap stand-out dan terbaca jelas dari kejauhan.\"",
     tools: ["Adobe Photoshop"]
   },
   {
@@ -214,6 +221,7 @@ const placeholderDesigns: DesignProject[] = [
     ],
     title: "Launching PAUD TK",
     category: "Education Promotion",
+    description: "Fokus: Desain playful untuk target audiens spesifik (anak/orang tua).\n\n\"Eksplorasi desain visual yang playful dan ramah anak. Karya ini memanfaatkan palet warna cerah, elemen grafis pendukung, serta modifikasi tipografi 3D berkarakter untuk menciptakan kesan institusi pendidikan yang menyenangkan dan welcoming.\"",
     tools: ["Adobe Photoshop", "Adobe Illustrator"]
   },
   {
@@ -302,6 +310,7 @@ const placeholderDesigns: DesignProject[] = [
     ],
     title: "Creative Banner Poster",
     category: "Poster Design",
+    description: "Fokus: Minimalist art dan permainan kedalaman (depth).\n\n\"Penerapan teknik ilustrasi flat vector untuk menciptakan lanskap alam yang imersif. Eksplorasi ini berfokus pada permainan lapisan (layering), kedalaman ruang, dan pencahayaan atmosferik siluet untuk membangun mood yang tenang dan dramatis.\"",
     tools: ["Adobe Photoshop", "Adobe Illustrator"]
   },
   {
