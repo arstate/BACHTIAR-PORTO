@@ -105,18 +105,32 @@ const Portfolio = () => {
       isSeeMore: true,
       tags: ['wedding', 'graduation', 'corporate', 'event', 'generalist']
     },
-    {
-      title: "Yearbook Design",
-      category: "Design",
-      img: "https://github.com/user-attachments/assets/19f5df6d-968e-49b8-a764-904082531061",
+    { 
+      title: "Design", 
+      category: "Design", 
+      img: "https://github.com/user-attachments/assets/bb77040c-c6b3-4e3c-a795-f9149d42fa54", 
       images: [
-        "https://github.com/user-attachments/assets/19f5df6d-968e-49b8-a764-904082531061",
-        "https://github.com/user-attachments/assets/404a3f4e-9844-48f5-9304-44da40391d15",
-        "https://github.com/user-attachments/assets/5881477f-1d11-447a-8531-18237fc68233"
+        "https://github.com/user-attachments/assets/bb77040c-c6b3-4e3c-a795-f9149d42fa54",
+        "https://github.com/user-attachments/assets/a90987a3-b93b-4012-91cc-d7e747439b05",
+        "https://github.com/user-attachments/assets/3de0543b-bc5b-4117-8b6f-f5c2feab539c",
+        "https://github.com/user-attachments/assets/9f366e30-aab0-4092-8ef6-feae623bfd42",
+        "https://github.com/user-attachments/assets/8ed9f4de-5825-4d14-93ce-bf4b75a8ecd8",
+        "https://github.com/user-attachments/assets/7ac9a4b6-6963-4e37-a69f-c7a0b9d343e8",
+        "https://github.com/user-attachments/assets/ded8c80e-c00c-4710-881a-04c20af305a0",
+        "https://github.com/user-attachments/assets/d86b6421-9171-43e0-901c-4bc10647f3ad",
+        "https://github.com/user-attachments/assets/61981376-6b9f-4433-9b7b-7202ae0ff692",
+        "https://github.com/user-attachments/assets/f1b92c6b-8304-455a-9121-cbcb5ba9f2be",
+        "https://github.com/user-attachments/assets/45d0334f-c947-4bf2-9fb3-cbbfdac95dbc",
+        "https://github.com/user-attachments/assets/3bfd524d-8b8f-4c06-873f-47ebe0525688",
+        "https://github.com/user-attachments/assets/798aa398-8513-4073-bccd-3b1d9a592719",
+        "https://github.com/user-attachments/assets/504ccc0b-75bb-478f-8178-9084b205d864",
+        "https://github.com/user-attachments/assets/0a865a6a-3571-469d-827b-57084e0141fe",
+        "https://github.com/user-attachments/assets/7e76b050-0b0c-4120-8d81-8c91d2a2b850",
+        "https://res.cloudinary.com/dxghgdt9t/image/upload/v1774697131/1_dqwtqb.png"
       ],
       span: "md:col-span-1 md:row-span-1",
-      brief: "End-to-end design and photography for premium school yearbooks. Creating lasting memories through thoughtful layout and high-end aesthetics.",
-      tools: ["InDesign", "Photoshop", "Sony A7II"],
+      brief: "A diverse collection of graphic design, typography, and visual branding projects. From stage designs to digital prototypes, each work explores the intersection of aesthetics and utility.",
+      tools: ["Photoshop", "Illustrator", "InDesign", "Figma"],
       tags: ['graduation', 'generalist']
     }
   ];
@@ -143,7 +157,7 @@ const Portfolio = () => {
     if (url.includes('picsum.photos')) {
       return url; // picsum urls in Portfolio are already sized appropriately
     }
-    return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=${width}&output=webp&q=80`;
+    return `https://wsrv.nl/?url=${encodeURIComponent(url)}&w=${width}&output=webp&q=50`;
   };
 
   return (
@@ -218,7 +232,7 @@ const Portfolio = () => {
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 1 }}
                       transition={{ duration: 0.8 }}
-                      src={getOptimizedUrl(project.images ? project.images[slideshowIndex % project.images.length] : project.img, 500)} 
+                      src={getOptimizedUrl(project.images ? project.images[slideshowIndex % project.images.length] : project.img, 400)} 
                       alt={project.title} 
                       loading="lazy"
                       className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
