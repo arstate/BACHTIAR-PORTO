@@ -29,6 +29,7 @@ interface DesignProject {
   images: DesignImage[];
   title: string;
   category: string;
+  description?: string;
   tools?: string[];
   figmaUrl?: string;
   instagramUrls?: string[];
@@ -79,8 +80,9 @@ const placeholderDesigns: DesignProject[] = [
         description: "Detail desain ornamen pilar vertikal berbantuk gerbang kemerdekaan yang akan dipasang di kedua sisi panggung."
       }
     ],
-    title: "Stage Design 17 Agustus 2025",
+    title: "Stage Design: 17 Agustus 2025",
     category: "Stage & Event Design",
+    description: "Dekonstruksi elemen tradisional dalam komposisi modern. Desain panggung ini menyeimbangkan kerumitan ornamen kemerdekaan dengan fungsionalitas tata letak, diperkuat oleh narasi warna yang megah dan tipografi presisi.",
     tools: ["Adobe Photoshop", "Adobe Illustrator"]
   },
   {
@@ -159,6 +161,7 @@ const placeholderDesigns: DesignProject[] = [
     ],
     title: "Papan Pengumuman Lomba",
     category: "Event Announcement",
+    description: "Pendekatan Information Design untuk merangkum rangkaian acara kemerdekaan. Eksplorasi ini berfokus pada:\n\nVisual Hierarchy: Penataan tipografi agar jadwal yang padat mudah di-skimming.\n\nThematic Consistency: Mempertahankan elemen epik Garuda sebagai penarik perhatian utama.\n\nModern Integration: Mengemas keragaman acara secara harmonis dalam satu kesatuan visual.",
     tools: ["Adobe Photoshop", "Adobe Illustrator"]
   },
   {
@@ -260,6 +263,7 @@ const placeholderDesigns: DesignProject[] = [
     ],
     title: "Vintage Album Yearbook",
     category: "Yearbook Design",
+    description: "Desain Yearbook Album bernada retro dengan ilustrasi sekolah vintage, menggunakan paduan warna hangat yang nostalgia dan elegan.\n\nProject Team:\n• Saya (Fotografer Utama & Designer Album)\n• Atha Zaki (Fotografer Second)\n• Rizdho (Color Grading Editor)",
     tools: ["Adobe Illustrator", "Adobe Photoshop"]
   },
   {
@@ -705,7 +709,11 @@ const DesignPage = () => {
                               <div className="w-4 h-[1px] bg-white/20"></div> Case Overview
                             </h3>
                             <div className="font-light space-y-4">
-                              {selectedProject.category === 'Presentation Design' ? (
+                              {selectedProject.description ? (
+                                selectedProject.description.split('\n\n').map((paragraph, i) => (
+                                  <p key={i}>{paragraph}</p>
+                                ))
+                              ) : selectedProject.category === 'Presentation Design' ? (
                                 <p>Presentasi (Pitch Deck) Interaktif yang dirancang langsung di kanvas Figma. Mengedepankan transisi mulus dan struktur narasi visual yang dinamis.</p>
                               ) : selectedProject.isScrollableDoc ? (
                                 <p>Sistem identitas visual komprehensif yang dikembangkan untuk memastikan konsistensi wajah brand di seluruh platform operasional dan digital.</p>
@@ -838,7 +846,11 @@ const DesignPage = () => {
                             transition={{ duration: 0.3 }}
                             className="text-white/70 text-[11px] md:text-sm leading-relaxed mb-4 md:mb-6"
                           >
-                            {currentSlideIndex > 0 ? (
+                            {selectedProject.description ? (
+                              selectedProject.description.split('\n\n').map((paragraph, i) => (
+                                <p key={i} className="mb-2 whitespace-pre-wrap">{paragraph}</p>
+                              ))
+                            ) : currentSlideIndex > 0 ? (
                               <p className="mb-2"><span className="text-white/40 uppercase text-[9px] mr-2">Page {currentSlideIndex}</span> {pages[currentSlideIndex]?.data?.description || ''}</p>
                             ) : (
                               <p className="mb-2"><span className="text-white/40 uppercase text-[9px] mr-2">Cover</span> {pages[0]?.data?.description || ''}</p>

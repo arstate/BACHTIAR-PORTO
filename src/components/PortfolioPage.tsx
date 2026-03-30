@@ -263,7 +263,7 @@ const ManualRow: React.FC<{ cat: string; onSelectVideo: (data: any) => void }> =
 const PortfolioPage = () => {
   const categories = ["Ads", "Angkatan", "Corporate/Event", "Prewedding", "Wedding", "Wisuda"];
   const location = useLocation();
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState("Ads");
   const [selectedVideo, setSelectedVideo] = useState<any | null>(null);
   const [activeUrl, setActiveUrl] = useState<string>('');
 
@@ -293,10 +293,10 @@ const PortfolioPage = () => {
       if (categories.includes(category)) {
         setActiveCategory(category);
       } else {
-        setActiveCategory('All');
+        setActiveCategory('Ads');
       }
     } else {
-      setActiveCategory('All');
+      setActiveCategory('Ads');
     }
   }, [location.hash]);
 

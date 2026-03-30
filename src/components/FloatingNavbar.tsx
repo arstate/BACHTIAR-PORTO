@@ -23,7 +23,7 @@ const FloatingNavbar = () => {
   const isHubPage = location.pathname === '/portfolio';
   const isDropdownPage = isGalleryPage || isVideographyPage || isMotionPage || isBTSPage || isDesignPage;
 
-  const [activeCategory, setActiveCategory] = useState('All');
+  const [activeCategory, setActiveCategory] = useState('Konser');
   const [isTutorialActive, setIsTutorialActive] = useState(false);
 
   useEffect(() => {
@@ -48,7 +48,9 @@ const FloatingNavbar = () => {
         setActiveCategory(category);
       } else {
         if (isGalleryPage) {
-          setActiveCategory('All');
+          setActiveCategory('Konser');
+        } else if (isVideographyPage) {
+          setActiveCategory('Ads');
         } else {
           setActiveCategory('All');
         }
